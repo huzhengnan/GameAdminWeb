@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyh.admin.mapper.OsaModuleMapper">
+  <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaModule">
+    <id column="module_id" jdbcType="BIGINT" property="moduleId" />
+    <result column="module_name" jdbcType="VARCHAR" property="moduleName" />
+    <result column="module_url" jdbcType="VARCHAR" property="moduleUrl" />
+    <result column="module_sort" jdbcType="INTEGER" property="moduleSort" />
+    <result column="module_desc" jdbcType="VARCHAR" property="moduleDesc" />
+    <result column="module_icon" jdbcType="VARCHAR" property="moduleIcon" />
+    <result column="online" jdbcType="INTEGER" property="online" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    module_id, module_name, module_url, module_sort, module_desc, module_icon, online
+  </sql>
+  <select id="selectByExample" parameterType="com.lyh.admin.model.OsaModuleExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from osa_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from osa_module
+    where module_id = #{moduleId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from osa_module
+    where module_id = #{moduleId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lyh.admin.model.OsaModuleExample">
+    delete from osa_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lyh.admin.model.OsaModule">
+    insert into osa_module (module_id, module_name, module_url, 
+      module_sort, module_desc, module_icon, 
+      online)
+    values (#{moduleId,jdbcType=BIGINT}, #{moduleName,jdbcType=VARCHAR}, #{moduleUrl,jdbcType=VARCHAR}, 
+      #{moduleSort,jdbcType=INTEGER}, #{moduleDesc,jdbcType=VARCHAR}, #{moduleIcon,jdbcType=VARCHAR}, 
+      #{online,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaModule">
+    insert into osa_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        module_id,
+      </if>
+      <if test="moduleName != null">
+        module_name,
+      </if>
+      <if test="moduleUrl != null">
+        module_url,
+      </if>
+      <if test="moduleSort != null">
+        module_sort,
+      </if>
+      <if test="moduleDesc != null">
+        module_desc,
+      </if>
+      <if test="moduleIcon != null">
+        module_icon,
+      </if>
+      <if test="online != null">
+        online,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="moduleId != null">
+        #{moduleId,jdbcType=BIGINT},
+      </if>
+      <if test="moduleName != null">
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleUrl != null">
+        #{moduleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleSort != null">
+        #{moduleSort,jdbcType=INTEGER},
+      </if>
+      <if test="moduleDesc != null">
+        #{moduleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleIcon != null">
+        #{moduleIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="online != null">
+        #{online,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lyh.admin.model.OsaModuleExample" resultType="java.lang.Long">
+    select count(*) from osa_module
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update osa_module
+    <set>
+      <if test="record.moduleId != null">
+        module_id = #{record.moduleId,jdbcType=BIGINT},
+      </if>
+      <if test="record.moduleName != null">
+        module_name = #{record.moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moduleUrl != null">
+        module_url = #{record.moduleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moduleSort != null">
+        module_sort = #{record.moduleSort,jdbcType=INTEGER},
+      </if>
+      <if test="record.moduleDesc != null">
+        module_desc = #{record.moduleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.moduleIcon != null">
+        module_icon = #{record.moduleIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.online != null">
+        online = #{record.online,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update osa_module
+    set module_id = #{record.moduleId,jdbcType=BIGINT},
+      module_name = #{record.moduleName,jdbcType=VARCHAR},
+      module_url = #{record.moduleUrl,jdbcType=VARCHAR},
+      module_sort = #{record.moduleSort,jdbcType=INTEGER},
+      module_desc = #{record.moduleDesc,jdbcType=VARCHAR},
+      module_icon = #{record.moduleIcon,jdbcType=VARCHAR},
+      online = #{record.online,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lyh.admin.model.OsaModule">
+    update osa_module
+    <set>
+      <if test="moduleName != null">
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleUrl != null">
+        module_url = #{moduleUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleSort != null">
+        module_sort = #{moduleSort,jdbcType=INTEGER},
+      </if>
+      <if test="moduleDesc != null">
+        module_desc = #{moduleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleIcon != null">
+        module_icon = #{moduleIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="online != null">
+        online = #{online,jdbcType=INTEGER},
+      </if>
+    </set>
+    where module_id = #{moduleId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaModule">
+    update osa_module
+    set module_name = #{moduleName,jdbcType=VARCHAR},
+      module_url = #{moduleUrl,jdbcType=VARCHAR},
+      module_sort = #{moduleSort,jdbcType=INTEGER},
+      module_desc = #{moduleDesc,jdbcType=VARCHAR},
+      module_icon = #{moduleIcon,jdbcType=VARCHAR},
+      online = #{online,jdbcType=INTEGER}
+    where module_id = #{moduleId,jdbcType=BIGINT}
+  </update>
+</mapper>

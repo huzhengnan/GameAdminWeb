@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyh.admin.mapper.OsaGmForbidmsgMapper">
+  <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaGmForbidmsg">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ptype" jdbcType="INTEGER" property="ptype" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="world_id" jdbcType="VARCHAR" property="worldId" />
+    <result column="opttype" jdbcType="INTEGER" property="opttype" />
+    <result column="forbidtime" jdbcType="INTEGER" property="forbidtime" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="optres" jdbcType="VARCHAR" property="optres" />
+    <result column="opttime" jdbcType="VARCHAR" property="opttime" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, ptype, open_id, app_id, world_id, opttype, forbidtime, ip, msg, optres, opttime, 
+    username
+  </sql>
+  <select id="selectByExample" parameterType="com.lyh.admin.model.OsaGmForbidmsgExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from osa_gm_forbidmsg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from osa_gm_forbidmsg
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from osa_gm_forbidmsg
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lyh.admin.model.OsaGmForbidmsgExample">
+    delete from osa_gm_forbidmsg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lyh.admin.model.OsaGmForbidmsg">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into osa_gm_forbidmsg (ptype, open_id, app_id, 
+      world_id, opttype, forbidtime, 
+      ip, msg, optres, opttime, 
+      username)
+    values (#{ptype,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
+      #{worldId,jdbcType=VARCHAR}, #{opttype,jdbcType=INTEGER}, #{forbidtime,jdbcType=INTEGER}, 
+      #{ip,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR}, #{optres,jdbcType=VARCHAR}, #{opttime,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGmForbidmsg">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into osa_gm_forbidmsg
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ptype != null">
+        ptype,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="worldId != null">
+        world_id,
+      </if>
+      <if test="opttype != null">
+        opttype,
+      </if>
+      <if test="forbidtime != null">
+        forbidtime,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="msg != null">
+        msg,
+      </if>
+      <if test="optres != null">
+        optres,
+      </if>
+      <if test="opttime != null">
+        opttime,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ptype != null">
+        #{ptype,jdbcType=INTEGER},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="worldId != null">
+        #{worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="opttype != null">
+        #{opttype,jdbcType=INTEGER},
+      </if>
+      <if test="forbidtime != null">
+        #{forbidtime,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null">
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="optres != null">
+        #{optres,jdbcType=VARCHAR},
+      </if>
+      <if test="opttime != null">
+        #{opttime,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lyh.admin.model.OsaGmForbidmsgExample" resultType="java.lang.Long">
+    select count(*) from osa_gm_forbidmsg
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update osa_gm_forbidmsg
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.ptype != null">
+        ptype = #{record.ptype,jdbcType=INTEGER},
+      </if>
+      <if test="record.openId != null">
+        open_id = #{record.openId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appId != null">
+        app_id = #{record.appId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.worldId != null">
+        world_id = #{record.worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opttype != null">
+        opttype = #{record.opttype,jdbcType=INTEGER},
+      </if>
+      <if test="record.forbidtime != null">
+        forbidtime = #{record.forbidtime,jdbcType=INTEGER},
+      </if>
+      <if test="record.ip != null">
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.msg != null">
+        msg = #{record.msg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.optres != null">
+        optres = #{record.optres,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opttime != null">
+        opttime = #{record.opttime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null">
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update osa_gm_forbidmsg
+    set id = #{record.id,jdbcType=BIGINT},
+      ptype = #{record.ptype,jdbcType=INTEGER},
+      open_id = #{record.openId,jdbcType=VARCHAR},
+      app_id = #{record.appId,jdbcType=VARCHAR},
+      world_id = #{record.worldId,jdbcType=VARCHAR},
+      opttype = #{record.opttype,jdbcType=INTEGER},
+      forbidtime = #{record.forbidtime,jdbcType=INTEGER},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      msg = #{record.msg,jdbcType=VARCHAR},
+      optres = #{record.optres,jdbcType=VARCHAR},
+      opttime = #{record.opttime,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lyh.admin.model.OsaGmForbidmsg">
+    update osa_gm_forbidmsg
+    <set>
+      <if test="ptype != null">
+        ptype = #{ptype,jdbcType=INTEGER},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="worldId != null">
+        world_id = #{worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="opttype != null">
+        opttype = #{opttype,jdbcType=INTEGER},
+      </if>
+      <if test="forbidtime != null">
+        forbidtime = #{forbidtime,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="msg != null">
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="optres != null">
+        optres = #{optres,jdbcType=VARCHAR},
+      </if>
+      <if test="opttime != null">
+        opttime = #{opttime,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaGmForbidmsg">
+    update osa_gm_forbidmsg
+    set ptype = #{ptype,jdbcType=INTEGER},
+      open_id = #{openId,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=VARCHAR},
+      world_id = #{worldId,jdbcType=VARCHAR},
+      opttype = #{opttype,jdbcType=INTEGER},
+      forbidtime = #{forbidtime,jdbcType=INTEGER},
+      ip = #{ip,jdbcType=VARCHAR},
+      msg = #{msg,jdbcType=VARCHAR},
+      optres = #{optres,jdbcType=VARCHAR},
+      opttime = #{opttime,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

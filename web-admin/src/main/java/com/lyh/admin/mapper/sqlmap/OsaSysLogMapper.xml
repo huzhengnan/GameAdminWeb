@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyh.admin.mapper.OsaSysLogMapper">
+  <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaSysLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="action" jdbcType="VARCHAR" property="action" />
+    <result column="class_name" jdbcType="VARCHAR" property="className" />
+    <result column="class_obj" jdbcType="VARCHAR" property="classObj" />
+    <result column="op_time" jdbcType="INTEGER" property="opTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lyh.admin.model.OsaSysLog">
+    <result column="result" jdbcType="LONGVARCHAR" property="result" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_name, action, class_name, class_obj, op_time
+  </sql>
+  <sql id="Blob_Column_List">
+    result
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.lyh.admin.model.OsaSysLogExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from osa_sys_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.lyh.admin.model.OsaSysLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from osa_sys_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from osa_sys_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from osa_sys_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lyh.admin.model.OsaSysLogExample">
+    delete from osa_sys_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lyh.admin.model.OsaSysLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into osa_sys_log (user_name, action, class_name, 
+      class_obj, op_time, result
+      )
+    values (#{userName,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, 
+      #{classObj,jdbcType=VARCHAR}, #{opTime,jdbcType=INTEGER}, #{result,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaSysLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into osa_sys_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="action != null">
+        action,
+      </if>
+      <if test="className != null">
+        class_name,
+      </if>
+      <if test="classObj != null">
+        class_obj,
+      </if>
+      <if test="opTime != null">
+        op_time,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null">
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classObj != null">
+        #{classObj,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null">
+        #{opTime,jdbcType=INTEGER},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lyh.admin.model.OsaSysLogExample" resultType="java.lang.Long">
+    select count(*) from osa_sys_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update osa_sys_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.action != null">
+        action = #{record.action,jdbcType=VARCHAR},
+      </if>
+      <if test="record.className != null">
+        class_name = #{record.className,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classObj != null">
+        class_obj = #{record.classObj,jdbcType=VARCHAR},
+      </if>
+      <if test="record.opTime != null">
+        op_time = #{record.opTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.result != null">
+        result = #{record.result,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update osa_sys_log
+    set id = #{record.id,jdbcType=BIGINT},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      action = #{record.action,jdbcType=VARCHAR},
+      class_name = #{record.className,jdbcType=VARCHAR},
+      class_obj = #{record.classObj,jdbcType=VARCHAR},
+      op_time = #{record.opTime,jdbcType=INTEGER},
+      result = #{record.result,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update osa_sys_log
+    set id = #{record.id,jdbcType=BIGINT},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      action = #{record.action,jdbcType=VARCHAR},
+      class_name = #{record.className,jdbcType=VARCHAR},
+      class_obj = #{record.classObj,jdbcType=VARCHAR},
+      op_time = #{record.opTime,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lyh.admin.model.OsaSysLog">
+    update osa_sys_log
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null">
+        action = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classObj != null">
+        class_obj = #{classObj,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null">
+        op_time = #{opTime,jdbcType=INTEGER},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.lyh.admin.model.OsaSysLog">
+    update osa_sys_log
+    set user_name = #{userName,jdbcType=VARCHAR},
+      action = #{action,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
+      class_obj = #{classObj,jdbcType=VARCHAR},
+      op_time = #{opTime,jdbcType=INTEGER},
+      result = #{result,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaSysLog">
+    update osa_sys_log
+    set user_name = #{userName,jdbcType=VARCHAR},
+      action = #{action,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
+      class_obj = #{classObj,jdbcType=VARCHAR},
+      op_time = #{opTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyh.admin.mapper.OsaGameWorldMapper">
+  <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaGameWorld">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="w_name" jdbcType="VARCHAR" property="wName" />
+    <result column="world_id" jdbcType="VARCHAR" property="worldId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="domain" jdbcType="VARCHAR" property="domain" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="server_url" jdbcType="VARCHAR" property="serverUrl" />
+    <result column="info" jdbcType="VARCHAR" property="info" />
+    <result column="ismingle" jdbcType="VARCHAR" property="ismingle" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, app_id, w_name, world_id, status, domain, ip, server_url, info, ismingle, time, 
+    open_time
+  </sql>
+  <select id="selectByExample" parameterType="com.lyh.admin.model.OsaGameWorldExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from osa_game_world
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from osa_game_world
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from osa_game_world
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lyh.admin.model.OsaGameWorldExample">
+    delete from osa_game_world
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lyh.admin.model.OsaGameWorld">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into osa_game_world (app_id, w_name, world_id, 
+      status, domain, ip, 
+      server_url, info, ismingle, 
+      time, open_time)
+    values (#{appId,jdbcType=VARCHAR}, #{wName,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{domain,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{serverUrl,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{ismingle,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, #{openTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGameWorld">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into osa_game_world
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="wName != null">
+        w_name,
+      </if>
+      <if test="worldId != null">
+        world_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="domain != null">
+        domain,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="serverUrl != null">
+        server_url,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="ismingle != null">
+        ismingle,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="openTime != null">
+        open_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="wName != null">
+        #{wName,jdbcType=VARCHAR},
+      </if>
+      <if test="worldId != null">
+        #{worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="serverUrl != null">
+        #{serverUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="ismingle != null">
+        #{ismingle,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openTime != null">
+        #{openTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lyh.admin.model.OsaGameWorldExample" resultType="java.lang.Long">
+    select count(*) from osa_game_world
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update osa_game_world
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.appId != null">
+        app_id = #{record.appId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wName != null">
+        w_name = #{record.wName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.worldId != null">
+        world_id = #{record.worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.domain != null">
+        domain = #{record.domain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null">
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serverUrl != null">
+        server_url = #{record.serverUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.info != null">
+        info = #{record.info,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ismingle != null">
+        ismingle = #{record.ismingle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null">
+        time = #{record.time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.openTime != null">
+        open_time = #{record.openTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update osa_game_world
+    set id = #{record.id,jdbcType=BIGINT},
+      app_id = #{record.appId,jdbcType=VARCHAR},
+      w_name = #{record.wName,jdbcType=VARCHAR},
+      world_id = #{record.worldId,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      domain = #{record.domain,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      server_url = #{record.serverUrl,jdbcType=VARCHAR},
+      info = #{record.info,jdbcType=VARCHAR},
+      ismingle = #{record.ismingle,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=TIMESTAMP},
+      open_time = #{record.openTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lyh.admin.model.OsaGameWorld">
+    update osa_game_world
+    <set>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="wName != null">
+        w_name = #{wName,jdbcType=VARCHAR},
+      </if>
+      <if test="worldId != null">
+        world_id = #{worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="domain != null">
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="serverUrl != null">
+        server_url = #{serverUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null">
+        info = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="ismingle != null">
+        ismingle = #{ismingle,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openTime != null">
+        open_time = #{openTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaGameWorld">
+    update osa_game_world
+    set app_id = #{appId,jdbcType=VARCHAR},
+      w_name = #{wName,jdbcType=VARCHAR},
+      world_id = #{worldId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      domain = #{domain,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      server_url = #{serverUrl,jdbcType=VARCHAR},
+      info = #{info,jdbcType=VARCHAR},
+      ismingle = #{ismingle,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      open_time = #{openTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

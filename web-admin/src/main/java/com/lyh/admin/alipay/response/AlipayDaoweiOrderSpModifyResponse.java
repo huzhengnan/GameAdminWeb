@@ -1,0 +1,20 @@
+package com.lyh.admin.alipay.response;
+
+
+import com.lyh.admin.alipay.AlipayResponse;
+
+/**
+ * ALIPAY API: alipay.daowei.order.sp.modify response.
+ * 
+ * @author auto create
+ * @since 1.0, 2017-03-20 14:01:51
+ */
+public class AlipayDaoweiOrderSpModifyResponse extends AlipayResponse {
+
+	private static final long serialVersionUID = 5296279389475966768L;
+
+	
+
+	
+
+}

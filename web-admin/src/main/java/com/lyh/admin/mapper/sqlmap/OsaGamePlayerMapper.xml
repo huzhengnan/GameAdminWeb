@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyh.admin.mapper.OsaGamePlayerMapper">
+  <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaGamePlayer">
+    <id column="player_id" jdbcType="BIGINT" property="playerId" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="world_id" jdbcType="VARCHAR" property="worldId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="cur_money" jdbcType="DOUBLE" property="curMoney" />
+    <result column="total_money" jdbcType="DOUBLE" property="totalMoney" />
+    <result column="isonline" jdbcType="INTEGER" property="isonline" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+    <result column="last_login_time" jdbcType="VARCHAR" property="lastLoginTime" />
+    <result column="vip_level" jdbcType="INTEGER" property="vipLevel" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="invite_code" jdbcType="VARCHAR" property="inviteCode" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="card_id" jdbcType="VARCHAR" property="cardId" />
+    <result column="invite_time" jdbcType="TIMESTAMP" property="inviteTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    player_id, open_id, world_id, role_name, level, cur_money, total_money, isonline, 
+    status, last_login_ip, last_login_time, vip_level, app_id, invite_code, real_name, 
+    card_id, invite_time, create_time
+  </sql>
+  <select id="selectByExample" parameterType="com.lyh.admin.model.OsaGamePlayerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from osa_game_player
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from osa_game_player
+    where player_id = #{playerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from osa_game_player
+    where player_id = #{playerId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lyh.admin.model.OsaGamePlayerExample">
+    delete from osa_game_player
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lyh.admin.model.OsaGamePlayer">
+    insert into osa_game_player (player_id, open_id, world_id, 
+      role_name, level, cur_money, 
+      total_money, isonline, status, 
+      last_login_ip, last_login_time, vip_level, 
+      app_id, invite_code, real_name, 
+      card_id, invite_time, create_time
+      )
+    values (#{playerId,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, 
+      #{roleName,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{curMoney,jdbcType=DOUBLE}, 
+      #{totalMoney,jdbcType=DOUBLE}, #{isonline,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{lastLoginIp,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=VARCHAR}, #{vipLevel,jdbcType=INTEGER}, 
+      #{appId,jdbcType=VARCHAR}, #{inviteCode,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{cardId,jdbcType=VARCHAR}, #{inviteTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGamePlayer">
+    insert into osa_game_player
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="playerId != null">
+        player_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="worldId != null">
+        world_id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="curMoney != null">
+        cur_money,
+      </if>
+      <if test="totalMoney != null">
+        total_money,
+      </if>
+      <if test="isonline != null">
+        isonline,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="vipLevel != null">
+        vip_level,
+      </if>
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="inviteCode != null">
+        invite_code,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="cardId != null">
+        card_id,
+      </if>
+      <if test="inviteTime != null">
+        invite_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="playerId != null">
+        #{playerId,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="worldId != null">
+        #{worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="curMoney != null">
+        #{curMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="totalMoney != null">
+        #{totalMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="isonline != null">
+        #{isonline,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="vipLevel != null">
+        #{vipLevel,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteCode != null">
+        #{inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null">
+        #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteTime != null">
+        #{inviteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lyh.admin.model.OsaGamePlayerExample" resultType="java.lang.Long">
+    select count(*) from osa_game_player
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update osa_game_player
+    <set>
+      <if test="record.playerId != null">
+        player_id = #{record.playerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.openId != null">
+        open_id = #{record.openId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.worldId != null">
+        world_id = #{record.worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleName != null">
+        role_name = #{record.roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.level != null">
+        level = #{record.level,jdbcType=INTEGER},
+      </if>
+      <if test="record.curMoney != null">
+        cur_money = #{record.curMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalMoney != null">
+        total_money = #{record.totalMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.isonline != null">
+        isonline = #{record.isonline,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastLoginIp != null">
+        last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastLoginTime != null">
+        last_login_time = #{record.lastLoginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vipLevel != null">
+        vip_level = #{record.vipLevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.appId != null">
+        app_id = #{record.appId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inviteCode != null">
+        invite_code = #{record.inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realName != null">
+        real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardId != null">
+        card_id = #{record.cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inviteTime != null">
+        invite_time = #{record.inviteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update osa_game_player
+    set player_id = #{record.playerId,jdbcType=BIGINT},
+      open_id = #{record.openId,jdbcType=VARCHAR},
+      world_id = #{record.worldId,jdbcType=VARCHAR},
+      role_name = #{record.roleName,jdbcType=VARCHAR},
+      level = #{record.level,jdbcType=INTEGER},
+      cur_money = #{record.curMoney,jdbcType=DOUBLE},
+      total_money = #{record.totalMoney,jdbcType=DOUBLE},
+      isonline = #{record.isonline,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      last_login_time = #{record.lastLoginTime,jdbcType=VARCHAR},
+      vip_level = #{record.vipLevel,jdbcType=INTEGER},
+      app_id = #{record.appId,jdbcType=VARCHAR},
+      invite_code = #{record.inviteCode,jdbcType=VARCHAR},
+      real_name = #{record.realName,jdbcType=VARCHAR},
+      card_id = #{record.cardId,jdbcType=VARCHAR},
+      invite_time = #{record.inviteTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lyh.admin.model.OsaGamePlayer">
+    update osa_game_player
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="worldId != null">
+        world_id = #{worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="curMoney != null">
+        cur_money = #{curMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="totalMoney != null">
+        total_money = #{totalMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="isonline != null">
+        isonline = #{isonline,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="vipLevel != null">
+        vip_level = #{vipLevel,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteCode != null">
+        invite_code = #{inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null">
+        card_id = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteTime != null">
+        invite_time = #{inviteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where player_id = #{playerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaGamePlayer">
+    update osa_game_player
+    set open_id = #{openId,jdbcType=VARCHAR},
+      world_id = #{worldId,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      cur_money = #{curMoney,jdbcType=DOUBLE},
+      total_money = #{totalMoney,jdbcType=DOUBLE},
+      isonline = #{isonline,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      last_login_time = #{lastLoginTime,jdbcType=VARCHAR},
+      vip_level = #{vipLevel,jdbcType=INTEGER},
+      app_id = #{appId,jdbcType=VARCHAR},
+      invite_code = #{inviteCode,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      card_id = #{cardId,jdbcType=VARCHAR},
+      invite_time = #{inviteTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where player_id = #{playerId,jdbcType=BIGINT}
+  </update>
+</mapper>

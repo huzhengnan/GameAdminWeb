@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyh.admin.mapper.OsaPlayerRegisterLogMapper">
+  <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaPlayerRegisterLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="world_id" jdbcType="VARCHAR" property="worldId" />
+    <result column="lastlogin_ip" jdbcType="VARCHAR" property="lastloginIp" />
+    <result column="lastlogintime" jdbcType="VARCHAR" property="lastlogintime" />
+    <result column="info" jdbcType="VARCHAR" property="info" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, open_id, world_id, lastlogin_ip, lastlogintime, info, app_id
+  </sql>
+  <select id="selectByExample" parameterType="com.lyh.admin.model.OsaPlayerRegisterLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from osa_player_register_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from osa_player_register_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from osa_player_register_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lyh.admin.model.OsaPlayerRegisterLogExample">
+    delete from osa_player_register_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lyh.admin.model.OsaPlayerRegisterLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into osa_player_register_log (open_id, world_id, lastlogin_ip, 
+      lastlogintime, info, app_id
+      )
+    values (#{openId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, #{lastloginIp,jdbcType=VARCHAR}, 
+      #{lastlogintime,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaPlayerRegisterLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into osa_player_register_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="worldId != null">
+        world_id,
+      </if>
+      <if test="lastloginIp != null">
+        lastlogin_ip,
+      </if>
+      <if test="lastlogintime != null">
+        lastlogintime,
+      </if>
+      <if test="info != null">
+        info,
+      </if>
+      <if test="appId != null">
+        app_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="worldId != null">
+        #{worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastloginIp != null">
+        #{lastloginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastlogintime != null">
+        #{lastlogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lyh.admin.model.OsaPlayerRegisterLogExample" resultType="java.lang.Long">
+    select count(*) from osa_player_register_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update osa_player_register_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.openId != null">
+        open_id = #{record.openId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.worldId != null">
+        world_id = #{record.worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastloginIp != null">
+        lastlogin_ip = #{record.lastloginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastlogintime != null">
+        lastlogintime = #{record.lastlogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.info != null">
+        info = #{record.info,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appId != null">
+        app_id = #{record.appId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update osa_player_register_log
+    set id = #{record.id,jdbcType=BIGINT},
+      open_id = #{record.openId,jdbcType=VARCHAR},
+      world_id = #{record.worldId,jdbcType=VARCHAR},
+      lastlogin_ip = #{record.lastloginIp,jdbcType=VARCHAR},
+      lastlogintime = #{record.lastlogintime,jdbcType=VARCHAR},
+      info = #{record.info,jdbcType=VARCHAR},
+      app_id = #{record.appId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lyh.admin.model.OsaPlayerRegisterLog">
+    update osa_player_register_log
+    <set>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="worldId != null">
+        world_id = #{worldId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastloginIp != null">
+        lastlogin_ip = #{lastloginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="lastlogintime != null">
+        lastlogintime = #{lastlogintime,jdbcType=VARCHAR},
+      </if>
+      <if test="info != null">
+        info = #{info,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaPlayerRegisterLog">
+    update osa_player_register_log
+    set open_id = #{openId,jdbcType=VARCHAR},
+      world_id = #{worldId,jdbcType=VARCHAR},
+      lastlogin_ip = #{lastloginIp,jdbcType=VARCHAR},
+      lastlogintime = #{lastlogintime,jdbcType=VARCHAR},
+      info = #{info,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
