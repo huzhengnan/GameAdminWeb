@@ -18,7 +18,6 @@
 <link rel="stylesheet" href="${ctxPage}/css/other.css">
 <link rel="stylesheet" href="${ctxPage}/css/jquery-ui.css" />
 
-
 <script src="${ctxPage}/js/jquery-1.12.4.js"></script>
 <script src="${ctxPage}/js/jquery.cookie.js"></script>
 
