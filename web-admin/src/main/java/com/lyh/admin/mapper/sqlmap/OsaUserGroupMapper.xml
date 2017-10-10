@@ -4,11 +4,9 @@
   <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaUserGroup">
     <id column="group_id" jdbcType="BIGINT" property="groupId" />
     <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="group_role" jdbcType="VARCHAR" property="groupRole" />
     <result column="owner_id" jdbcType="INTEGER" property="ownerId" />
     <result column="group_desc" jdbcType="VARCHAR" property="groupDesc" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lyh.admin.model.OsaUserGroup">
-    <result column="group_role" jdbcType="LONGVARCHAR" property="groupRole" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,28 +67,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    group_id, group_name, owner_id, group_desc
+    group_id, group_name, group_role, owner_id, group_desc
   </sql>
-  <sql id="Blob_Column_List">
-    group_role
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.lyh.admin.model.OsaUserGroupExample" resultMap="ResultMapWithBLOBs">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    'true' as QUERYID,
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from osa_user_group
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByExample" parameterType="com.lyh.admin.model.OsaUserGroupExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -106,11 +84,9 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from osa_user_group
     where group_id = #{groupId,jdbcType=BIGINT}
   </select>
@@ -125,10 +101,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaUserGroup">
-    insert into osa_user_group (group_id, group_name, owner_id, 
-      group_desc, group_role)
-    values (#{groupId,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, #{ownerId,jdbcType=INTEGER}, 
-      #{groupDesc,jdbcType=VARCHAR}, #{groupRole,jdbcType=LONGVARCHAR})
+    insert into osa_user_group (group_id, group_name, group_role, 
+      owner_id, group_desc)
+    values (#{groupId,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, #{groupRole,jdbcType=VARCHAR}, 
+      #{ownerId,jdbcType=INTEGER}, #{groupDesc,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaUserGroup">
     insert into osa_user_group
@@ -139,14 +115,14 @@
       <if test="groupName != null">
         group_name,
       </if>
+      <if test="groupRole != null">
+        group_role,
+      </if>
       <if test="ownerId != null">
         owner_id,
       </if>
       <if test="groupDesc != null">
         group_desc,
-      </if>
-      <if test="groupRole != null">
-        group_role,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -156,14 +132,14 @@
       <if test="groupName != null">
         #{groupName,jdbcType=VARCHAR},
       </if>
+      <if test="groupRole != null">
+        #{groupRole,jdbcType=VARCHAR},
+      </if>
       <if test="ownerId != null">
         #{ownerId,jdbcType=INTEGER},
       </if>
       <if test="groupDesc != null">
         #{groupDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="groupRole != null">
-        #{groupRole,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -182,27 +158,16 @@
       <if test="record.groupName != null">
         group_name = #{record.groupName,jdbcType=VARCHAR},
       </if>
+      <if test="record.groupRole != null">
+        group_role = #{record.groupRole,jdbcType=VARCHAR},
+      </if>
       <if test="record.ownerId != null">
         owner_id = #{record.ownerId,jdbcType=INTEGER},
       </if>
       <if test="record.groupDesc != null">
         group_desc = #{record.groupDesc,jdbcType=VARCHAR},
       </if>
-      <if test="record.groupRole != null">
-        group_role = #{record.groupRole,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update osa_user_group
-    set group_id = #{record.groupId,jdbcType=BIGINT},
-      group_name = #{record.groupName,jdbcType=VARCHAR},
-      owner_id = #{record.ownerId,jdbcType=INTEGER},
-      group_desc = #{record.groupDesc,jdbcType=VARCHAR},
-      group_role = #{record.groupRole,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -211,6 +176,7 @@
     update osa_user_group
     set group_id = #{record.groupId,jdbcType=BIGINT},
       group_name = #{record.groupName,jdbcType=VARCHAR},
+      group_role = #{record.groupRole,jdbcType=VARCHAR},
       owner_id = #{record.ownerId,jdbcType=INTEGER},
       group_desc = #{record.groupDesc,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -223,29 +189,22 @@
       <if test="groupName != null">
         group_name = #{groupName,jdbcType=VARCHAR},
       </if>
+      <if test="groupRole != null">
+        group_role = #{groupRole,jdbcType=VARCHAR},
+      </if>
       <if test="ownerId != null">
         owner_id = #{ownerId,jdbcType=INTEGER},
       </if>
       <if test="groupDesc != null">
         group_desc = #{groupDesc,jdbcType=VARCHAR},
       </if>
-      <if test="groupRole != null">
-        group_role = #{groupRole,jdbcType=LONGVARCHAR},
-      </if>
     </set>
-    where group_id = #{groupId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.lyh.admin.model.OsaUserGroup">
-    update osa_user_group
-    set group_name = #{groupName,jdbcType=VARCHAR},
-      owner_id = #{ownerId,jdbcType=INTEGER},
-      group_desc = #{groupDesc,jdbcType=VARCHAR},
-      group_role = #{groupRole,jdbcType=LONGVARCHAR}
     where group_id = #{groupId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaUserGroup">
     update osa_user_group
     set group_name = #{groupName,jdbcType=VARCHAR},
+      group_role = #{groupRole,jdbcType=VARCHAR},
       owner_id = #{ownerId,jdbcType=INTEGER},
       group_desc = #{groupDesc,jdbcType=VARCHAR}
     where group_id = #{groupId,jdbcType=BIGINT}

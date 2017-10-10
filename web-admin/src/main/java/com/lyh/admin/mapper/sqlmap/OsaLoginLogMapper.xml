@@ -105,22 +105,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaLoginLog">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_login_log (world_id, user_ip, login_time, 
-      open_id, level, role_name, 
-      addtime, app_id)
-    values (#{worldId,jdbcType=VARCHAR}, #{userIp,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, 
-      #{openId,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, 
-      #{addtime,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR})
+    insert into osa_login_log (id, world_id, user_ip, 
+      login_time, open_id, level, 
+      role_name, addtime, app_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{worldId,jdbcType=VARCHAR}, #{userIp,jdbcType=VARCHAR}, 
+      #{loginTime,jdbcType=TIMESTAMP}, #{openId,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
+      #{roleName,jdbcType=VARCHAR}, #{addtime,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaLoginLog">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_login_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="worldId != null">
         world_id,
       </if>
@@ -147,6 +146,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="worldId != null">
         #{worldId,jdbcType=VARCHAR},
       </if>

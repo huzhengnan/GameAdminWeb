@@ -101,20 +101,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaProxyRechargeFetch">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_proxy_recharge_fetch (money, create_time, name, 
-      ids)
-    values (#{money,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
-      #{ids,jdbcType=VARCHAR})
+    insert into osa_proxy_recharge_fetch (id, money, create_time, 
+      name, ids)
+    values (#{id,jdbcType=BIGINT}, #{money,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{name,jdbcType=VARCHAR}, #{ids,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaProxyRechargeFetch">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_proxy_recharge_fetch
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="money != null">
         money,
       </if>
@@ -129,6 +126,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="money != null">
         #{money,jdbcType=DOUBLE},
       </if>

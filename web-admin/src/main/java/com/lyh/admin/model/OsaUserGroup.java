@@ -14,6 +14,11 @@ public class OsaUserGroup implements Serializable {
     private String groupName;
 
     /**
+     * 初始权限为1,5,17,18,22,23,24,25
+     */
+    private String groupRole;
+
+    /**
      * 创建人ID
      */
     private Integer ownerId;
@@ -22,11 +27,6 @@ public class OsaUserGroup implements Serializable {
      * 
      */
     private String groupDesc;
-
-    /**
-     * 初始权限为1,5,17,18,22,23,24,25
-     */
-    private String groupRole;
 
     /**
      * osa_user_group
@@ -49,6 +49,14 @@ public class OsaUserGroup implements Serializable {
         this.groupName = groupName == null ? null : groupName.trim();
     }
 
+    public String getGroupRole() {
+        return groupRole;
+    }
+
+    public void setGroupRole(String groupRole) {
+        this.groupRole = groupRole == null ? null : groupRole.trim();
+    }
+
     public Integer getOwnerId() {
         return ownerId;
     }
@@ -65,14 +73,6 @@ public class OsaUserGroup implements Serializable {
         this.groupDesc = groupDesc == null ? null : groupDesc.trim();
     }
 
-    public String getGroupRole() {
-        return groupRole;
-    }
-
-    public void setGroupRole(String groupRole) {
-        this.groupRole = groupRole == null ? null : groupRole.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -81,9 +81,9 @@ public class OsaUserGroup implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", groupId=").append(groupId);
         sb.append(", groupName=").append(groupName);
+        sb.append(", groupRole=").append(groupRole);
         sb.append(", ownerId=").append(ownerId);
         sb.append(", groupDesc=").append(groupDesc);
-        sb.append(", groupRole=").append(groupRole);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

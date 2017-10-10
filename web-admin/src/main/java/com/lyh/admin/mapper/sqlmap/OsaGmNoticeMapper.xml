@@ -105,22 +105,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaGmNotice">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_gm_notice (app_id, world_id, type, 
-      content, msg, optres, 
-      opttime, user_name)
-    values (#{appId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
-      #{content,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR}, #{optres,jdbcType=VARCHAR}, 
-      #{opttime,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR})
+    insert into osa_gm_notice (id, app_id, world_id, 
+      type, content, msg, 
+      optres, opttime, user_name
+      )
+    values (#{id,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR}, 
+      #{optres,jdbcType=VARCHAR}, #{opttime,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGmNotice">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_gm_notice
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="appId != null">
         app_id,
       </if>
@@ -147,6 +146,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>

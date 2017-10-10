@@ -16,21 +16,15 @@ public interface OsaUserMapper {
 
     int insertSelective(OsaUser record);
 
-    List<OsaUser> selectByExampleWithBLOBs(OsaUserExample example);
-
     List<OsaUser> selectByExample(OsaUserExample example);
 
     OsaUser selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") OsaUser record, @Param("example") OsaUserExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") OsaUser record, @Param("example") OsaUserExample example);
-
     int updateByExample(@Param("record") OsaUser record, @Param("example") OsaUserExample example);
 
     int updateByPrimaryKeySelective(OsaUser record);
-
-    int updateByPrimaryKeyWithBLOBs(OsaUser record);
 
     int updateByPrimaryKey(OsaUser record);
 }

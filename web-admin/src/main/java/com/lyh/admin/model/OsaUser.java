@@ -65,6 +65,11 @@ public class OsaUser implements Serializable {
     private String template;
 
     /**
+     * 快捷菜单
+     */
+    private String shortcuts;
+
+    /**
      * 是否显示quicknote
      */
     private Integer showQuicknote;
@@ -113,11 +118,6 @@ public class OsaUser implements Serializable {
      * 创建时间
      */
     private Date createTime;
-
-    /**
-     * 快捷菜单
-     */
-    private String shortcuts;
 
     /**
      * osa_user
@@ -220,6 +220,14 @@ public class OsaUser implements Serializable {
         this.template = template == null ? null : template.trim();
     }
 
+    public String getShortcuts() {
+        return shortcuts;
+    }
+
+    public void setShortcuts(String shortcuts) {
+        this.shortcuts = shortcuts == null ? null : shortcuts.trim();
+    }
+
     public Integer getShowQuicknote() {
         return showQuicknote;
     }
@@ -300,14 +308,6 @@ public class OsaUser implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getShortcuts() {
-        return shortcuts;
-    }
-
-    public void setShortcuts(String shortcuts) {
-        this.shortcuts = shortcuts == null ? null : shortcuts.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -326,6 +326,7 @@ public class OsaUser implements Serializable {
         sb.append(", loginIp=").append(loginIp);
         sb.append(", userGroup=").append(userGroup);
         sb.append(", template=").append(template);
+        sb.append(", shortcuts=").append(shortcuts);
         sb.append(", showQuicknote=").append(showQuicknote);
         sb.append(", wechat=").append(wechat);
         sb.append(", isProxy=").append(isProxy);
@@ -336,7 +337,6 @@ public class OsaUser implements Serializable {
         sb.append(", remainMoney=").append(remainMoney);
         sb.append(", bindPlayerId=").append(bindPlayerId);
         sb.append(", createTime=").append(createTime);
-        sb.append(", shortcuts=").append(shortcuts);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

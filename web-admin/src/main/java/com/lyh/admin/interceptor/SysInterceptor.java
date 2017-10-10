@@ -10,6 +10,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.lyh.admin.entity.SysMenu;
 import com.lyh.admin.entity.SysUser;
+import com.lyh.admin.tools.ToolUtils;
 
 /**
  * 
@@ -72,7 +73,8 @@ public class SysInterceptor extends HandlerInterceptorAdapter  {
 		//ajax 没有Model
 		if (modelAndView != null){
 			//msg特殊处理
-			if (!modelAndView.getViewName().contains("/sys/message")){
+			
+			if (!modelAndView.getViewName().contains("/sys/message") && !modelAndView.getViewName().contains(":")){
 				String requestPath = request.getContextPath();
 				String redirect_uri = request.getRequestURL().toString();
 				int index = redirect_uri.indexOf(requestPath);
@@ -80,8 +82,12 @@ public class SysInterceptor extends HandlerInterceptorAdapter  {
 					logger.error("拦截有问题:"+redirect_uri);
 					return ;
 				}
-				String subRedirectUri = redirect_uri.substring(index + requestPath.length());
 				
+				
+				String tempString = redirect_uri.substring(index + requestPath.length());
+				
+				String subRedirectUri = ToolUtils.split(ToolUtils.split(tempString, "?")[0],";")[0];
+					
 				SysUser sysUser = (SysUser)request.getSession().getAttribute("sysUser");
 				if (sysUser != null){
 					modelAndView.addObject("sidebar", sysUser.getMenuLists());
@@ -95,8 +101,6 @@ public class SysInterceptor extends HandlerInterceptorAdapter  {
 					}
 				}
 			}
-			
-			
 		}
 	}
 	

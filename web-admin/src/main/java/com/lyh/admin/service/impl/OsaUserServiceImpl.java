@@ -57,7 +57,7 @@ public class OsaUserServiceImpl implements OsaUserService {
 		OsaUserExample.Criteria  criteria= example.createCriteria();
 		criteria.andUserNameEqualTo(userName);
 		List<OsaUser> list = mapper.selectByExample(example);
-		return list.isEmpty() ? null : list.get(0) ;
+		return list.size() <= 0? null : list.get(0) ;
 	}
 	
 }

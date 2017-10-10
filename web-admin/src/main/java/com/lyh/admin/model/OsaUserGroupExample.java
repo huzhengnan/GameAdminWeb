@@ -246,6 +246,76 @@ public class OsaUserGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andGroupRoleIsNull() {
+            addCriterion("group_role is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleIsNotNull() {
+            addCriterion("group_role is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleEqualTo(String value) {
+            addCriterion("group_role =", value, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleNotEqualTo(String value) {
+            addCriterion("group_role <>", value, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleGreaterThan(String value) {
+            addCriterion("group_role >", value, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleGreaterThanOrEqualTo(String value) {
+            addCriterion("group_role >=", value, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleLessThan(String value) {
+            addCriterion("group_role <", value, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleLessThanOrEqualTo(String value) {
+            addCriterion("group_role <=", value, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleLike(String value) {
+            addCriterion("group_role like", value, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleNotLike(String value) {
+            addCriterion("group_role not like", value, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleIn(List<String> values) {
+            addCriterion("group_role in", values, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleNotIn(List<String> values) {
+            addCriterion("group_role not in", values, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleBetween(String value1, String value2) {
+            addCriterion("group_role between", value1, value2, "groupRole");
+            return (Criteria) this;
+        }
+
+        public Criteria andGroupRoleNotBetween(String value1, String value2) {
+            addCriterion("group_role not between", value1, value2, "groupRole");
+            return (Criteria) this;
+        }
+
         public Criteria andOwnerIdIsNull() {
             addCriterion("owner_id is null");
             return (Criteria) this;

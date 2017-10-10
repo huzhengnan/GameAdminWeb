@@ -106,24 +106,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaGmSendMoneyPay">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_gm_send_money_pay (order_id, app_id, world_id, 
-      open_id, money, send_id, 
-      status, info, addtime
-      )
-    values (#{orderId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, 
-      #{openId,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{sendId,jdbcType=BIGINT}, 
-      #{status,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{addtime,jdbcType=VARCHAR}
-      )
+    insert into osa_gm_send_money_pay (id, order_id, app_id, 
+      world_id, open_id, money, 
+      send_id, status, info, 
+      addtime)
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
+      #{worldId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
+      #{sendId,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
+      #{addtime,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGmSendMoneyPay">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_gm_send_money_pay
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="orderId != null">
         order_id,
       </if>
@@ -153,6 +150,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="orderId != null">
         #{orderId,jdbcType=VARCHAR},
       </if>

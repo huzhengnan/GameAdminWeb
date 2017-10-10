@@ -104,7 +104,7 @@ public class MyRealm extends AuthorizingRealm {
 		
 		// token是用户输入的用户名和密码
 		// 第一步从token中取出用户名
-		UsernamePasswordToken userCode = (UsernamePasswordToken) token.getPrincipal();
+		UsernamePasswordToken userCode = (UsernamePasswordToken) token;
 		
 		// 第二步：根据用户输入的userCode从数据库查询
 		OsaUser user = null;
@@ -112,17 +112,22 @@ public class MyRealm extends AuthorizingRealm {
 			user = sysService.findUserByUserName(userCode.getUsername());
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			logger.error("用户::",e1);
+			throw  new AuthenticationException("null");
 		}
 		
 		// 如果查询不到返回null
 		if (user == null) {//
-			throw  new AuthenticationException("用户为空!");
+			throw  new AuthenticationException("user");
 		}
 		// 从数据库查询到密码
 		String password = user.getPassword();
-		if (!userCode.getPassword().equals(user.getPassword())){
-			throw new AuthenticationException("密码不对!");
+		String uPassword = "";
+			for ( char c :userCode.getPassword()){
+				uPassword+=c;
+			}
+		if (!uPassword.equals(password)){
+			throw new AuthenticationException("password");
 		}
 		
 		// 盐
@@ -160,6 +165,7 @@ public class MyRealm extends AuthorizingRealm {
 					SysModule sysModule = sysUser.getMapModule().get(menuUrl.getModuleId());
 					if (sysModule == null) {
 						OsaModule osaModule = moduleService.findById(menuUrl.getModuleId());
+						sysModule = new SysModule();
 						sysModule.setModule(osaModule);
 						sysUser.getMenuLists().add(sysModule);
 						sysUser.getMapModule().put(menuUrl.getModuleId(), sysModule);

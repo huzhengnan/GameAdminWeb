@@ -11,10 +11,6 @@
 
 <!--- START 以上内容不需更改，保证该TPL页内的标签匹配即可 --->
 
-<{$osadmin_action_alert}>
-<{$osadmin_quick_note}>
-
-	
 	<div class="block">
         <a href="#page-stats" class="block-heading" data-toggle="collapse">当前用户信息</a>
         <div id="page-stats" class="block-body collapse in">

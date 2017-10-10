@@ -110,26 +110,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaProxyUser">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_proxy_user (name, invite_code, agent_level, 
-      remain_money, parent_name, wechat_code, 
-      phone, create_time, password, 
-      status, blank_card, bind_player_id
-      )
-    values (#{name,jdbcType=VARCHAR}, #{inviteCode,jdbcType=VARCHAR}, #{agentLevel,jdbcType=INTEGER}, 
-      #{remainMoney,jdbcType=INTEGER}, #{parentName,jdbcType=VARCHAR}, #{wechatCode,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}, 
-      #{status,jdbcType=TINYINT}, #{blankCard,jdbcType=VARCHAR}, #{bindPlayerId,jdbcType=VARCHAR}
-      )
+    insert into osa_proxy_user (id, name, invite_code, 
+      agent_level, remain_money, parent_name, 
+      wechat_code, phone, create_time, 
+      password, status, blank_card, 
+      bind_player_id)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{inviteCode,jdbcType=VARCHAR}, 
+      #{agentLevel,jdbcType=INTEGER}, #{remainMoney,jdbcType=INTEGER}, #{parentName,jdbcType=VARCHAR}, 
+      #{wechatCode,jdbcType=VARCHAR}, #{phone,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{password,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{blankCard,jdbcType=VARCHAR}, 
+      #{bindPlayerId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaProxyUser">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_proxy_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="name != null">
         name,
       </if>
@@ -168,6 +165,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
