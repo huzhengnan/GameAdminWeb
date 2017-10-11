@@ -8,6 +8,8 @@ package com.lyh.admin.tools;
  */
 public class ShowPage {
 	
+	/**每页显示行数**/  
+	public static final int PAGE_SIZE = 5;
 	
 	//显示当前页的前后页数  4,5,6,七,8,9,10
     public static final int  OFFSET=3;
@@ -23,7 +25,7 @@ public class ShowPage {
      * @param row_count总行数
      * @return 
      */  
-    public  static String showPager(String link, int page_no,int page_size,int row_count){
+    public  static String showPager(String link, int page_no,int page_size,long row_count){
         String url="";
         String params="";
         if(!ToolUtils.isStringNull(link)){
@@ -43,7 +45,7 @@ public class ShowPage {
         String navibar = "<div class=\"pagination\"><ul>";
         int offset=OFFSET;
         //$page_size=10;
-        int total_page=row_count%page_size==0?row_count/page_size:(int)Math.ceil(row_count/page_size);
+        int total_page=(int)(row_count%page_size==0?row_count/page_size:(int)Math.ceil((double)row_count/page_size));
 
         page_no=page_no<1?1:page_no;
         page_no=page_no>(total_page)?(total_page):page_no;
@@ -77,17 +79,17 @@ public class ShowPage {
         if (row_count > 0) {
             navibar += "<li><a>共" +row_count + "条</a></li>";
         }
-        String jump ="";
+     //   String jump ="";
         //$jump ="<li><form action='$url' method='GET' name='jumpForm'><input type='text' name='page_no' value='$page_no'></form></li>";
 
-        navibar+=jump;
+     //   navibar+=jump;
         navibar+="</ul></div>";
 
         return navibar;
     }
     
     
-    public static   String showSimplePager(String link, int page_no,int page_size,int row_count){
+    public static   String showSimplePager(String link, int page_no,int page_size,long row_count){
         String url="";
         String params="";
         if(!ToolUtils.isStringNull(link)){
@@ -107,7 +109,7 @@ public class ShowPage {
         String navibar = "<div class=\"pagination\"><ul>";
         int offset=OFFSET;
         //$page_size=10;
-        int total_page=row_count%page_size==0?row_count/page_size:(int)Math.ceil(row_count/page_size);
+        int total_page=(int)(row_count%page_size==0?row_count/page_size:(int)Math.ceil((double)row_count/page_size));
 
         page_no=page_no<1?1:page_no;
         page_no=page_no>(total_page)?(total_page):page_no;

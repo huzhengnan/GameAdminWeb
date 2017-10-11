@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:choose>
@@ -13,11 +14,13 @@
 </c:choose>
 
 <c:forEach items="${sidebar}" var="module">
+
+
 	<c:if test="${fn:length(module.menuList) gt 0}">
-		<a href="#sidebar_menu_${module.module.moduleId}>" class="nav-header collapsed"
-			data-toggle="collapse">
-			<i class="${module.module.moduleIcon}"></i> ${module.module.moduleName} <i
-				class="icon-chevron-up"></i>
+		<a href="#sidebar_menu_${module.module.moduleId}" class="nav-header collapsed" data-toggle="collapse">
+			<i class="${module.module.moduleIcon}"></i>
+			${module.module.moduleName}
+			<i class="icon-chevron-up"></i>
 		</a>
 
 		<c:choose>
@@ -26,13 +29,15 @@
 			</c:when>
 
 			<c:otherwise>
+				
 				<ul id="sidebar_menu_${module.module.moduleId}" class="nav nav-list collapse">
 			</c:otherwise>
 		</c:choose>
-		
+
 		<c:forEach items="${module.menuList}" var="menu_list">
+		
 			<li>
-				<a href="${ctxPage}/${menu_list.menuUrl.menuUrl}">${menu_list.menuUrl.menuName}</a>
+				<a href="${ctxPage}${menu_list.menuUrl.menuUrl}">${menu_list.menuUrl.menuName}</a>
 			</li>
 		</c:forEach>
 
@@ -42,7 +47,8 @@
 
 
 <a target="_blank" href="${ctxPage}/index" class="nav-header">
-	<i class="icon-question-sign"></i>帮助
+	<i class="icon-question-sign"></i>
+	帮助
 </a>
 </div>
 <!--- 以上为左侧菜单栏 sidebar --->
@@ -69,12 +75,12 @@
 
 <ul class="breadcrumb">
 	<li>
-		<a href="${ctxPage}/${content_header.moduleUrl}"> ${content_header.moduleName} </a>
+		<a href="${ctxPage}${content_header.moduleUrl}"> ${content_header.moduleName} </a>
 		<span class="divider">/</span>
 	</li>
 	<c:if test="${content_header.fatherMenuUrl !=null }">
 		<li>
-			<a href="${ctxPage }/${content_header.fatherMenuUrl}"> ${content_header.fatherMenuName} </a>
+			<a href="${ctxPage }${content_header.fatherMenuUrl}"> ${content_header.fatherMenuName} </a>
 			<span class="divider">/</span>
 		</li>
 	</c:if>

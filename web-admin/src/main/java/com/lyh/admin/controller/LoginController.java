@@ -9,13 +9,16 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.session.hazelcast.config.annotation.web.http.HazelcastHttpSessionConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.lyh.admin.controller.sys.CommonsMsg;
+import com.lyh.admin.controller.sys.MessageController;
+import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.exception.MyWebException;
+import com.lyh.admin.service.OsaUserService;
 
 /**
  * ClassName:LoginController <br/>
@@ -26,6 +29,8 @@ import com.lyh.admin.exception.MyWebException;
  */
 @Controller
 public class LoginController extends BaseController {
+	@Autowired
+	private OsaUserService sysService;
 	
 	/**
 	 * login:(). <br/>
@@ -73,8 +78,10 @@ public class LoginController extends BaseController {
 				UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
 				try {
 					currentUser.login(token);
-					
-					session.setAttribute("sysUser", currentUser.getPrincipal());
+					String ip = getIpAddr(request);
+					ShiroSysUser.getShiroSubject().getOsaUser().setLoginIp(ip);
+					sysService.update(ShiroSysUser.getShiroSubject().getOsaUser());
+					// session.setAttribute("sysUser", currentUser.getPrincipal());
 				} catch (Exception e) {
 					logger.error("登录错误:");
 					// return "/login";
@@ -82,17 +89,19 @@ public class LoginController extends BaseController {
 					if (e instanceof AuthenticationException) {
 						AuthenticationException ex = (AuthenticationException) e;
 						if (ex.getMessage().equals("null")) {
-							return CommonsMsg.exitWithMsg(null, "查无此人", "登录", "/index", 3, model);
+							return MessageController.exitWithMsg(null, "查无此人", "登录", "/index", 3, model);
 						} else if (ex.getMessage().equals("user")) {
-							return CommonsMsg.exitWithMsg(null, "查无此人!", "登录", "/index", 3, model);
+							return MessageController.exitWithMsg(null, "查无此人!", "登录", "/index", 3, model);
 						} else if (ex.getMessage().equals("password")) {
-							return CommonsMsg.exitWithMsg(null, "密码有问题!", "登录", "/index", 3, model);
+							return MessageController.exitWithMsg(null, "密码有问题!", "登录", "/index", 3, model);
+						} else if (ex.getMessage().equals("status")) {
+							return MessageController.exitWithMsg(null, "此用户被禁!", "登录", "/index", 3, model);
 						}
 					}
 				}
 			}
 		} else {
-			return CommonsMsg.exitWithMsg(null, "验证码有问题", "登录", "/index", 3, model);
+			return MessageController.exitWithMsg(null, "验证码有问题", "登录", "/index", 3, model);
 		}
 		
 		// 此方法不处理登陆成功（认证成功），shiro认证成功会自动跳转到上一个请求路径

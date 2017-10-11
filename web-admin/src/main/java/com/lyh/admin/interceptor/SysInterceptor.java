@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.entity.SysMenu;
 import com.lyh.admin.entity.SysUser;
 import com.lyh.admin.tools.ToolUtils;
@@ -87,8 +88,8 @@ public class SysInterceptor extends HandlerInterceptorAdapter  {
 				String tempString = redirect_uri.substring(index + requestPath.length());
 				
 				String subRedirectUri = ToolUtils.split(ToolUtils.split(tempString, "?")[0],";")[0];
-					
-				SysUser sysUser = (SysUser)request.getSession().getAttribute("sysUser");
+				subRedirectUri = subRedirectUri.replace("//", "/");
+				SysUser sysUser = ShiroSysUser.getShiroSubject();
 				if (sysUser != null){
 					modelAndView.addObject("sidebar", sysUser.getMenuLists());
 					SysMenu menu =  sysUser.getMenuMap().get(subRedirectUri);

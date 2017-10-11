@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.entity.SysUser;
 import com.lyh.admin.tools.IText;
 
@@ -24,8 +25,8 @@ public class IndexController extends BaseController {
 	@RequestMapping("/index")
 	public String index(HttpSession session,  HttpServletRequest request,Model model){
 		session.setAttribute("company", IText.COMPANY);
-		logger.error("company::"+session.getAttribute("company"));
-		 SysUser user =   (SysUser)session.getAttribute("sysUser");
+		//logger.error("company::"+session.getAttribute("company"));
+		 SysUser user =  ShiroSysUser.getShiroSubject();
 		 
 		 if (user == null){
 			 model.addAttribute("page_title","登录");

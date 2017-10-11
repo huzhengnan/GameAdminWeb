@@ -1,6 +1,7 @@
 package com.lyh.admin.shiro;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -112,23 +113,30 @@ public class MyRealm extends AuthorizingRealm {
 			user = sysService.findUserByUserName(userCode.getUsername());
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			logger.error("用户::",e1);
-			throw  new AuthenticationException("null");
+			logger.error("用户::", e1);
+			throw new AuthenticationException("null");
 		}
 		
 		// 如果查询不到返回null
 		if (user == null) {//
-			throw  new AuthenticationException("user");
+			throw new AuthenticationException("user");
+		}
+		
+		// 用户被禁
+		if (user.getStatus() == 0) {
+			throw new AuthenticationException("status");
 		}
 		// 从数据库查询到密码
 		String password = user.getPassword();
 		String uPassword = "";
-			for ( char c :userCode.getPassword()){
-				uPassword+=c;
-			}
-		if (!uPassword.equals(password)){
+		for (char c : userCode.getPassword()) {
+			uPassword += c;
+		}
+		if (!uPassword.equals(password)) {
 			throw new AuthenticationException("password");
 		}
+		
+		user.setLoginTime(new Date(System.currentTimeMillis()));
 		
 		// 盐
 		String salt = "" + 1;
@@ -194,7 +202,7 @@ public class MyRealm extends AuthorizingRealm {
 		
 		// 将activeUser设置simpleAuthenticationInfo
 		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(sysUser, password, ByteSource.Util.bytes(salt), this.getName());
-
+		
 		return simpleAuthenticationInfo;
 	}
 	

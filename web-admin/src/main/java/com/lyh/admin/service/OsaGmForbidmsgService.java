@@ -1,5 +1,7 @@
 package com.lyh.admin.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.model.OsaGmForbidmsg;
@@ -13,6 +15,15 @@ import com.lyh.admin.model.OsaGmForbidmsg;
  */
 
 public interface OsaGmForbidmsgService extends BaseService<OsaGmForbidmsg> {
+	
+	/** 
+	 * getGmForbidMsgList:(). <br/> 
+	 * TODO().<br/> 
+	 * gm封禁记录
+	 * @author lyh 
+	 * @return 
+	 */  
+	List<OsaGmForbidmsg> getGmForbidMsgList();
 	
 }
   

@@ -16,7 +16,7 @@ import com.lyh.admin.tools.ToolUtils;
  * @version
  */
 
-public class CommonsMsg {
+public class MessageController {
 	
 	/**
 	 * exitWithMsg:(). <br/>
@@ -53,7 +53,7 @@ public class CommonsMsg {
 		}
 		
 		if (!ToolUtils.isStringNull(forwardUrl)) {
-			msg += "<script type=\"text/javascript\" >setTimeout(\"window.location.href =${ctxPage}" + forwardUrl + "+;\", " + (second * 1000) + ");</script>";
+			msg += "<script type=\"text/javascript\" >setTimeout(\"window.location.href =\"${ctxPage}" + forwardUrl + "\";\", " + (second * 1000) + ");</script>";
 		}
 		model.addAttribute("page_title", "提示信息");
 		model.addAttribute("msg", msg);

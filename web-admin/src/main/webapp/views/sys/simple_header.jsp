@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="ctxPage" value="${pageContext.request.contextPath}" />
@@ -14,8 +13,7 @@
 <link rel="stylesheet" href="${ctxPage}/css/bootstrap.css">
 
 <link rel="stylesheet" href="${ctxPage}/theme/default-theme.css">
-<link rel="stylesheet"
-	href="${ctxPage}/font-awesome/css/font-awesome.css">
+<link rel="stylesheet" href="${ctxPage}/font-awesome/css/font-awesome.css">
 
 <script src="${ctxPage}/js/jquery-1.12.4.js"></script>
 <script src="${ctxPage}/js/other.js"></script>
