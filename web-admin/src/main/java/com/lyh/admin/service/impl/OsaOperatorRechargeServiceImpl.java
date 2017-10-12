@@ -1,4 +1,4 @@
-package com.lyh.admin.service.impl;
+﻿package com.lyh.admin.service.impl;
 
 import java.util.List;
 
@@ -68,7 +68,9 @@ public class OsaOperatorRechargeServiceImpl implements OsaOperatorRechargeServic
 		List<OsaOperatorRecharge> list = mapper.selectByExample(example);
 		double totalPay = 0;
 		for (OsaOperatorRecharge pay : list){
-			totalPay+= pay.getGold()== null ? 0 : pay.getGold();
+
+		   totalPay+= pay.getGold()== null ? 0 : pay.getGold();
+
 		}
 		return totalPay;
 	}
