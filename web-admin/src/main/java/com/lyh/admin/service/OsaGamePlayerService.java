@@ -1,5 +1,7 @@
 package com.lyh.admin.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.model.OsaGamePlayer;
@@ -23,5 +25,16 @@ public interface OsaGamePlayerService extends BaseService<OsaGamePlayer> {
 	 * @return 
 	 */  
 	OsaGamePlayer getGamePlayerByOpenId(String openId);
+	
+	/** 
+	 * getGamePlayerList:(). <br/> 
+	 * TODO().<br/> 
+	 * 按条件获取玩家
+	 * @author lyh 
+	 * @param playerId
+	 * @param openId
+	 * @return 
+	 */  
+	List<OsaGamePlayer> getGamePlayerList(long playerId,String openId);
 }
   

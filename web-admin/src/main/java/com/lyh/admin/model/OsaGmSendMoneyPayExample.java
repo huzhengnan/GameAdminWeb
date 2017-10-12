@@ -1,6 +1,7 @@
 package com.lyh.admin.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OsaGmSendMoneyPayExample {
@@ -173,76 +174,6 @@ public class OsaGmSendMoneyPayExample {
 
         public Criteria andIdNotBetween(Long value1, Long value2) {
             addCriterion("id not between", value1, value2, "id");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdIsNull() {
-            addCriterion("order_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdIsNotNull() {
-            addCriterion("order_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdEqualTo(String value) {
-            addCriterion("order_id =", value, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdNotEqualTo(String value) {
-            addCriterion("order_id <>", value, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdGreaterThan(String value) {
-            addCriterion("order_id >", value, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdGreaterThanOrEqualTo(String value) {
-            addCriterion("order_id >=", value, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdLessThan(String value) {
-            addCriterion("order_id <", value, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdLessThanOrEqualTo(String value) {
-            addCriterion("order_id <=", value, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdLike(String value) {
-            addCriterion("order_id like", value, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdNotLike(String value) {
-            addCriterion("order_id not like", value, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdIn(List<String> values) {
-            addCriterion("order_id in", values, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdNotIn(List<String> values) {
-            addCriterion("order_id not in", values, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdBetween(String value1, String value2) {
-            addCriterion("order_id between", value1, value2, "orderId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderIdNotBetween(String value1, String value2) {
-            addCriterion("order_id not between", value1, value2, "orderId");
             return (Criteria) this;
         }
 
@@ -516,63 +447,73 @@ public class OsaGmSendMoneyPayExample {
             return (Criteria) this;
         }
 
-        public Criteria andSendIdIsNull() {
-            addCriterion("send_id is null");
+        public Criteria andSendNameIsNull() {
+            addCriterion("send_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdIsNotNull() {
-            addCriterion("send_id is not null");
+        public Criteria andSendNameIsNotNull() {
+            addCriterion("send_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdEqualTo(Long value) {
-            addCriterion("send_id =", value, "sendId");
+        public Criteria andSendNameEqualTo(String value) {
+            addCriterion("send_name =", value, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdNotEqualTo(Long value) {
-            addCriterion("send_id <>", value, "sendId");
+        public Criteria andSendNameNotEqualTo(String value) {
+            addCriterion("send_name <>", value, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdGreaterThan(Long value) {
-            addCriterion("send_id >", value, "sendId");
+        public Criteria andSendNameGreaterThan(String value) {
+            addCriterion("send_name >", value, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("send_id >=", value, "sendId");
+        public Criteria andSendNameGreaterThanOrEqualTo(String value) {
+            addCriterion("send_name >=", value, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdLessThan(Long value) {
-            addCriterion("send_id <", value, "sendId");
+        public Criteria andSendNameLessThan(String value) {
+            addCriterion("send_name <", value, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdLessThanOrEqualTo(Long value) {
-            addCriterion("send_id <=", value, "sendId");
+        public Criteria andSendNameLessThanOrEqualTo(String value) {
+            addCriterion("send_name <=", value, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdIn(List<Long> values) {
-            addCriterion("send_id in", values, "sendId");
+        public Criteria andSendNameLike(String value) {
+            addCriterion("send_name like", value, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdNotIn(List<Long> values) {
-            addCriterion("send_id not in", values, "sendId");
+        public Criteria andSendNameNotLike(String value) {
+            addCriterion("send_name not like", value, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdBetween(Long value1, Long value2) {
-            addCriterion("send_id between", value1, value2, "sendId");
+        public Criteria andSendNameIn(List<String> values) {
+            addCriterion("send_name in", values, "sendName");
             return (Criteria) this;
         }
 
-        public Criteria andSendIdNotBetween(Long value1, Long value2) {
-            addCriterion("send_id not between", value1, value2, "sendId");
+        public Criteria andSendNameNotIn(List<String> values) {
+            addCriterion("send_name not in", values, "sendName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendNameBetween(String value1, String value2) {
+            addCriterion("send_name between", value1, value2, "sendName");
+            return (Criteria) this;
+        }
+
+        public Criteria andSendNameNotBetween(String value1, String value2) {
+            addCriterion("send_name not between", value1, value2, "sendName");
             return (Criteria) this;
         }
 
@@ -586,62 +527,52 @@ public class OsaGmSendMoneyPayExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(String value) {
+        public Criteria andStatusEqualTo(Integer value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(String value) {
+        public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(String value) {
+        public Criteria andStatusGreaterThan(Integer value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(String value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(String value) {
+        public Criteria andStatusLessThan(Integer value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(String value) {
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLike(String value) {
-            addCriterion("status like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotLike(String value) {
-            addCriterion("status not like", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<String> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<String> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(String value1, String value2) {
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(String value1, String value2) {
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
@@ -716,73 +647,63 @@ public class OsaGmSendMoneyPayExample {
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeIsNull() {
-            addCriterion("addtime is null");
+        public Criteria andAddTimeIsNull() {
+            addCriterion("add_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeIsNotNull() {
-            addCriterion("addtime is not null");
+        public Criteria andAddTimeIsNotNull() {
+            addCriterion("add_time is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeEqualTo(String value) {
-            addCriterion("addtime =", value, "addtime");
+        public Criteria andAddTimeEqualTo(Date value) {
+            addCriterion("add_time =", value, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeNotEqualTo(String value) {
-            addCriterion("addtime <>", value, "addtime");
+        public Criteria andAddTimeNotEqualTo(Date value) {
+            addCriterion("add_time <>", value, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeGreaterThan(String value) {
-            addCriterion("addtime >", value, "addtime");
+        public Criteria andAddTimeGreaterThan(Date value) {
+            addCriterion("add_time >", value, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeGreaterThanOrEqualTo(String value) {
-            addCriterion("addtime >=", value, "addtime");
+        public Criteria andAddTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("add_time >=", value, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeLessThan(String value) {
-            addCriterion("addtime <", value, "addtime");
+        public Criteria andAddTimeLessThan(Date value) {
+            addCriterion("add_time <", value, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeLessThanOrEqualTo(String value) {
-            addCriterion("addtime <=", value, "addtime");
+        public Criteria andAddTimeLessThanOrEqualTo(Date value) {
+            addCriterion("add_time <=", value, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeLike(String value) {
-            addCriterion("addtime like", value, "addtime");
+        public Criteria andAddTimeIn(List<Date> values) {
+            addCriterion("add_time in", values, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeNotLike(String value) {
-            addCriterion("addtime not like", value, "addtime");
+        public Criteria andAddTimeNotIn(List<Date> values) {
+            addCriterion("add_time not in", values, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeIn(List<String> values) {
-            addCriterion("addtime in", values, "addtime");
+        public Criteria andAddTimeBetween(Date value1, Date value2) {
+            addCriterion("add_time between", value1, value2, "addTime");
             return (Criteria) this;
         }
 
-        public Criteria andAddtimeNotIn(List<String> values) {
-            addCriterion("addtime not in", values, "addtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddtimeBetween(String value1, String value2) {
-            addCriterion("addtime between", value1, value2, "addtime");
-            return (Criteria) this;
-        }
-
-        public Criteria andAddtimeNotBetween(String value1, String value2) {
-            addCriterion("addtime not between", value1, value2, "addtime");
+        public Criteria andAddTimeNotBetween(Date value1, Date value2) {
+            addCriterion("add_time not between", value1, value2, "addTime");
             return (Criteria) this;
         }
     }

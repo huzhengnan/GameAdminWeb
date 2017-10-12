@@ -109,24 +109,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaGmForbidmsg">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_gm_forbidmsg (ptype, open_id, app_id, 
-      world_id, opttype, forbidtime, 
-      ip, msg, optres, opttime, 
-      username)
-    values (#{ptype,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
-      #{worldId,jdbcType=VARCHAR}, #{opttype,jdbcType=INTEGER}, #{forbidtime,jdbcType=INTEGER}, 
-      #{ip,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR}, #{optres,jdbcType=VARCHAR}, #{opttime,jdbcType=VARCHAR}, 
-      #{username,jdbcType=VARCHAR})
+    insert into osa_gm_forbidmsg (id, ptype, open_id, 
+      app_id, world_id, opttype, 
+      forbidtime, ip, msg, 
+      optres, opttime, username
+      )
+    values (#{id,jdbcType=BIGINT}, #{ptype,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, 
+      #{appId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, #{opttype,jdbcType=INTEGER}, 
+      #{forbidtime,jdbcType=INTEGER}, #{ip,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR}, 
+      #{optres,jdbcType=VARCHAR}, #{opttime,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGmForbidmsg">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_gm_forbidmsg
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="ptype != null">
         ptype,
       </if>
@@ -162,6 +161,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="ptype != null">
         #{ptype,jdbcType=INTEGER},
       </if>

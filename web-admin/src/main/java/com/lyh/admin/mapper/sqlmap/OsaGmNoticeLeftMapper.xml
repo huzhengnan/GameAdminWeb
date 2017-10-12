@@ -102,20 +102,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaGmNoticeLeft">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_gm_notice_left (content, create_time, app_id, 
-      world_id, title)
-    values (#{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{appId,jdbcType=VARCHAR}, 
-      #{worldId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR})
+    insert into osa_gm_notice_left (id, content, create_time, 
+      app_id, world_id, title
+      )
+    values (#{id,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{appId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGmNoticeLeft">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_gm_notice_left
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="content != null">
         content,
       </if>
@@ -133,6 +132,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>

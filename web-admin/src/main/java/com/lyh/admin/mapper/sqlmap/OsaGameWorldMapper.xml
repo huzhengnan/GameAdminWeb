@@ -109,24 +109,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaGameWorld">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_game_world (app_id, w_name, world_id, 
-      status, domain, ip, 
-      server_url, info, ismingle, 
-      time, open_time)
-    values (#{appId,jdbcType=VARCHAR}, #{wName,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{domain,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
-      #{serverUrl,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{ismingle,jdbcType=VARCHAR}, 
-      #{time,jdbcType=TIMESTAMP}, #{openTime,jdbcType=TIMESTAMP})
+    insert into osa_game_world (id, app_id, w_name, 
+      world_id, status, domain, 
+      ip, server_url, info, 
+      ismingle, time, open_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR}, #{wName,jdbcType=VARCHAR}, 
+      #{worldId,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{domain,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{serverUrl,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
+      #{ismingle,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{openTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGameWorld">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_game_world
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="appId != null">
         app_id,
       </if>
@@ -162,6 +161,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>

@@ -907,6 +907,76 @@ public class OsaUserExample {
             return (Criteria) this;
         }
 
+        public Criteria andShortcutsIsNull() {
+            addCriterion("shortcuts is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsIsNotNull() {
+            addCriterion("shortcuts is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsEqualTo(String value) {
+            addCriterion("shortcuts =", value, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsNotEqualTo(String value) {
+            addCriterion("shortcuts <>", value, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsGreaterThan(String value) {
+            addCriterion("shortcuts >", value, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsGreaterThanOrEqualTo(String value) {
+            addCriterion("shortcuts >=", value, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsLessThan(String value) {
+            addCriterion("shortcuts <", value, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsLessThanOrEqualTo(String value) {
+            addCriterion("shortcuts <=", value, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsLike(String value) {
+            addCriterion("shortcuts like", value, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsNotLike(String value) {
+            addCriterion("shortcuts not like", value, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsIn(List<String> values) {
+            addCriterion("shortcuts in", values, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsNotIn(List<String> values) {
+            addCriterion("shortcuts not in", values, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsBetween(String value1, String value2) {
+            addCriterion("shortcuts between", value1, value2, "shortcuts");
+            return (Criteria) this;
+        }
+
+        public Criteria andShortcutsNotBetween(String value1, String value2) {
+            addCriterion("shortcuts not between", value1, value2, "shortcuts");
+            return (Criteria) this;
+        }
+
         public Criteria andShowQuicknoteIsNull() {
             addCriterion("show_quicknote is null");
             return (Criteria) this;

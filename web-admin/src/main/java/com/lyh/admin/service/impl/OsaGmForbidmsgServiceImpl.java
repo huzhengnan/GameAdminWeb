@@ -1,11 +1,14 @@
 package com.lyh.admin.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.mapper.OsaGmForbidmsgMapper;
 import com.lyh.admin.model.OsaGmForbidmsg;
+import com.lyh.admin.model.OsaGmForbidmsgExample;
 import com.lyh.admin.service.OsaGmForbidmsgService;
 
 /** 
@@ -42,6 +45,15 @@ public class OsaGmForbidmsgServiceImpl implements OsaGmForbidmsgService {
 	public OsaGmForbidmsg findById(long id) {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<OsaGmForbidmsg> getGmForbidMsgList() {
+		// TODO Auto-generated method stub
+		OsaGmForbidmsgExample example = new OsaGmForbidmsgExample();
+		OsaGmForbidmsgExample.Criteria criteria = example.createCriteria();
+		example.setOrderByClause("opttime desc");
+		return mapper.selectByExample(example);
 	}
 	
 }

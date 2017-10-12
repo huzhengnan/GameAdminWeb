@@ -1,5 +1,7 @@
 package com.lyh.admin.service;
 
+import java.util.List;
+
 import com.lyh.admin.model.OsaGmSendMoneyPay;
 
 /** 
@@ -11,5 +13,13 @@ import com.lyh.admin.model.OsaGmSendMoneyPay;
  */
 public interface OsaGmSendMoneyPayService extends BaseService<OsaGmSendMoneyPay> {
 	
+	/** 
+	 * getSendMoneyPayList:(). <br/> 
+	 * TODO().<br/> 
+	 * 获取内充记录
+	 * @author lyh 
+	 * @return 
+	 */  
+	List<OsaGmSendMoneyPay> getSendMoneyPayList();
 }
   

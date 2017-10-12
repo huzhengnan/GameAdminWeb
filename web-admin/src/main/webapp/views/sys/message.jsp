@@ -1,3 +1,10 @@
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
+<c:set var="ctxPage" value="${pageContext.request.contextPath}" />
+
 <%@include file="simple_header.jsp" %>
   <body class="simple_body">
 
@@ -26,6 +33,7 @@
 				</c:otherwise>
 				</c:choose>
 			-->
+	
 				<p class="info">${msg}</p>
 				<h2>返回 <a href="${ctxPage }/${forward_url}">${forward_title}</a></h2>
 			</div>

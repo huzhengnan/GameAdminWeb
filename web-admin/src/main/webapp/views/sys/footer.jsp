@@ -1,3 +1,10 @@
+					
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
+<c:set var="ctxPage" value="${pageContext.request.contextPath}" />
+
 					<footer>
                         <hr>
                         <p class="pull-right">A <a href="www.baidu.com" target="_blank">管理系统</a></p>

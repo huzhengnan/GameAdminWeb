@@ -1,11 +1,14 @@
 package com.lyh.admin.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.mapper.OsaGmSendMoneyPayMapper;
 import com.lyh.admin.model.OsaGmSendMoneyPay;
+import com.lyh.admin.model.OsaGmSendMoneyPayExample;
 import com.lyh.admin.service.OsaGmSendMoneyPayService;
 
 
@@ -43,6 +46,15 @@ public class OsaGmSendMoneyPayServiceImpl implements OsaGmSendMoneyPayService {
 	public OsaGmSendMoneyPay findById(long id) {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<OsaGmSendMoneyPay> getSendMoneyPayList() {
+		// TODO Auto-generated method stub
+		OsaGmSendMoneyPayExample example = new OsaGmSendMoneyPayExample();
+		example.setOrderByClause("create_time desc");
+		return mapper.selectByExample(example);
+		
 	}
 	
 }

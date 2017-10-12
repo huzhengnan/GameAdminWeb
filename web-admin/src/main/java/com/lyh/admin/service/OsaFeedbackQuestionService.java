@@ -1,5 +1,7 @@
 package com.lyh.admin.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.model.OsaFeedbackQuestion;
@@ -14,5 +16,13 @@ import com.lyh.admin.model.OsaFeedbackQuestion;
 
 public interface OsaFeedbackQuestionService extends BaseService<OsaFeedbackQuestion> {
 	
+	/** 
+	 * getFeedbackQuestionList:(). <br/> 
+	 * TODO().<br/> 
+	 * 反馈列表
+	 * @author lyh 
+	 * @return 
+	 */  
+	List<OsaFeedbackQuestion> getFeedbackQuestionList();
 }
   

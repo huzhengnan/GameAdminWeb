@@ -1,6 +1,7 @@
 package com.lyh.admin.shiro;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -104,7 +105,7 @@ public class MyRealm extends AuthorizingRealm {
 		
 		// token是用户输入的用户名和密码
 		// 第一步从token中取出用户名
-		UsernamePasswordToken userCode = (UsernamePasswordToken) token.getPrincipal();
+		UsernamePasswordToken userCode = (UsernamePasswordToken) token;
 		
 		// 第二步：根据用户输入的userCode从数据库查询
 		OsaUser user = null;
@@ -112,18 +113,30 @@ public class MyRealm extends AuthorizingRealm {
 			user = sysService.findUserByUserName(userCode.getUsername());
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			logger.error("用户::", e1);
+			throw new AuthenticationException("null");
 		}
 		
 		// 如果查询不到返回null
 		if (user == null) {//
-			throw  new AuthenticationException("用户为空!");
+			throw new AuthenticationException("user");
+		}
+		
+		// 用户被禁
+		if (user.getStatus() == 0) {
+			throw new AuthenticationException("status");
 		}
 		// 从数据库查询到密码
 		String password = user.getPassword();
-		if (!userCode.getPassword().equals(user.getPassword())){
-			throw new AuthenticationException("密码不对!");
+		String uPassword = "";
+		for (char c : userCode.getPassword()) {
+			uPassword += c;
 		}
+		if (!uPassword.equals(password)) {
+			throw new AuthenticationException("password");
+		}
+		
+		user.setLoginTime(new Date(System.currentTimeMillis()));
 		
 		// 盐
 		String salt = "" + 1;
@@ -160,6 +173,7 @@ public class MyRealm extends AuthorizingRealm {
 					SysModule sysModule = sysUser.getMapModule().get(menuUrl.getModuleId());
 					if (sysModule == null) {
 						OsaModule osaModule = moduleService.findById(menuUrl.getModuleId());
+						sysModule = new SysModule();
 						sysModule.setModule(osaModule);
 						sysUser.getMenuLists().add(sysModule);
 						sysUser.getMapModule().put(menuUrl.getModuleId(), sysModule);
@@ -188,7 +202,7 @@ public class MyRealm extends AuthorizingRealm {
 		
 		// 将activeUser设置simpleAuthenticationInfo
 		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(sysUser, password, ByteSource.Util.bytes(salt), this.getName());
-
+		
 		return simpleAuthenticationInfo;
 	}
 	

@@ -127,22 +127,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaSysLog">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_sys_log (user_name, action, class_name, 
-      class_obj, op_time, result
-      )
-    values (#{userName,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, 
-      #{classObj,jdbcType=VARCHAR}, #{opTime,jdbcType=INTEGER}, #{result,jdbcType=LONGVARCHAR}
-      )
+    insert into osa_sys_log (id, user_name, action, 
+      class_name, class_obj, op_time, 
+      result)
+    values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR}, 
+      #{className,jdbcType=VARCHAR}, #{classObj,jdbcType=VARCHAR}, #{opTime,jdbcType=INTEGER}, 
+      #{result,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaSysLog">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_sys_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="userName != null">
         user_name,
       </if>
@@ -163,6 +160,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="userName != null">
         #{userName,jdbcType=VARCHAR},
       </if>

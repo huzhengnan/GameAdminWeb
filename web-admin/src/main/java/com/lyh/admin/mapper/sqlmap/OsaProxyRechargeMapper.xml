@@ -108,24 +108,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaProxyRecharge">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_proxy_recharge (agent_name, money, is_agent, 
-      create_time, name, trader_order, 
-      online_pay, is_fetch, fetch_money, 
-      flag)
-    values (#{agentName,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{isAgent,jdbcType=TINYINT}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{traderOrder,jdbcType=VARCHAR}, 
-      #{onlinePay,jdbcType=INTEGER}, #{isFetch,jdbcType=INTEGER}, #{fetchMoney,jdbcType=DOUBLE}, 
-      #{flag,jdbcType=INTEGER})
+    insert into osa_proxy_recharge (id, agent_name, money, 
+      is_agent, create_time, name, 
+      trader_order, online_pay, is_fetch, 
+      fetch_money, flag)
+    values (#{id,jdbcType=BIGINT}, #{agentName,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
+      #{isAgent,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
+      #{traderOrder,jdbcType=VARCHAR}, #{onlinePay,jdbcType=INTEGER}, #{isFetch,jdbcType=INTEGER}, 
+      #{fetchMoney,jdbcType=DOUBLE}, #{flag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaProxyRecharge">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_proxy_recharge
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="agentName != null">
         agent_name,
       </if>
@@ -158,6 +155,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="agentName != null">
         #{agentName,jdbcType=VARCHAR},
       </if>

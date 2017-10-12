@@ -101,20 +101,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaFeedbackQuestion">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into osa_feedback_question (open_id, content, create_time, 
-      phone)
-    values (#{openId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{phone,jdbcType=BIGINT})
+    insert into osa_feedback_question (id, open_id, content, 
+      create_time, phone)
+    values (#{id,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{phone,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaFeedbackQuestion">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
     insert into osa_feedback_question
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="openId != null">
         open_id,
       </if>
@@ -129,6 +126,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="openId != null">
         #{openId,jdbcType=VARCHAR},
       </if>

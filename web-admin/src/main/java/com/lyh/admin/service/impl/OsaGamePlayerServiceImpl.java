@@ -10,6 +10,7 @@ import com.lyh.admin.mapper.OsaGamePlayerMapper;
 import com.lyh.admin.model.OsaGamePlayer;
 import com.lyh.admin.model.OsaGamePlayerExample;
 import com.lyh.admin.service.OsaGamePlayerService;
+import com.lyh.admin.tools.ToolUtils;
 
 /** 
  * ClassName:OsaGamePlayerServiceImpl <br/> 
@@ -54,6 +55,22 @@ public class OsaGamePlayerServiceImpl implements OsaGamePlayerService {
 		criteria.andOpenIdEqualTo(openId);
 		List<OsaGamePlayer> list =  mapper.selectByExample(example);
 		return list.size() > 0? list.get(0) : null;
+	}
+
+	@Override
+	public List<OsaGamePlayer> getGamePlayerList(long playerId, String openId) {
+		// TODO Auto-generated method stub
+		OsaGamePlayerExample example = new OsaGamePlayerExample();
+		OsaGamePlayerExample.Criteria criteria = example.createCriteria();
+		if (playerId > 0){
+			criteria.andPlayerIdEqualTo(playerId);
+		}
+		
+		if (!ToolUtils.isStringNull(openId)){
+			criteria.andOpenIdEqualTo(openId);
+		}
+		List<OsaGamePlayer> list =  mapper.selectByExample(example);
+		return list;
 	}
 	
 }
