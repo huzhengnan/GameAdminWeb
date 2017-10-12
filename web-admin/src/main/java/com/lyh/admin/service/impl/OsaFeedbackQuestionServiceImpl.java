@@ -1,11 +1,14 @@
 package com.lyh.admin.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.mapper.OsaFeedbackQuestionMapper;
 import com.lyh.admin.model.OsaFeedbackQuestion;
+import com.lyh.admin.model.OsaFeedbackQuestionExample;
 import com.lyh.admin.service.OsaFeedbackQuestionService;
 
 /** 
@@ -41,6 +44,14 @@ public class OsaFeedbackQuestionServiceImpl implements OsaFeedbackQuestionServic
 	public OsaFeedbackQuestion findById(long id) {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<OsaFeedbackQuestion> getFeedbackQuestionList() {
+		// TODO Auto-generated method stub
+		OsaFeedbackQuestionExample example = new OsaFeedbackQuestionExample();
+		example.setOrderByClause("create_time desc");
+		return mapper.selectByExample(example);
 	}
 	
 }

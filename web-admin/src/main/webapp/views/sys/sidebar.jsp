@@ -78,11 +78,13 @@
 		<a href="${ctxPage}${content_header.moduleUrl}"> ${content_header.moduleName} </a>
 		<span class="divider">/</span>
 	</li>
-	<c:if test="${content_header.fatherMenuUrl !=null }">
+	<c:if test="${ ! empty content_header.fatherMenuUrl  }">
+	<c:if test="content_header.menuUrl.isShow eq '1'">
 		<li>
 			<a href="${ctxPage }${content_header.fatherMenuUrl}"> ${content_header.fatherMenuName} </a>
 			<span class="divider">/</span>
 		</li>
+		</c:if>
 	</c:if>
 	<li class="active">${content_header.menuUrl.menuName}</li>
 </ul>

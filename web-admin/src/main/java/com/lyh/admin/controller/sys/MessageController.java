@@ -53,7 +53,15 @@ public class MessageController {
 		}
 		
 		if (!ToolUtils.isStringNull(forwardUrl)) {
-			msg += "<script type=\"text/javascript\" >setTimeout(\"window.location.href =\"${ctxPage}" + forwardUrl + "\";\", " + (second * 1000) + ");</script>";
+			
+//			setTimeout(function() {
+//				alert('成功');
+//			}, 3000);
+			
+			msg += "<script type=\"text/javascript\" >"
+				+ "setTimeout( function() "+"{window.location.href ='${ctxPage}'" + forwardUrl + ";}\", " + (second * 1000) + 
+				
+				");</script>";
 		}
 		model.addAttribute("page_title", "提示信息");
 		model.addAttribute("msg", msg);
@@ -85,7 +93,11 @@ public class MessageController {
 			
 		}
 		if (!ToolUtils.isStringNull(forwardUrl)) {
-			msg += "<script type=\"text/javascript\">setTimeout(\"window.location.href = ${ctxPage}" + forwardUrl + "+;\", " + (second * 1000) + ");</script>";
+			//msg += "<script type=\"text/javascript\">setTimeout(\"window.location.href = ${ctxPage}" + forwardUrl + "+;\", " + (second * 1000) + ");</script>";
+			msg += "<script type=\"text/javascript\" >"
+				+ "setTimeout( function() "+"{window.location.href ='${ctxPage}'" + forwardUrl + ";}\", " + (second * 1000) + 
+				
+				");</script>";
 		}
 		view.addObject("page_title", "提示信息");
 		view.addObject("msg", msg);

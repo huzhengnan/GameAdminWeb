@@ -1,17 +1,13 @@
 package com.lyh.admin.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class OsaGmSendMoneyPay implements Serializable {
     /**
      * 
      */
     private Long id;
-
-    /**
-     * 订单号
-     */
-    private String orderId;
 
     /**
      * 
@@ -24,7 +20,7 @@ public class OsaGmSendMoneyPay implements Serializable {
     private String worldId;
 
     /**
-     * 
+     * 被发放帐号
      */
     private String openId;
 
@@ -34,14 +30,14 @@ public class OsaGmSendMoneyPay implements Serializable {
     private Double money;
 
     /**
-     * 
+     * 发放人
      */
-    private Long sendId;
+    private String sendName;
 
     /**
      * 
      */
-    private String status;
+    private Integer status;
 
     /**
      * 
@@ -51,7 +47,7 @@ public class OsaGmSendMoneyPay implements Serializable {
     /**
      * 
      */
-    private String addtime;
+    private Date addTime;
 
     /**
      * osa_gm_send_money_pay
@@ -64,14 +60,6 @@ public class OsaGmSendMoneyPay implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
     }
 
     public String getAppId() {
@@ -106,20 +94,20 @@ public class OsaGmSendMoneyPay implements Serializable {
         this.money = money;
     }
 
-    public Long getSendId() {
-        return sendId;
+    public String getSendName() {
+        return sendName;
     }
 
-    public void setSendId(Long sendId) {
-        this.sendId = sendId;
+    public void setSendName(String sendName) {
+        this.sendName = sendName == null ? null : sendName.trim();
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getInfo() {
@@ -130,12 +118,12 @@ public class OsaGmSendMoneyPay implements Serializable {
         this.info = info == null ? null : info.trim();
     }
 
-    public String getAddtime() {
-        return addtime;
+    public Date getAddTime() {
+        return addTime;
     }
 
-    public void setAddtime(String addtime) {
-        this.addtime = addtime == null ? null : addtime.trim();
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
     }
 
     @Override
@@ -145,15 +133,14 @@ public class OsaGmSendMoneyPay implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", orderId=").append(orderId);
         sb.append(", appId=").append(appId);
         sb.append(", worldId=").append(worldId);
         sb.append(", openId=").append(openId);
         sb.append(", money=").append(money);
-        sb.append(", sendId=").append(sendId);
+        sb.append(", sendName=").append(sendName);
         sb.append(", status=").append(status);
         sb.append(", info=").append(info);
-        sb.append(", addtime=").append(addtime);
+        sb.append(", addTime=").append(addTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

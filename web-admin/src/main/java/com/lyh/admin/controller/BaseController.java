@@ -5,13 +5,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.lyh.admin.service.OsaGameWorldService;
 
 /**
  * create by admin create 2017/9/29 TODO:控制器基础类
  */
 public abstract class BaseController {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+	@Autowired
+	protected OsaGameWorldService gameWorldService;
 	/**
 	 * getBaseUrl:(). <br/>
 	 * TODO().<br/>
@@ -67,7 +71,19 @@ public abstract class BaseController {
 		if (!StringUtils.isBlank(ip) && !"unknown".equalsIgnoreCase(ip)) {
 			return ip;
 		}
+		
+		
 		ip = request.getHeader("X-Forwarded-For");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		
 		if (!StringUtils.isBlank(ip) && !"unknown".equalsIgnoreCase(ip)) {
 			// 多次反向代理后会有多个IP值，第一个为真实IP。
 			int index = ip.indexOf(',');
@@ -79,5 +95,43 @@ public abstract class BaseController {
 		} else {
 			return request.getRemoteAddr();
 		}
+	}
+	
+	
+	/** 
+	 * isPost:(). <br/> 
+	 * TODO().<br/> 
+	 *post方式提交
+	 * @author lyh 
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */  
+	protected boolean isPost(HttpServletRequest request){
+		String postString = request.getMethod().toLowerCase().trim();
+		
+		if (postString.equals("post")){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/** 
+	 * isGet:(). <br/> 
+	 * TODO().<br/> 
+	 * get方式提交
+	 * @author lyh 
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */  
+	protected boolean isGet(HttpServletRequest request){
+		String postString = request.getMethod().toLowerCase().trim();
+		if (postString.equals("get")){
+			return true;
+		}
+		
+		return false;
 	}
 }

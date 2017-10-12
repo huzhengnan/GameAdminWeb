@@ -25,37 +25,36 @@
 --%>
 
 <div class="block">
-	<a href="#page-stats" class="block-heading" data-toggle="collapse">玩家列表</a>
+	<a href="#page-stats" class="block-heading" data-toggle="collapse">${page_title}</a>
 	<div id="page-stats" class="block-body collapse in">
 		<table class="table table-striped table-bordered table-condensed">
 			<thead>
 				<tr>
-					<th style="width:80px">操作类型</th>
-					<th style="width:150px">账号</th>
-					<th style="width:80px">操作结果</th>
+					<th style="width:100px">账号</th>
+					<th style="width: 100px">发放人</th>
+					<th style="width:80px">金币</th>
+					<th style="width :300px">状态</th>
 					<th style="width:80px">时间</th>
-					<th style="width:100px">备注</th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<c:forEach items="${list}" var="item">
 					<tr>
+						<td>${item.openId}</td>
+						<td>${item.sendName}</td>
+						<td>${item.money}</td>
 						<td>
 							<c:choose>
-								<c:when test="${item.opttype eq '5050'}">禁言</c:when>
-								<c:when test="${item.opttype eq '5051'}">禁言解禁</c:when>
-								<c:when test="${item.opttype eq '5052'}">IP禁言</c:when>
-								<c:when test="${item.opttype eq '5053'}">IP禁言解禁</c:when>
-								<c:when test="${item.opttype eq '5060'}">封号</c:when>
-								<c:when test="${item.opttype eq '5061'}">解封</c:when>
-								<c:when test="${item.opttype eq '5070'}">踢人</c:when>
+								<c:when test="${item.status eq '0'}">
+									<span style="color: red;">待发</span>
+								</c:when>
+								<c:when test="${item.status eq '1'}">已发</c:when>
 							</c:choose>
+						<td>
+							<fmt:formatDate value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" />
 						</td>
-						<td>${item.openId}</td>
-						<td>${item.optres}</td>
-						<td>${item.opttime}</td>
-						<td>${item.msg}</td>
+
 
 					</tr>
 				</c:forEach>

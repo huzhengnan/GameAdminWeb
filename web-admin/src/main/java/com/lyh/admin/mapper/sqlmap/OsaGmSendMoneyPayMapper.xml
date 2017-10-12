@@ -3,15 +3,14 @@
 <mapper namespace="com.lyh.admin.mapper.OsaGmSendMoneyPayMapper">
   <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaGmSendMoneyPay">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="app_id" jdbcType="VARCHAR" property="appId" />
     <result column="world_id" jdbcType="VARCHAR" property="worldId" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="money" jdbcType="DOUBLE" property="money" />
-    <result column="send_id" jdbcType="BIGINT" property="sendId" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="send_name" jdbcType="VARCHAR" property="sendName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="info" jdbcType="VARCHAR" property="info" />
-    <result column="addtime" jdbcType="VARCHAR" property="addtime" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_id, app_id, world_id, open_id, money, send_id, status, info, addtime
+    id, app_id, world_id, open_id, money, send_name, status, info, add_time
   </sql>
   <select id="selectByExample" parameterType="com.lyh.admin.model.OsaGmSendMoneyPayExample" resultMap="BaseResultMap">
     select
@@ -106,23 +105,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaGmSendMoneyPay">
-    insert into osa_gm_send_money_pay (id, order_id, app_id, 
-      world_id, open_id, money, 
-      send_id, status, info, 
-      addtime)
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
-      #{worldId,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
-      #{sendId,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, 
-      #{addtime,jdbcType=VARCHAR})
+    insert into osa_gm_send_money_pay (id, app_id, world_id, 
+      open_id, money, send_name, 
+      status, info, add_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{appId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, 
+      #{openId,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{sendName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{info,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGmSendMoneyPay">
     insert into osa_gm_send_money_pay
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
-      </if>
-      <if test="orderId != null">
-        order_id,
       </if>
       <if test="appId != null">
         app_id,
@@ -136,8 +132,8 @@
       <if test="money != null">
         money,
       </if>
-      <if test="sendId != null">
-        send_id,
+      <if test="sendName != null">
+        send_name,
       </if>
       <if test="status != null">
         status,
@@ -145,16 +141,13 @@
       <if test="info != null">
         info,
       </if>
-      <if test="addtime != null">
-        addtime,
+      <if test="addTime != null">
+        add_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
-      </if>
-      <if test="orderId != null">
-        #{orderId,jdbcType=VARCHAR},
       </if>
       <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
@@ -168,17 +161,17 @@
       <if test="money != null">
         #{money,jdbcType=DOUBLE},
       </if>
-      <if test="sendId != null">
-        #{sendId,jdbcType=BIGINT},
+      <if test="sendName != null">
+        #{sendName,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="info != null">
         #{info,jdbcType=VARCHAR},
       </if>
-      <if test="addtime != null">
-        #{addtime,jdbcType=VARCHAR},
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -194,9 +187,6 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.orderId != null">
-        order_id = #{record.orderId,jdbcType=VARCHAR},
-      </if>
       <if test="record.appId != null">
         app_id = #{record.appId,jdbcType=VARCHAR},
       </if>
@@ -209,17 +199,17 @@
       <if test="record.money != null">
         money = #{record.money,jdbcType=DOUBLE},
       </if>
-      <if test="record.sendId != null">
-        send_id = #{record.sendId,jdbcType=BIGINT},
+      <if test="record.sendName != null">
+        send_name = #{record.sendName,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=VARCHAR},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.info != null">
         info = #{record.info,jdbcType=VARCHAR},
       </if>
-      <if test="record.addtime != null">
-        addtime = #{record.addtime,jdbcType=VARCHAR},
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -229,15 +219,14 @@
   <update id="updateByExample" parameterType="map">
     update osa_gm_send_money_pay
     set id = #{record.id,jdbcType=BIGINT},
-      order_id = #{record.orderId,jdbcType=VARCHAR},
       app_id = #{record.appId,jdbcType=VARCHAR},
       world_id = #{record.worldId,jdbcType=VARCHAR},
       open_id = #{record.openId,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DOUBLE},
-      send_id = #{record.sendId,jdbcType=BIGINT},
-      status = #{record.status,jdbcType=VARCHAR},
+      send_name = #{record.sendName,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
       info = #{record.info,jdbcType=VARCHAR},
-      addtime = #{record.addtime,jdbcType=VARCHAR}
+      add_time = #{record.addTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -245,9 +234,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.lyh.admin.model.OsaGmSendMoneyPay">
     update osa_gm_send_money_pay
     <set>
-      <if test="orderId != null">
-        order_id = #{orderId,jdbcType=VARCHAR},
-      </if>
       <if test="appId != null">
         app_id = #{appId,jdbcType=VARCHAR},
       </if>
@@ -260,32 +246,31 @@
       <if test="money != null">
         money = #{money,jdbcType=DOUBLE},
       </if>
-      <if test="sendId != null">
-        send_id = #{sendId,jdbcType=BIGINT},
+      <if test="sendName != null">
+        send_name = #{sendName,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="info != null">
         info = #{info,jdbcType=VARCHAR},
       </if>
-      <if test="addtime != null">
-        addtime = #{addtime,jdbcType=VARCHAR},
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaGmSendMoneyPay">
     update osa_gm_send_money_pay
-    set order_id = #{orderId,jdbcType=VARCHAR},
-      app_id = #{appId,jdbcType=VARCHAR},
+    set app_id = #{appId,jdbcType=VARCHAR},
       world_id = #{worldId,jdbcType=VARCHAR},
       open_id = #{openId,jdbcType=VARCHAR},
       money = #{money,jdbcType=DOUBLE},
-      send_id = #{sendId,jdbcType=BIGINT},
-      status = #{status,jdbcType=VARCHAR},
+      send_name = #{sendName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
       info = #{info,jdbcType=VARCHAR},
-      addtime = #{addtime,jdbcType=VARCHAR}
+      add_time = #{addTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

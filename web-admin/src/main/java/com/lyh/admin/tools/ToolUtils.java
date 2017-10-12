@@ -7,7 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * 工具类
@@ -91,6 +96,7 @@ public class ToolUtils {
 		}
 		return tmp;
 	}
+	
 	/**
 	 * 判断是不是同一天
 	 * 
@@ -477,24 +483,26 @@ public class ToolUtils {
 	
 	/**
 	 * 将字符串格式的日期转换为日期对象-"HH:mm:ss"
+	 * 
 	 * @Title:TODO
 	 * @Description:TODO
 	 * @param date
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
-	public static Date formatDate(String date) throws ParseException{
+	public static Date formatDate(String date) throws ParseException {
 		return new SimpleDateFormat("HH:mm:ss").parse(date);
 	}
 	
 	/**
-	 *获取日期的时
+	 * 获取日期的时
+	 * 
 	 * @Title:TODO
 	 * @Description:TODO
 	 * @param date
 	 * @return
 	 */
-	public static int getHour(Date date){
+	public static int getHour(Date date) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		return c.get(Calendar.HOUR_OF_DAY);
@@ -502,12 +510,13 @@ public class ToolUtils {
 	
 	/**
 	 * 获取日期的分
+	 * 
 	 * @Title:TODO
 	 * @Description:TODO
 	 * @param date
 	 * @return
 	 */
-	public static int getMinute(Date date){
+	public static int getMinute(Date date) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		return c.get(Calendar.MINUTE);
@@ -515,12 +524,13 @@ public class ToolUtils {
 	
 	/**
 	 * 获取日期的秒
+	 * 
 	 * @Title:TODO
 	 * @Description:TODO
 	 * @param date
 	 * @return
 	 */
-	public static int getSecond(Date date){
+	public static int getSecond(Date date) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		return c.get(Calendar.SECOND);
@@ -528,16 +538,18 @@ public class ToolUtils {
 	
 	/**
 	 * 获取星期几
+	 * 
 	 * @Title:TODO
 	 * @Description:TODO
 	 * @param date
 	 * @return
 	 */
-	public static int getWeek(Date date){
+	public static int getWeek(Date date) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		return c.get(Calendar.DAY_OF_WEEK);
 	}
+	
 	/**
 	 * date 转换为时间串
 	 * 
@@ -564,5 +576,82 @@ public class ToolUtils {
 		SimpleDateFormat s = new SimpleDateFormat(format);
 		Calendar now = Calendar.getInstance();
 		return s.format(now.getTime()).toString();
+	}
+	
+	/**
+	 * 大陆号码或香港号码均可
+	 */
+	public static boolean isPhoneLegal(String str) throws PatternSyntaxException {
+		return isChinaPhoneLegal(str) || isHKPhoneLegal(str);
+	}
+	
+	/**
+	 * isNum:(). <br/>
+	 * TODO().<br/>
+	 * 判断是否是数据
+	 * 
+	 * @author lyh
+	 * @param num
+	 * @return
+	 */
+	public static boolean isNum(String num) {
+		String reg = "^[1-9]\\d*$";
+		Pattern p = Pattern.compile(reg);
+		Matcher m = p.matcher(num);
+		return m.matches();
+	}
+	
+	/**
+	 * 大陆手机号码11位数，匹配格式：前三位固定格式+后8位任意数 此方法中前三位格式有： 13+任意数 15+除4的任意数 18+除1和4的任意数 17+除9的任意数 147
+	 */
+	public static boolean isChinaPhoneLegal(String str) throws PatternSyntaxException {
+		String regExp = "^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$";
+		Pattern p = Pattern.compile(regExp);
+		Matcher m = p.matcher(str);
+		return m.matches();
+	}
+	
+	/**
+	 * 香港手机号码8位数，5|6|8|9开头+7位任意数
+	 */
+	public static boolean isHKPhoneLegal(String str) throws PatternSyntaxException {
+		String regExp = "^(5|6|8|9)\\d{7}$";
+		Pattern p = Pattern.compile(regExp);
+		Matcher m = p.matcher(str);
+		return m.matches();
+	}
+	
+	/**
+	 * splitStringToMap:(). <br/>
+	 * TODO().<br/>
+	 * 分隔字符串到map
+	 * 
+	 * @author lyh
+	 * @param srcString
+	 * @param separatorOne
+	 * @param mapSeparator
+	 * @return
+	 */
+	public static Map<String, String> splitStringToMap(String srcStr, String separatorOne, String mapSeparator) {
+		Map<String, String> map = new HashMap<String, String>();
+		List<String> list = new ArrayList<String>();
+		if (srcStr != null) {
+			int i = 0;
+			int j = 0;
+			while ((i = srcStr.indexOf(separatorOne, i)) != -1) {
+				list.add(srcStr.substring(j, i));
+				j = i + separatorOne.length();
+				i = j;
+			}
+			
+			list.add(srcStr.substring(j, srcStr.length()));
+		}
+		for (String str : list) {
+			int i = 0;
+			if ((i = str.indexOf(mapSeparator, i)) != -1) {
+				map.put(str.substring(0, i), str.substring(i + separatorOne.length(), str.length()));
+			}
+		}
+		return map;
 	}
 }

@@ -11,5 +11,6 @@ import com.lyh.admin.model.OsaRechargeLog;
  */
 public interface OsaRechargeLogService extends BaseService<OsaRechargeLog> {
 	
+	
 }
   

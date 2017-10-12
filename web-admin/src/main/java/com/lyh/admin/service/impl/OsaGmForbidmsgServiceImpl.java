@@ -52,7 +52,7 @@ public class OsaGmForbidmsgServiceImpl implements OsaGmForbidmsgService {
 		// TODO Auto-generated method stub
 		OsaGmForbidmsgExample example = new OsaGmForbidmsgExample();
 		OsaGmForbidmsgExample.Criteria criteria = example.createCriteria();
-		
+		example.setOrderByClause("opttime desc");
 		return mapper.selectByExample(example);
 	}
 	
