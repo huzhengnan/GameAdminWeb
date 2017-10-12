@@ -1,5 +1,7 @@
 package com.lyh.admin.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,18 +13,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.game.protocol.gm.GmRechargeHttpProtocol;
+import com.game.protocol.gm.GmRechargeProtocolRequest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.model.OsaFeedbackQuestion;
+import com.lyh.admin.model.OsaGamePlayer;
 import com.lyh.admin.model.OsaGameWorld;
 import com.lyh.admin.model.OsaGmForbidmsg;
+import com.lyh.admin.model.OsaGmSendMoney;
 import com.lyh.admin.model.OsaGmSendMoneyPay;
 import com.lyh.admin.model.OsaOperatorRecharge;
 import com.lyh.admin.model.OsaRechargeLog;
+import com.lyh.admin.service.OsaGamePlayerService;
 import com.lyh.admin.service.OsaGmSendMoneyPayService;
 import com.lyh.admin.service.OsaOperatorRechargeService;
 import com.lyh.admin.service.OsaRechargeLogService;
+import com.lyh.admin.tools.IdGenerateUtils;
+import com.lyh.admin.tools.PlatformToServerConnection;
 import com.lyh.admin.tools.ShowPage;
+import com.lyh.admin.tools.ToolUtils;
+import com.lyh.admin.tools.encrypt.MD5;
 
 /** 
  * ClassName:PayController <br/> 
@@ -39,7 +51,8 @@ public class PayController extends BaseController {
 	
 	@Autowired
 	private OsaOperatorRechargeService  operatorRechargeService;
-	
+	@Autowired
+	private OsaGamePlayerService gamePlayerService;
 	/** 
 	 * getPayInternalList:(). <br/> 
 	 * TODO().<br/> 
@@ -86,13 +99,12 @@ public class PayController extends BaseController {
 //			String openId = request.getParameter("openId");
 //			String forbidtime = request.getParameter("forbidtime");
 //			String msg = request.getParameter("msg");
-	
-			String result ="";
-			if (result.equals("1")){
-				result="操作成功";
-			}else{
-				result="操作失败";
-			}
+			String result = sendMoney(request);
+//			if (result.equals("1")){
+//				result="操作成功";
+//			}else{
+//				result="操作失败";
+//			}
 			view.addObject("msg", result);
 		}
 		List<OsaGameWorld> worldList =  gameWorldService.getWorldList(1);
@@ -126,81 +138,80 @@ public class PayController extends BaseController {
 	}
 	
 	
-public String sendMoney(GmtSendMoneyBean gmtSendMoneyBean) {
+/** 
+ * sendMoney:(). <br/> 
+ * TODO().<br/> 
+ * 发放内充
+ * @author lyh 
+ * @param request
+ * @return 
+ */  
+public String sendMoney(HttpServletRequest request) {
 		
-		String res = "";
+	String  worldId = request.getParameter("worldId");
+	int ptype =  Integer.parseInt(request.getParameter("ptype"));
+	String openIds = request.getParameter("openId");
+	double money = Double.parseDouble(request.getParameter("money"));
+	String msg =  request.getParameter("msg");
 		// 获取账号信息
 		List<String> passports = new ArrayList<String>();
-		if (gmtSendMoneyBean.getType().equals("1")) { // 指定账号发放
-			if (gmtSendMoneyBean.getPassports() != null) {
-				String[] pps = gmtSendMoneyBean.getPassports().split(",");
+		if (ptype == 1) { // 指定账号发放
+			if (!ToolUtils.isStringNull(openIds)) {
+				String[] pps = ToolUtils.split(openIds, ",");
 				for (String pid : pps) {
 					passports.add(pid);
 				}
 			}
 			
-		} else if (gmtSendMoneyBean.getType().equals("2")) { // 全部账号发放
-			passports = dataUpHandleService.getPassportIdsStr(gmtSendMoneyBean.getWid() + "");
+		} else if (ptype == 2) { // 全部账号发放
+			List<OsaGamePlayer> list = gamePlayerService.getGamePlayerList(0, null);
+			for (OsaGamePlayer player : list){
+				passports.add(player.getOpenId());
+			}
 		}
 		
 		// 获取区服信息
-		OpGameworld opGameworld = worldService.getWorldByWid(gmtSendMoneyBean.getWid());
+
+		OsaGameWorld gameWorld =	gameWorldService.getWorldByWorldId(worldId);
 		
 		// 发放动作
 		
 		// 记录发放日志
-		OpGmtSendmoneyLog opGmtSendmoneyLog = new OpGmtSendmoneyLog();
-		opGmtSendmoneyLog.setAppid(gmtSendMoneyBean.getAppid());
-		opGmtSendmoneyLog.setWorldid(gmtSendMoneyBean.getWid() + "");
-		opGmtSendmoneyLog.setApplyid(Integer.parseInt(gmtSendMoneyBean.getApplyid()));
-		opGmtSendmoneyLog.setMsg(gmtSendMoneyBean.getMsg());
-		opGmtSendmoneyLog.setPassports(Integer.parseInt(gmtSendMoneyBean.getType()) == 1 ? gmtSendMoneyBean.getPassports() : "全服");
-		opGmtSendmoneyLog.setType(Integer.parseInt(gmtSendMoneyBean.getType()));
-		opGmtSendmoneyLog.setOpttime(Tools.getNowDate());
-		opGmtSendmoneyLog.setOptres(res); // 发放结果
-		opGmtSendmoneyLog.setUsername(gmtSendMoneyBean.getUser());
-		opGmtSendmoneyLogMapper.insertSelective(opGmtSendmoneyLog);
+
 		
 		//内充
 		StringBuffer failStr = new StringBuffer(); // 发送失败的账号
-		int num = 0;
+		String res = "";
 		for (String pid : passports) {
 			try {
 				GmRechargeProtocolRequest req = new GmRechargeProtocolRequest();
-				req.setBillon("lyh:" + System.currentTimeMillis()); // 平台单号
+				req.setBillon("lyh:" +IdGenerateUtils.makeId()); // 平台单号
 				req.setExtendstr("0");
-				req.setMoney(gmtSendMoneyBean.getMoney());
+				req.setMoney(""+money);
 				req.setOpenid(pid);
 				req.setSigstr(MD5.encodeMD5(req.getOpenid() + req.getBillon() + req.getMoney() + "123456"));
-				req.setServerId(opGameworld.getWorldid());
-				GmRechargeHttpProtocol resp = (GmRechargeHttpProtocol)PlatformToServerConnection.sendPlatformToServer(opGameworld.getIp(), opGameworld.getServerurl(), req);
+				req.setServerId(worldId);
+				GmRechargeHttpProtocol resp = (GmRechargeHttpProtocol)PlatformToServerConnection.sendPlatformToServer(gameWorld.getIp(), gameWorld.getServerUrl(), req);
 				res = resp.getResult();
-				//				SendReqToGame.getInstance().init(opGameworld.getIp(), Integer.parseInt(opGameworld.getServerurl()));
-//				res = SendReqToGame.getInstance().sendMessage(recharge_request, opGameworld.getWorldid()).toString();
-				System.out.println("发送金币：" + res + ",openid:" + pid);
-				
 				// 记录充值日志。
 				if (res.equals("1")) {
-					num++;
-					OpGmtSendmoneyPay opGmtSendmoneyPay = new OpGmtSendmoneyPay();
-					opGmtSendmoneyPay.setAddtime(Tools.getNowDate());
-					opGmtSendmoneyPay.setAppid(gmtSendMoneyBean.getAppid());
-					opGmtSendmoneyPay.setWorldid(opGameworld.getWorldid() + "");
-					opGmtSendmoneyPay.setOrderid(System.currentTimeMillis() + "");
-					opGmtSendmoneyPay.setMoney(Double.parseDouble(gmtSendMoneyBean.getMoney()));
-					opGmtSendmoneyPay.setPassport(pid);
-					opGmtSendmoneyPay.setSendid(opGmtSendmoneyLog.getDid());
-					opGmtSendmoneyPayMapper.insertSelective(opGmtSendmoneyPay);
+
+					OsaGmSendMoneyPay opGmtSendmoneyPay = new OsaGmSendMoneyPay();
+					opGmtSendmoneyPay.setAddTime(new Date(System.currentTimeMillis()));
+					opGmtSendmoneyPay.setAppId(gameWorld.getAppId());
+					opGmtSendmoneyPay.setWorldId(gameWorld.getWorldId());
+					opGmtSendmoneyPay.setMoney(money);
+					opGmtSendmoneyPay.setId(IdGenerateUtils.makeId());
+					opGmtSendmoneyPay.setOpenId(pid);
+					opGmtSendmoneyPay.setSendName(ShiroSysUser.getShiroSubject().getOsaUser().getUserName());
+					sendMoneyPayService.insert(opGmtSendmoneyPay);
 				} else {
 					failStr.append(pid + ",");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			try {
-				Thread.sleep(10);
-			} catch (Exception e) {
-			}
+	
 		}
 		// 发送失败的账号
 		String fails = failStr.toString();
@@ -210,11 +221,7 @@ public String sendMoney(GmtSendMoneyBean gmtSendMoneyBean) {
 		} else {
 			res = "ok";
 		}
-		// 更新本次发送结果
-		OpGmtSendmoneyLog obj = new OpGmtSendmoneyLog();
-		obj.setDid(opGmtSendmoneyLog.getDid());
-		obj.setOptres(res + ",成功发送" + num + "个");
-		opGmtSendmoneyLogMapper.updateByPrimaryKeySelective(obj);
+
 		
 		return res;
 	}
