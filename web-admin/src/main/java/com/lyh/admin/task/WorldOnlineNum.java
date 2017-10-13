@@ -88,7 +88,7 @@ public class WorldOnlineNum {
 					opOssQlzOnlinecurLog.setOnlineNum(num);
 					opOssQlzOnlinecurLog.setWorldId(wobj.getWorldId());
 					opOssQlzOnlinecurLog.setAddtime(ToolUtils.getNowDate());
-					opOssQlzOnlinecurLog.setId(IdGenerateUtils.makeId());
+					//opOssQlzOnlinecurLog.setId(IdGenerateUtils.makeId());
 					worldOnlineService.insert(opOssQlzOnlinecurLog);
 					
 				} else {

@@ -90,7 +90,7 @@ public class OsaGmNoticeServiceImpl implements OsaGmNoticeService {
 					opGmtNotice.setMsg(gmtSendNoticeBean.getMsg());
 					opGmtNotice.setUserName(gmtSendNoticeBean.getUser());
 					opGmtNotice.setOptres(res.equals("1") ? "成功" : (res.equals("-1000") ? "链接失败" : (res.equals("-1002") ? "接入失败" : "失败" + res)));
-					opGmtNotice.setId(IdGenerateUtils.makeId());
+					//opGmtNotice.setId(IdGenerateUtils.makeId());
 					mapper.insertSelective(opGmtNotice);
 				}
 				
@@ -138,7 +138,7 @@ public class OsaGmNoticeServiceImpl implements OsaGmNoticeService {
 		opGmtNoticeCycle.setSettime(ToolUtils.getNowDate());
 		opGmtNoticeCycle.setStatus("1"); // 活跃
 		opGmtNoticeCycle.setLastSendTime(System.currentTimeMillis() + opGmtNoticeCycle.getCycletime() * 60 * 1000);
-		opGmtNoticeCycle.setId(IdGenerateUtils.makeId());
+		//opGmtNoticeCycle.setId(IdGenerateUtils.makeId());
 		
 		gmNoticeCycleService.insertSelective(opGmtNoticeCycle);
 		

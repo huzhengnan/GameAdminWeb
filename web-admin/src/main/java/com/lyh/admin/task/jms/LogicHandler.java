@@ -130,7 +130,7 @@ public class LogicHandler implements MessageListener {
 			opOssQlzPassportReg.setLastloginIp(obj.getUserIp());
 			opOssQlzPassportReg.setOpenId(obj.getUserName());
 			opOssQlzPassportReg.setAppId(obj.getAppId());
-			opOssQlzPassportReg.setId(IdGenerateUtils.makeId());
+		//	opOssQlzPassportReg.setId(IdGenerateUtils.makeId());
 			opOssQlzPassportReg.setWorldId(obj.getServerId());
 			playerRegisterLogService.insert(opOssQlzPassportReg);
 			
@@ -159,7 +159,7 @@ public class LogicHandler implements MessageListener {
 			opOssQlzCreateroleLog.setUserIp(obj.getUserIp());
 			opOssQlzCreateroleLog.setTime(ToolUtils.getDateString(new Date(obj.getCreateRoleTime())));
 			opOssQlzCreateroleLog.setAppId(obj.getAppId());
-			opOssQlzCreateroleLog.setId(IdGenerateUtils.makeId());
+			//opOssQlzCreateroleLog.setId(IdGenerateUtils.makeId());
 			createrRoleLogService.insert(opOssQlzCreateroleLog);
 
 			// 加账号
@@ -202,7 +202,7 @@ public class LogicHandler implements MessageListener {
 			opOssQlzLoginLog.setUserIp(obj.getUserIp());
 			opOssQlzLoginLog.setLoginTime((new Date(obj.getLoginTime())));
 			opOssQlzLoginLog.setAppId(obj.getAppId());
-			opOssQlzLoginLog.setId(IdGenerateUtils.makeId());
+			//opOssQlzLoginLog.setId(IdGenerateUtils.makeId());
 			loginLogService.insert(opOssQlzLoginLog);
 			
 			
@@ -256,7 +256,7 @@ public class LogicHandler implements MessageListener {
 			opOssQlzOutLog.setOutTime(new Date(obj.getLoginOutTime()));
 			opOssQlzOutLog.setVipLevel(obj.getVipLevel());
 			opOssQlzOutLog.setAppId(obj.getAppId());
-			opOssQlzOutLog.setId(IdGenerateUtils.makeId());
+		//	opOssQlzOutLog.setId(IdGenerateUtils.makeId());
 			
 			logoutLogService.insert(opOssQlzOutLog);
 
@@ -295,7 +295,7 @@ public class LogicHandler implements MessageListener {
 			rechargeLog.setSfrom(obj.getRechargeChannel());
 			rechargeLog.setBillon(obj.getBillOrder());
 			rechargeLog.setAppId(obj.getAppId());
-			rechargeLog.setId(IdGenerateUtils.makeId());
+			//rechargeLog.setId(IdGenerateUtils.makeId());
 			rechargeLogService.insert(rechargeLog);
 	
 			OsaGamePlayer gamePlayer = gameLogPlayer.get(obj.getUserName());
@@ -342,7 +342,7 @@ public class LogicHandler implements MessageListener {
 			opOssQlzConsumeLog.setItemNum(obj.getItemNum());
 			opOssQlzConsumeLog.setItemType(obj.getItemType() + "");
 			opOssQlzConsumeLog.setAppId(obj.getAppId());
-			opOssQlzConsumeLog.setId(IdGenerateUtils.makeId());
+		//	opOssQlzConsumeLog.setId(IdGenerateUtils.makeId());
 			consumeLogService.insert(opOssQlzConsumeLog);
 			OsaGamePlayer gamePlayer = gameLogPlayer.get(obj.getUserName());
 			if (gamePlayer != null){
@@ -372,7 +372,7 @@ public class LogicHandler implements MessageListener {
 		opOssQlzOnlinecurLog.setAddtime(ToolUtils.getDateString(new Date(obj.getRecordTime())));
 		opOssQlzOnlinecurLog.setOnlineNum(obj.getOnlineNum());
 		opOssQlzOnlinecurLog.setAppId(obj.getAppId());
-		opOssQlzOnlinecurLog.setId(IdGenerateUtils.makeId());
+	//	opOssQlzOnlinecurLog.setId(IdGenerateUtils.makeId());
 		onlineLogService.insert(opOssQlzOnlinecurLog);
 	}
 }

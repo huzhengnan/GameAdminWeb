@@ -1,11 +1,14 @@
 package com.lyh.admin.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.mapper.OsaGmNoticeLeftMapper;
 import com.lyh.admin.model.OsaGmNoticeLeft;
+import com.lyh.admin.model.OsaGmNoticeLeftExample;
 import com.lyh.admin.service.OsaGmNoticeLeftService;
 
 /** 
@@ -17,6 +20,7 @@ import com.lyh.admin.service.OsaGmNoticeLeftService;
  */
 @Service
 public class OsaGmNoticeLeftServiceImpl implements OsaGmNoticeLeftService {
+	
 	@Resource
 	private OsaGmNoticeLeftMapper mapper;
 	
@@ -42,6 +46,14 @@ public class OsaGmNoticeLeftServiceImpl implements OsaGmNoticeLeftService {
 	public OsaGmNoticeLeft findById(long id) {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<OsaGmNoticeLeft> getNoticeLeftList() {
+		// TODO Auto-generated method stub
+		OsaGmNoticeLeftExample example =new OsaGmNoticeLeftExample();
+		example.setOrderByClause("create_time desc");
+		return mapper.selectByExample(example);
 	}
 	
 }

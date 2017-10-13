@@ -324,7 +324,7 @@ public class ForbidController extends BaseController {
 				GmBlockSayHttpProtocol resp = (GmBlockSayHttpProtocol)PlatformToServerConnection.sendPlatformToServer(gameWorld.getIp(), gameWorld.getServerUrl(), req);
 				res =""+ resp.getStatus();
 				forbidMsg.setOpttime(ToolUtils.getNowDate());
-				forbidMsg.setId(IdGenerateUtils.makeId());
+			//	forbidMsg.setId(IdGenerateUtils.makeId());
 				
 //				OpGmtForbidmsg opGmtForbidmsg = new OpGmtForbidmsg();
 //				opGmtForbidmsg.setAppid(gmtForbidBean.getAppid());
@@ -357,7 +357,7 @@ public class ForbidController extends BaseController {
 //				opGmtForbidmsg.setOpttype(Integer.parseInt(gmtForbidBean.getAct()));
 //				opGmtForbidmsg.setUsername(gmtForbidBean.getUser());
 				forbidMsg.setOpttime(ToolUtils.getNowDate());
-				forbidMsg.setId(IdGenerateUtils.makeId());
+				//forbidMsg.setId(IdGenerateUtils.makeId());
 				forbidMsg.setOptres(resp.getStatus() == 1? "成功" : (resp.getStatus() ==-1000 ? "链接失败" : (resp.getStatus() ==-1002 ? "接入失败" : "失败" + resp.getStatus())));
 				gmForbidmsgService.insert(forbidMsg);
 				
@@ -370,7 +370,7 @@ public class ForbidController extends BaseController {
 				GmBlockIPHttpProtocol resp = (GmBlockIPHttpProtocol)PlatformToServerConnection.sendPlatformToServer(gameWorld.getIp(), gameWorld.getServerUrl(), req);
 				res =""+ resp.getStatus();
 				forbidMsg.setOpttime(ToolUtils.getNowDate());
-				forbidMsg.setId(IdGenerateUtils.makeId());
+				//forbidMsg.setId(IdGenerateUtils.makeId());
 				forbidMsg.setOptres(resp.getStatus() == 1? "成功" : (resp.getStatus() ==-1000 ? "链接失败" : (resp.getStatus() ==-1002 ? "接入失败" : "失败" + resp.getStatus())));
 				gmForbidmsgService.insert(forbidMsg);
 				
@@ -382,7 +382,7 @@ public class ForbidController extends BaseController {
 				GmDisblockIPHttpProtocol resp = (GmDisblockIPHttpProtocol)PlatformToServerConnection.sendPlatformToServer(gameWorld.getIp(), gameWorld.getServerUrl(), req);
 				res =""+ resp.getStatus();
 				forbidMsg.setOpttime(ToolUtils.getNowDate());
-				forbidMsg.setId(IdGenerateUtils.makeId());
+				//forbidMsg.setId(IdGenerateUtils.makeId());
 				forbidMsg.setOptres(resp.getStatus() == 1? "成功" : (resp.getStatus() ==-1000 ? "链接失败" : (resp.getStatus() ==-1002 ? "接入失败" : "失败" + resp.getStatus())));
 				gmForbidmsgService.insert(forbidMsg);
 				
@@ -395,7 +395,7 @@ public class ForbidController extends BaseController {
 
 				res =""+ resp.getStatus();
 				forbidMsg.setOpttime(ToolUtils.getNowDate());
-				forbidMsg.setId(IdGenerateUtils.makeId());
+			//	forbidMsg.setId(IdGenerateUtils.makeId());
 				forbidMsg.setOptres(resp.getStatus() == 1? "成功" : (resp.getStatus() ==-1000 ? "链接失败" : (resp.getStatus() ==-1002 ? "接入失败" : "失败" + resp.getStatus())));
 				gmForbidmsgService.insert(forbidMsg);
 				
@@ -409,7 +409,7 @@ public class ForbidController extends BaseController {
 				GmDisblockRoleHttpProtocol resp = (GmDisblockRoleHttpProtocol)PlatformToServerConnection.sendPlatformToServer(gameWorld.getIp(), gameWorld.getServerUrl(), req);
 				res =""+ resp.getStatus();
 				forbidMsg.setOpttime(ToolUtils.getNowDate());
-				forbidMsg.setId(IdGenerateUtils.makeId());
+				//forbidMsg.setId(IdGenerateUtils.makeId());
 				forbidMsg.setOptres(resp.getStatus() == 1? "成功" : (resp.getStatus() ==-1000 ? "链接失败" : (resp.getStatus() ==-1002 ? "接入失败" : "失败" + resp.getStatus())));
 				gmForbidmsgService.insert(forbidMsg);
 				
@@ -431,7 +431,7 @@ public class ForbidController extends BaseController {
 //				opGmtForbidmsg.setOpttype(Integer.parseInt(gmtForbidBean.getAct()));
 //				opGmtForbidmsg.setUsername(gmtForbidBean.getUser());
 				forbidMsg.setOpttime(ToolUtils.getNowDate());
-				forbidMsg.setId(IdGenerateUtils.makeId());
+			//	forbidMsg.setId(IdGenerateUtils.makeId());
 				forbidMsg.setOptres(resp.getStatus() == 1? "成功" : (resp.getStatus() ==-1000 ? "链接失败" : (resp.getStatus() ==-1002 ? "接入失败" : "失败" + resp.getStatus())));
 				gmForbidmsgService.insert(forbidMsg);
 			}

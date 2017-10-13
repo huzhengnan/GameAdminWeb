@@ -70,7 +70,7 @@ public class FeedbackController extends BaseController {
 			quest.setOpenId(openId);
 			quest.setContent(content);
 			quest.setPhone(Long.parseLong(phone));
-			quest.setId(IdGenerateUtils.makeId());
+			//quest.setId(IdGenerateUtils.makeId());
 			quest.setCreateTime(new Date(System.currentTimeMillis()));
 			feedbackQuestionService.insert(quest);
 		}else{

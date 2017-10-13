@@ -87,7 +87,7 @@ public class PayController extends BaseController {
 	 * @return 
 	 */  
 	@RequestMapping("/pay/internal_add")
-	public ModelAndView payInternalAdd(HttpSession session, HttpServletRequest request,OsaGmForbidmsg forbidMsg){
+	public ModelAndView payInternalAdd(HttpSession session, HttpServletRequest request){
 		ModelAndView view = new ModelAndView("/PayInternalAdd");
 		if (this.isPost(request)){
 //			String worldId = request.getParameter("worldId");
@@ -197,7 +197,7 @@ public String sendMoney(HttpServletRequest request) {
 					opGmtSendmoneyPay.setAppId(gameWorld.getAppId());
 					opGmtSendmoneyPay.setWorldId(gameWorld.getWorldId());
 					opGmtSendmoneyPay.setMoney(money);
-					opGmtSendmoneyPay.setId(IdGenerateUtils.makeId());
+				//	opGmtSendmoneyPay.setId(IdGenerateUtils.makeId());
 					opGmtSendmoneyPay.setOpenId(pid);
 					opGmtSendmoneyPay.setSendName(ShiroSysUser.getShiroSubject().getOsaUser().getUserName());
 					sendMoneyPayService.insert(opGmtSendmoneyPay);

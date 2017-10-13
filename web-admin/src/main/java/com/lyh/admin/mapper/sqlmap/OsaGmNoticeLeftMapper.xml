@@ -8,6 +8,7 @@
     <result column="app_id" jdbcType="VARCHAR" property="appId" />
     <result column="world_id" jdbcType="VARCHAR" property="worldId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, content, create_time, app_id, world_id, title
+    id, content, create_time, app_id, world_id, title, status
   </sql>
   <select id="selectByExample" parameterType="com.lyh.admin.model.OsaGmNoticeLeftExample" resultMap="BaseResultMap">
     select
@@ -103,11 +104,11 @@
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaGmNoticeLeft">
     insert into osa_gm_notice_left (id, content, create_time, 
-      app_id, world_id, title
-      )
+      app_id, world_id, title, 
+      status)
     values (#{id,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{appId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}
-      )
+      #{appId,jdbcType=VARCHAR}, #{worldId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaGmNoticeLeft">
     insert into osa_gm_notice_left
@@ -130,6 +131,9 @@
       <if test="title != null">
         title,
       </if>
+      <if test="status != null">
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -149,6 +153,9 @@
       </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -179,6 +186,9 @@
       <if test="record.title != null">
         title = #{record.title,jdbcType=VARCHAR},
       </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -191,7 +201,8 @@
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       app_id = #{record.appId,jdbcType=VARCHAR},
       world_id = #{record.worldId,jdbcType=VARCHAR},
-      title = #{record.title,jdbcType=VARCHAR}
+      title = #{record.title,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -214,6 +225,9 @@
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -223,7 +237,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       app_id = #{appId,jdbcType=VARCHAR},
       world_id = #{worldId,jdbcType=VARCHAR},
-      title = #{title,jdbcType=VARCHAR}
+      title = #{title,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
