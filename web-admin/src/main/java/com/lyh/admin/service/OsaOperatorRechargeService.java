@@ -2,6 +2,7 @@ package com.lyh.admin.service;
 
 import java.util.List;
 
+import com.lyh.admin.model.OsaGameWorld;
 import com.lyh.admin.model.OsaOperatorRecharge;
 
 /**
@@ -32,4 +33,18 @@ public interface OsaOperatorRechargeService extends BaseService<OsaOperatorRecha
 	 */  
 	double getSumTotalPay();
 	
+	/** 
+	 * recharge:(). <br/> 
+	 * TODO().<br/> 
+	 * 给玩家充值
+	 * @author lyh 
+	 * @param openId
+	 * @param billno
+	 * @param dPrice
+	 * @param money
+	 * @param time
+	 * @param gameworld
+	 * @return 
+	 */  
+	int recharge(String openId, String billno,double dPrice, double money, int time,OsaGameWorld gameworld,int online);
 }

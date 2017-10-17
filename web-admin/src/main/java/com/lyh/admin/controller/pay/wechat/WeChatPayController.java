@@ -1,4 +1,4 @@
-package com.gamecenter.controller.pay.wechat;
+package com.lyh.admin.controller.pay.wechat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,32 +29,26 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.game.protocol.gm.GmInviteCodeProtocolRequest;
-import com.gamecenter.common.HttpClient;
-import com.gamecenter.common.IdGenerateUtils;
-import com.gamecenter.common.ToolUtils;
-import com.gamecenter.common.pay.wechat.CommonUtil;
-import com.gamecenter.common.pay.wechat.PayCommonUtil;
-import com.gamecenter.common.pay.wechat.XmlUtils;
-import com.gamecenter.common.properties.WeChatConfig;
-import com.gamecenter.controller.BaseController;
-import com.gamecenter.model.OpAgentConfig;
-import com.gamecenter.model.OpAgentInviteCode;
-import com.gamecenter.model.OpAgentList;
-import com.gamecenter.model.OpAgentRecharge;
-import com.gamecenter.model.OpGameapp;
-import com.gamecenter.model.OpGameworld;
-import com.gamecenter.model.OpOssQlzPassport;
-import com.gamecenter.model.OpShop;
-import com.gamecenter.service.agent.AgentConfigService;
-import com.gamecenter.service.agent.AgentInviteCodeService;
-import com.gamecenter.service.agent.AgentListService;
-import com.gamecenter.service.agent.AgentRechargeService;
-import com.gamecenter.service.agent.AgentShopService;
-import com.gamecenter.service.agent.PlayerRechargeService;
-import com.gamecenter.service.appServices.AppService;
-import com.gamecenter.service.appServices.WorldService;
-import com.gamecenter.service.dataup.DataUpHandleService;
-import com.gamecenter.service.task.InviteCodeTask;
+import com.lyh.admin.controller.BaseController;
+import com.lyh.admin.model.OsaGamePlayer;
+import com.lyh.admin.model.OsaGameWorld;
+import com.lyh.admin.model.OsaProxyConfig;
+import com.lyh.admin.model.OsaProxyRecharge;
+import com.lyh.admin.model.OsaShop;
+import com.lyh.admin.model.OsaUser;
+import com.lyh.admin.properites.WeChatConfig;
+import com.lyh.admin.service.OsaGamePlayerService;
+import com.lyh.admin.service.OsaOperatorRechargeService;
+import com.lyh.admin.service.OsaProxyConfigService;
+import com.lyh.admin.service.OsaProxyRechargeService;
+import com.lyh.admin.service.OsaShopService;
+import com.lyh.admin.service.OsaUserService;
+import com.lyh.admin.tools.HttpClient;
+import com.lyh.admin.tools.IdGenerateUtils;
+import com.lyh.admin.tools.ToolUtils;
+import com.lyh.admin.tools.pay.webchat.CommonUtil;
+import com.lyh.admin.tools.pay.webchat.PayCommonUtil;
+import com.lyh.admin.tools.pay.webchat.XmlUtils;
 
 /**
  * ClassName:WeChatPayController <br/>
@@ -75,31 +69,21 @@ public class WeChatPayController extends BaseController {
 	public static final String ES_PUBLIC_APPSECRET = "ab0e4cb4020bfd78e21b51ccc2d554b1";
 	
 	@Autowired
-	private AgentRechargeService agentRechargeService;
+	private OsaUserService userService;
+	@Autowired
+	private OsaProxyRechargeService proxyRechargeService;
 	
 	@Autowired
-	private AgentInviteCodeService agentInviteCodeService;
+	private OsaGamePlayerService gamePlayerService;
 	
 	@Autowired
-	private AgentShopService agentShopService;
+	private OsaProxyConfigService proxyConfigService;
 	
 	@Autowired
-	private AgentListService agentListService;
+	private OsaOperatorRechargeService operatorRechargeService;
 	
 	@Autowired
-	private DataUpHandleService dataUpHandleService;
-	
-	@Autowired
-	private PlayerRechargeService playerRechargeService;
-	
-	@Autowired
-	private WorldService worldService;
-	
-	@Autowired
-	private AppService appService;
-	
-	@Autowired
-	private AgentConfigService agentConfigService;
+	private OsaShopService shopService;
 	
 	/**
 	 * 重点：封装参数调用统一下单接口，生成prepay_id(预支付订单Id) 微信支付
@@ -114,48 +98,36 @@ public class WeChatPayController extends BaseController {
 		boolean bCheck = false;
 		int price = Integer.parseInt(fprice);
 		double dPrice = ((double) price) / 100;
-		OpShop goods = agentShopService.findShopGoodsByPrice(dPrice, 0);
+		OsaShop goods = shopService.findShopGoodsByPrice(dPrice);
+		OsaGamePlayer player = null;
+		OsaUser agent = null;
+		double fetchMoneyRate = 0;
 		SortedMap<String, String> returnMap = new TreeMap<String, String>();
 		if (goods != null) {
-			//先找人
-			List<OpGameapp> appList = appService.getAppList();
-			OpGameapp gameApp = appList.size() > 0 ? appList.get(0) : null;
-			OpGameworld worldServer = null;
-			OpOssQlzPassport player = null;
-			if (gameApp != null) {
-				List<OpGameworld> worldList = worldService.getWorldListByAppId(gameApp.getAppid());
-				worldServer = worldList.size() > 0 ? worldList.get(0) : null;
-			} else {
-				logger.error("没有找到world::" + openId);
+			// 先找人
+			if (inviteCode == null){
+				agent = userService.findById(1);
+			}else{
+			agent = userService.getUsersByInviteCode(inviteCode);
 			}
-			
-			if (worldServer != null) {
-				 player = dataUpHandleService.getPassportByOpenid(openId);
-				if (player != null) {
-					inviteCode = player.getInviteCode();
-					
-				} else {
-					logger.error("没有找到玩家::" + openId);
-				}
-			}
-			
-			
-			int gold = goods.getGift() + goods.getNum();
-			OpAgentList agent = null;
-			OpAgentInviteCode agentInviteCode = null;
-			if (ToolUtils.isStringNull(inviteCode)) {
-				agent = agentListService.findById(1);
-			} else {
-				agentInviteCode = agentInviteCodeService.findOpAgentInviteCodeByCode(inviteCode);
-				agent = agentListService.findById(agentInviteCode.getAgentId());
-			}
-			
 			if (agent.getRemainMoney() == null) {
-				agent.setRemainMoney(0);
+				agent.setRemainMoney("0");
 			}
 			
-			if (agent != null && player != null) {// && agent.getRemainMoney() >= gold在线冲值不要减money
-				bCheck = true;
+			OsaProxyConfig agentConfig = proxyConfigService.findById(1);
+			if (agentConfig != null && agentConfig.getOneLevel() != null) {
+				fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel());
+			}
+			
+			if (agent != null) {// && agent.getRemainMoney() >= gold在线冲值不要减money
+				player = gamePlayerService.getGamePlayerByOpenId(openId);
+				if (player != null) {
+					OsaGameWorld gameWorld = gameWorldService.getWorldByWorldId(player.getWorldId());
+					if (gameWorld != null) {
+						
+						bCheck = true;
+					}
+				}
 			}
 		} else {
 			logger.error(dPrice + ":没有找到商品::" + openId);
@@ -223,7 +195,7 @@ public class WeChatPayController extends BaseController {
 			weiXinVo.append("&appid=").append(WeChatConfig.APP_ID).append("&partnerid=").append(WeChatConfig.MCH_ID).append("&prepayid=").append(prepay_id).append("&noncestr=").append(nonceStr).append("&timestamp=").append(seconds).append("&sign=").append(signAgain);// 拼接参数返回给移动端
 			
 		} else {
-		
+			
 		}
 		write.write(weiXinVo.toString());
 		logger.error("返回给客户端::" + weiXinVo.toString());
@@ -285,8 +257,7 @@ public class WeChatPayController extends BaseController {
 			boolean bVerify = verifyWeChatNotify(map);
 			if (bVerify) {
 				double dPrice = Double.parseDouble(String.valueOf(map.get("total_fee"))) / 100;
-				OpShop goods = agentShopService.findShopGoodsByPrice(dPrice, 0);
-				
+				OsaShop goods = shopService.findShopGoodsByPrice(dPrice);
 				if (goods != null) {
 					
 					int gold = goods.getGift() + goods.getNum();
@@ -299,41 +270,36 @@ public class WeChatPayController extends BaseController {
 					}
 					openId = attach[0];
 					String serverId = attach[1];
-					OpAgentList agent = null;
-					OpAgentInviteCode agentInviteCode = null;
-					if (ToolUtils.isStringNull(inviteCode)) {
-						agent = agentListService.findById(1);
-					} else {
-						agentInviteCode = agentInviteCodeService.findOpAgentInviteCodeByCode(inviteCode);
-						agent = agentListService.findById(agentInviteCode.getAgentId());
+					OsaGamePlayer player = null;
+					OsaUser agent = null;
+		
+					
+					if (ToolUtils.isStringNull(inviteCode)){
+						agent = userService.findById(1);
+					}else{
+					agent = userService.getUsersByInviteCode(inviteCode);
 					}
 					
 					if (agent.getRemainMoney() == null) {
-						agent.setRemainMoney(0);
+						agent.setRemainMoney("0");
 					}
 					
 					if (agent != null) {// && agent.getRemainMoney() >= gold在线冲值不要减money
-						List<OpGameapp> appList = appService.getAppList();
-						OpGameapp gameApp = appList.size() > 0 ? appList.get(0) : null;
-						OpGameworld worldServer = null;
-						if (gameApp != null) {
-							List<OpGameworld> worldList = worldService.getWorldListByAppId(gameApp.getAppid());
-							worldServer = worldList.size() > 0 ? worldList.get(0) : null;
-						}
+						OsaGameWorld worldServer= gameWorldService.getWorldByWorldId(player.getWorldId());
 						
 						if (worldServer != null) {
-							OpOssQlzPassport player = dataUpHandleService.getPassportByOpenid(openId);
+							player = gamePlayerService.getGamePlayerByOpenId(openId);
 							if (player != null) {
 								//
+								OsaProxyConfig  agentConfig =  proxyConfigService.findById(1);
 								double fetchMoneyRate = 0;
-								OpAgentConfig agentConfig = agentConfigService.findById(1);
-								if (agentConfig != null && agentConfig.getOneLevel() != null) {
-									fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel());
+								if (agentConfig != null && agentConfig.getOneLevel() != null){
+									fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel() );
 								}
 								String trade = String.valueOf(map.get("out_trade_no"));
-								int status = playerRechargeService.recharge(player.getOpenid(), trade, dPrice, gold, (int) (System.currentTimeMillis() / 1000), worldServer.getWorldid(), "" + 1, worldServer);
+								int status = operatorRechargeService.recharge(player.getOpenId(), trade,dPrice,gold, (int) (System.currentTimeMillis() / 1000), worldServer,1);
 								if (status == 1) {
-									addPlayerMoney(player, agent, gold, dPrice, trade, (fetchMoneyRate * dPrice) / 100);
+									addPlayerMoney(agent, player ,gold,(fetchMoneyRate * dPrice) / 100);
 									returnMap.put("return_code", "SUCCESS");
 									logger.error("返回结果通知::成功" + map.get("attach"));
 								} else {
@@ -403,39 +369,28 @@ public class WeChatPayController extends BaseController {
 	}
 	
 	@Transactional
-	public void addPlayerMoney(OpOssQlzPassport player, OpAgentList parentAgent, int gold, double price, String staderOrder, double fetchMoney) {
-		// parentAgent.setRemainMoney(parentAgent.getRemainMoney() - gold); 在线冲值不充值
-		// agentListService.update(parentAgent);
-		saveRecharge(parentAgent.getName(), 0, price, player.getRolename(), staderOrder, 0, fetchMoney);
-	}
-	
-	/**
-	 * saveRecharge:(). <br/>
-	 * TODO().<br/>
-	 * 保存充值记录
-	 * 
-	 * @author lyh
-	 * @param agentName
-	 * @param isAgent
-	 * @param rmb
-	 * @param rechageName
-	 * @param traderOrder
-	 * @param onlinePay
-	 */
-	public void saveRecharge(String agentName, int isAgent, double rmb, String rechageName, String traderOrder, int onlinePay, double fetchMoney) {
-		OpAgentRecharge pay = new OpAgentRecharge();
-		pay.setAgentName(agentName);
-		pay.setIsAgent((byte) isAgent);
-		pay.setMoney(rmb);
-		pay.setName(rechageName);
-		pay.setTraderOrder(traderOrder);
-		pay.setOnlinePay(onlinePay);
+	public void addPlayerMoney(OsaUser proxyUser, OsaGamePlayer gamePlayer, double money,double fetchMoney) {
+		int fMoney = Integer.parseInt(proxyUser.getRemainMoney());
+
+		//proxyUser.setRemainMoney("" + (fMoney - money));
+
+	//	userService.update(proxyUser);
+		OsaProxyRecharge pay = new OsaProxyRecharge();
+		pay.setProxyName(proxyUser.getUserName());
+		pay.setIsProxy((byte) 0);
+		pay.setMoney(money);
+		pay.setName(gamePlayer.getRoleName());
+		pay.setTraderOrder("" + IdGenerateUtils.makeId());
+		pay.setOnlinePay(1);
 		pay.setCreateTime(new Date(System.currentTimeMillis()));
 		pay.setIsFetch(0);
 		pay.setFetchMoney(fetchMoney);
-		pay.setFlag(1);
-		agentRechargeService.insert(pay);
+		pay.setFlag(1);//支付宝要这个
+		pay.setOpenId(gamePlayer.getOpenId());
+		proxyRechargeService.insert(pay);
 	}
+	
+
 	
 	/**
 	 * playerUnbind:(). <br/>
@@ -450,7 +405,7 @@ public class WeChatPayController extends BaseController {
 	public void playerUnbind(HttpSession httpSession, HttpServletRequest request, HttpServletResponse response) {
 		
 		request.getRequestURL();
-	
+		
 		// ES_PUBLIC_APPID
 		
 		// public function getopenid(){
@@ -461,7 +416,8 @@ public class WeChatPayController extends BaseController {
 		// if(!$openid){
 		// header("Location:https://open.weixin.qq.com/connect/oauth2/authorize?appid=$appid&redirect_uri=".urlencode($redirect_url)."&response_type=code&scope=snsapi_base&state=blinq#wechat_redirect");
 		// $code_state =$_REQUEST;
-		// $token = json_decode(file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appid&secret=$secret&code={$code_state['code']}&grant_type=authorization_code"), true);
+		// $token = json_decode(file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=$appid&secret=$secret&code={$code_state['code']}&grant_type=authorization_code"),
+		// true);
 		// $_SESSION['openid']=$token['openid'];
 		// }
 		//
@@ -484,7 +440,7 @@ public class WeChatPayController extends BaseController {
 		String subRedirectUri = redirect_uri.substring(0, index + requestPath.length()) + "/player/code";
 		
 		try {
-
+			
 			String url = " https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + ES_PUBLIC_APPID + "&redirect_uri=" + URLEncoder.encode(subRedirectUri, "utf-8") + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
 			response.sendRedirect(url);
 		} catch (IOException e) {
@@ -508,46 +464,48 @@ public class WeChatPayController extends BaseController {
 		if (ToolUtils.isStringNull(code)) {
 			logger.error("微信code获得失败");
 		}
-		 ModelAndView view = new ModelAndView("/page/commons/error");
+		ModelAndView view = new ModelAndView("/error");
 		
-//		access_token 网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同 
-//		expires_in access_token接口调用凭证超时时间，单位（秒）
-//		refresh_token 用户刷新access_token
-//		openid 用户唯一标识，请注意，在未关注公众号时，用户访问公众号的网页，也会产生一个用户和公众号唯一的OpenID
-//		scope 用户授权的作用域，使用逗号（,）分隔 
-//		错误时微信会返回JSON数据包如下（示例为Code无效错误）: {"errcode":40029,"errmsg":"invalid code"
-//		 }
+		// access_token 网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
+		// expires_in access_token接口调用凭证超时时间，单位（秒）
+		// refresh_token 用户刷新access_token
+		// openid 用户唯一标识，请注意，在未关注公众号时，用户访问公众号的网页，也会产生一个用户和公众号唯一的OpenID
+		// scope 用户授权的作用域，使用逗号（,）分隔
+		// 错误时微信会返回JSON数据包如下（示例为Code无效错误）: {"errcode":40029,"errmsg":"invalid code"
+		// }
 		String tokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + ES_PUBLIC_APPID + "&secret=" + ES_PUBLIC_APPSECRET + "&code=" + code + "&grant_type=authorization_code";
 		JSONObject json = HttpClient.httpsRequest(tokenUrl, "GET", "");
-		 String weOpenId = String.valueOf(json.get("openid"));
-		if (!ToolUtils.isStringNull(weOpenId)){
-			//查数据库的openId
-			OpOssQlzPassport player = dataUpHandleService.getPassportByOpenid(weOpenId);
+		String weOpenId = String.valueOf(json.get("openid"));
+		if (!ToolUtils.isStringNull(weOpenId)) {
+			// 查数据库的openId
+			OsaGamePlayer player = gamePlayerService.getGamePlayerByOpenId(weOpenId);
+		
 			
-			if (player != null && (player.getInviteTime() == null || System.currentTimeMillis() >= player.getInviteTime().getTime())){
+			if (player != null && (player.getInviteTime() == null || System.currentTimeMillis() >= player.getInviteTime().getTime())) {
 				GmInviteCodeProtocolRequest req = new GmInviteCodeProtocolRequest();
 				req.setInviteCode("");
 				req.setOpenId(weOpenId);
-				if (player.getInviteTime() == null){
+				if (player.getInviteTime() == null) {
 					player.setInviteTime(new Date(0));
-				}else{
-					 player.getInviteTime().setTime(0);
+				} else {
+					player.getInviteTime().setTime(0);
 				}
 				player.setInviteCode("");
-				dataUpHandleService.updatePassport(player, "refresh");
+				gamePlayerService.update(player);
+		
 				
-				InviteCodeTask.inviteCodeList.add(req);
-				 logger.error("player解绑成功");
-				   view.addObject("message", "解绑成功");
-			}else{
-				 logger.error("player解绑失败");
-				 view.addObject("message", "解绑失败,玩家不存在,或时间不足.");
+			
+				logger.error("player解绑成功");
+				view.addObject("message", "解绑成功");
+			} else {
+				logger.error("player解绑失败");
+				view.addObject("message", "解绑失败,玩家不存在,或时间不足.");
 			}
-		}else{
-			 int errorCode = json.getIntValue("errcode");
-		                String errorMsg = json.getString("errmsg");
-		                logger.error("获取网页授权凭证失败 errcode:{} errmsg:{}", errorCode, errorMsg);
-		                view.addObject("message", "获取网页授权凭证失败::"+errorCode+"::"+errorMsg);
+		} else {
+			int errorCode = json.getIntValue("errcode");
+			String errorMsg = json.getString("errmsg");
+			logger.error("获取网页授权凭证失败 errcode:{} errmsg:{}", errorCode, errorMsg);
+			view.addObject("message", "获取网页授权凭证失败::" + errorCode + "::" + errorMsg);
 		}
 		return view;
 		

@@ -72,6 +72,18 @@ public class OsaGamePlayerServiceImpl implements OsaGamePlayerService {
 		List<OsaGamePlayer> list =  mapper.selectByExample(example);
 		return list;
 	}
+
+	@Override
+	public List<OsaGamePlayer> getGamePlayersByInviteCode(String inviteCode) {
+		// TODO Auto-generated method stub
+		OsaGamePlayerExample example = new OsaGamePlayerExample();
+		OsaGamePlayerExample.Criteria criteria = example.createCriteria();
+		if (!ToolUtils.isStringNull(inviteCode)){
+			criteria.andOpenIdEqualTo(inviteCode);
+		}
+		
+		return mapper.selectByExample(example);
+	}
 	
 }
   

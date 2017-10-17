@@ -38,6 +38,8 @@ public class GmRechargeProtocolRequest extends DataUpBase implements IMsgCode {
 	/** MD5验证码 MD5 32位加密串,MD5[openid+money+key],key为约定秘钥。 **/
 	private String sigstr;
 	
+	/**线上为1**/  
+	private int online;
 	public String getOpenid() {
 		return openid;
 	}
@@ -76,6 +78,14 @@ public class GmRechargeProtocolRequest extends DataUpBase implements IMsgCode {
 	
 	public void setExtendstr(String extendstr) {
 		this.extendstr = extendstr;
+	}
+
+	public int getOnline() {
+		return online;
+	}
+
+	public void setOnline(int online) {
+		this.online = online;
 	}
 	
 	

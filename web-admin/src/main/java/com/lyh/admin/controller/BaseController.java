@@ -7,7 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.lyh.admin.service.OsaGamePlayerService;
 import com.lyh.admin.service.OsaGameWorldService;
+import com.lyh.admin.service.OsaOperatorRechargeService;
+import com.lyh.admin.service.OsaProxyConfigService;
+import com.lyh.admin.service.OsaProxyRechargeFetchService;
+import com.lyh.admin.service.OsaProxyRechargeService;
+import com.lyh.admin.service.OsaUserService;
 
 /**
  * create by admin create 2017/9/29 TODO:控制器基础类
@@ -16,6 +22,24 @@ public abstract class BaseController {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	protected OsaGameWorldService gameWorldService;
+	
+	@Autowired
+	protected OsaUserService userService;
+	@Autowired
+	protected OsaProxyRechargeService proxyRechargeService;
+	
+	@Autowired
+	protected OsaProxyRechargeFetchService proxyRechargeFetchService;
+	
+	@Autowired
+	protected OsaGamePlayerService gamePlayerService;
+	
+	@Autowired
+	protected OsaProxyConfigService proxyConfigService;
+	
+	@Autowired
+	protected OsaOperatorRechargeService operatorRechargeService;
+	
 	/**
 	 * getBaseUrl:(). <br/>
 	 * TODO().<br/>

@@ -1,5 +1,7 @@
 package com.lyh.admin.service;
 
+import java.util.List;
+
 import com.lyh.admin.model.OsaUser;
 
 /** 
@@ -20,5 +22,39 @@ public interface OsaUserService extends BaseService<OsaUser> {
 	 * @return 
 	 */  
 	OsaUser findUserByUserName(String userName);
+	
+	/** 
+	 * getUserList:(). <br/> 
+	 * TODO().<br/> 
+	 * 得到全部玩家
+	 * @author lyh 
+	 * @return 
+	 */  
+	List<OsaUser>getUserList(int status);
+	
+	
+	/** 
+	 * getUsersByInviteCode:(). <br/> 
+	 * TODO().<br/> 
+	 * 获取代理用邀请码
+	 * @author lyh 
+	 * @param inviteCode
+	 * @return 
+	 */  
+	OsaUser getUsersByInviteCode(String inviteCode);
+	
+	
+	/** 
+	 * getUsersByFatherName:(). <br/> 
+	 * TODO().<br/> 
+	 * 获取代理列表用上级代理名
+	 * @author lyh 
+	 * @param fatherName
+	 * @return 
+	 */  
+	List<OsaUser> getUsersByFatherName(String fatherName);
+	
+	
+
 }
   

@@ -30,6 +30,11 @@ public class OsaProxyRechargeFetch implements Serializable {
     private String ids;
 
     /**
+     * 1已领取
+     */
+    private Integer status;
+
+    /**
      * osa_proxy_recharge_fetch
      */
     private static final long serialVersionUID = 1L;
@@ -74,6 +79,14 @@ public class OsaProxyRechargeFetch implements Serializable {
         this.ids = ids == null ? null : ids.trim();
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -85,6 +98,7 @@ public class OsaProxyRechargeFetch implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", name=").append(name);
         sb.append(", ids=").append(ids);
+        sb.append(", status=").append(status);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

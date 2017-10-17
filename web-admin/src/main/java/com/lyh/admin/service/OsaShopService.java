@@ -11,5 +11,14 @@ import com.lyh.admin.model.OsaShop;
  */
 public interface OsaShopService extends BaseService<OsaShop> {
 	
+	/** 
+	 * findShopGoodsByPrice:(). <br/> 
+	 * TODO().<br/> 
+	 * 价格找商品
+	 * @author lyh 
+	 * @param price
+	 * @return 
+	 */  
+	OsaShop findShopGoodsByPrice(double price);
 }
   

@@ -177,73 +177,73 @@ public class OsaProxyRechargeExample {
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameIsNull() {
-            addCriterion("agent_name is null");
+        public Criteria andProxyNameIsNull() {
+            addCriterion("proxy_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameIsNotNull() {
-            addCriterion("agent_name is not null");
+        public Criteria andProxyNameIsNotNull() {
+            addCriterion("proxy_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameEqualTo(String value) {
-            addCriterion("agent_name =", value, "agentName");
+        public Criteria andProxyNameEqualTo(String value) {
+            addCriterion("proxy_name =", value, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameNotEqualTo(String value) {
-            addCriterion("agent_name <>", value, "agentName");
+        public Criteria andProxyNameNotEqualTo(String value) {
+            addCriterion("proxy_name <>", value, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameGreaterThan(String value) {
-            addCriterion("agent_name >", value, "agentName");
+        public Criteria andProxyNameGreaterThan(String value) {
+            addCriterion("proxy_name >", value, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameGreaterThanOrEqualTo(String value) {
-            addCriterion("agent_name >=", value, "agentName");
+        public Criteria andProxyNameGreaterThanOrEqualTo(String value) {
+            addCriterion("proxy_name >=", value, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameLessThan(String value) {
-            addCriterion("agent_name <", value, "agentName");
+        public Criteria andProxyNameLessThan(String value) {
+            addCriterion("proxy_name <", value, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameLessThanOrEqualTo(String value) {
-            addCriterion("agent_name <=", value, "agentName");
+        public Criteria andProxyNameLessThanOrEqualTo(String value) {
+            addCriterion("proxy_name <=", value, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameLike(String value) {
-            addCriterion("agent_name like", value, "agentName");
+        public Criteria andProxyNameLike(String value) {
+            addCriterion("proxy_name like", value, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameNotLike(String value) {
-            addCriterion("agent_name not like", value, "agentName");
+        public Criteria andProxyNameNotLike(String value) {
+            addCriterion("proxy_name not like", value, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameIn(List<String> values) {
-            addCriterion("agent_name in", values, "agentName");
+        public Criteria andProxyNameIn(List<String> values) {
+            addCriterion("proxy_name in", values, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameNotIn(List<String> values) {
-            addCriterion("agent_name not in", values, "agentName");
+        public Criteria andProxyNameNotIn(List<String> values) {
+            addCriterion("proxy_name not in", values, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameBetween(String value1, String value2) {
-            addCriterion("agent_name between", value1, value2, "agentName");
+        public Criteria andProxyNameBetween(String value1, String value2) {
+            addCriterion("proxy_name between", value1, value2, "proxyName");
             return (Criteria) this;
         }
 
-        public Criteria andAgentNameNotBetween(String value1, String value2) {
-            addCriterion("agent_name not between", value1, value2, "agentName");
+        public Criteria andProxyNameNotBetween(String value1, String value2) {
+            addCriterion("proxy_name not between", value1, value2, "proxyName");
             return (Criteria) this;
         }
 
@@ -307,63 +307,63 @@ public class OsaProxyRechargeExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentIsNull() {
-            addCriterion("is_agent is null");
+        public Criteria andIsProxyIsNull() {
+            addCriterion("is_proxy is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentIsNotNull() {
-            addCriterion("is_agent is not null");
+        public Criteria andIsProxyIsNotNull() {
+            addCriterion("is_proxy is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentEqualTo(Byte value) {
-            addCriterion("is_agent =", value, "isAgent");
+        public Criteria andIsProxyEqualTo(Byte value) {
+            addCriterion("is_proxy =", value, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentNotEqualTo(Byte value) {
-            addCriterion("is_agent <>", value, "isAgent");
+        public Criteria andIsProxyNotEqualTo(Byte value) {
+            addCriterion("is_proxy <>", value, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentGreaterThan(Byte value) {
-            addCriterion("is_agent >", value, "isAgent");
+        public Criteria andIsProxyGreaterThan(Byte value) {
+            addCriterion("is_proxy >", value, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentGreaterThanOrEqualTo(Byte value) {
-            addCriterion("is_agent >=", value, "isAgent");
+        public Criteria andIsProxyGreaterThanOrEqualTo(Byte value) {
+            addCriterion("is_proxy >=", value, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentLessThan(Byte value) {
-            addCriterion("is_agent <", value, "isAgent");
+        public Criteria andIsProxyLessThan(Byte value) {
+            addCriterion("is_proxy <", value, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentLessThanOrEqualTo(Byte value) {
-            addCriterion("is_agent <=", value, "isAgent");
+        public Criteria andIsProxyLessThanOrEqualTo(Byte value) {
+            addCriterion("is_proxy <=", value, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentIn(List<Byte> values) {
-            addCriterion("is_agent in", values, "isAgent");
+        public Criteria andIsProxyIn(List<Byte> values) {
+            addCriterion("is_proxy in", values, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentNotIn(List<Byte> values) {
-            addCriterion("is_agent not in", values, "isAgent");
+        public Criteria andIsProxyNotIn(List<Byte> values) {
+            addCriterion("is_proxy not in", values, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentBetween(Byte value1, Byte value2) {
-            addCriterion("is_agent between", value1, value2, "isAgent");
+        public Criteria andIsProxyBetween(Byte value1, Byte value2) {
+            addCriterion("is_proxy between", value1, value2, "isProxy");
             return (Criteria) this;
         }
 
-        public Criteria andIsAgentNotBetween(Byte value1, Byte value2) {
-            addCriterion("is_agent not between", value1, value2, "isAgent");
+        public Criteria andIsProxyNotBetween(Byte value1, Byte value2) {
+            addCriterion("is_proxy not between", value1, value2, "isProxy");
             return (Criteria) this;
         }
 
@@ -804,6 +804,76 @@ public class OsaProxyRechargeExample {
 
         public Criteria andFlagNotBetween(Integer value1, Integer value2) {
             addCriterion("flag not between", value1, value2, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdIsNull() {
+            addCriterion("open_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdIsNotNull() {
+            addCriterion("open_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdEqualTo(String value) {
+            addCriterion("open_id =", value, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdNotEqualTo(String value) {
+            addCriterion("open_id <>", value, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdGreaterThan(String value) {
+            addCriterion("open_id >", value, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdGreaterThanOrEqualTo(String value) {
+            addCriterion("open_id >=", value, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdLessThan(String value) {
+            addCriterion("open_id <", value, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdLessThanOrEqualTo(String value) {
+            addCriterion("open_id <=", value, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdLike(String value) {
+            addCriterion("open_id like", value, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdNotLike(String value) {
+            addCriterion("open_id not like", value, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdIn(List<String> values) {
+            addCriterion("open_id in", values, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdNotIn(List<String> values) {
+            addCriterion("open_id not in", values, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdBetween(String value1, String value2) {
+            addCriterion("open_id between", value1, value2, "openId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenIdNotBetween(String value1, String value2) {
+            addCriterion("open_id not between", value1, value2, "openId");
             return (Criteria) this;
         }
     }
