@@ -25,7 +25,7 @@
 --%>
 
 <div class="block">
-	<a href="#page-stats" class="block-heading" data-toggle="collapse">玩家列表</a>
+	<a href="#page-stats" class="block-heading" data-toggle="collapse">${page_title}</a>
 	<div id="page-stats" class="block-body collapse in">
 		<table class="table table-striped table-bordered table-condensed">
 			<thead>

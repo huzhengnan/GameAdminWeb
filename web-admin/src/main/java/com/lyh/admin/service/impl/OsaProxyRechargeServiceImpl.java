@@ -1,11 +1,14 @@
 package com.lyh.admin.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.mapper.OsaProxyRechargeMapper;
 import com.lyh.admin.model.OsaProxyRecharge;
+import com.lyh.admin.model.OsaProxyRechargeExample;
 import com.lyh.admin.service.OsaProxyRechargeService;
 
 /** 
@@ -42,6 +45,53 @@ public class OsaProxyRechargeServiceImpl implements OsaProxyRechargeService {
 	public OsaProxyRecharge findById(long id) {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<OsaProxyRecharge> getMyBuyCardList(String userName) {
+		// TODO Auto-generated method stub
+		OsaProxyRechargeExample example  = new OsaProxyRechargeExample();
+		OsaProxyRechargeExample.Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(userName);
+		criteria.andIsProxyEqualTo((byte)1);
+		criteria.andFlagEqualTo(1);
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<OsaProxyRecharge> getMySellCardList(String fatherName) {
+		// TODO Auto-generated method stub
+		OsaProxyRechargeExample example  = new OsaProxyRechargeExample();
+		OsaProxyRechargeExample.Criteria criteria = example.createCriteria();
+		criteria.andProxyNameEqualTo(fatherName);
+		criteria.andIsProxyEqualTo((byte)1);
+		criteria.andFlagEqualTo(1);
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<OsaProxyRecharge> getPlayerRechargeList(String fatherName, int online) {
+		// TODO Auto-generated method stub
+		OsaProxyRechargeExample example  = new OsaProxyRechargeExample();
+		OsaProxyRechargeExample.Criteria criteria = example.createCriteria();
+		criteria.andProxyNameEqualTo(fatherName);
+		criteria.andIsProxyEqualTo((byte)0);
+		if (online > -1){
+			criteria.andOnlinePayEqualTo(online);
+		}
+		criteria.andFlagEqualTo(1);
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public OsaProxyRecharge getProxyRechargeByOrder(String orderId) {
+		// TODO Auto-generated method stub
+		OsaProxyRechargeExample example  = new OsaProxyRechargeExample();
+		OsaProxyRechargeExample.Criteria criteria = example.createCriteria();
+		criteria.andTraderOrderEqualTo(orderId);
+		List<OsaProxyRecharge> list = mapper.selectByExample(example);
+		
+		return list.size() > 0 ? list.get(0): null;
 	}
 	
 }

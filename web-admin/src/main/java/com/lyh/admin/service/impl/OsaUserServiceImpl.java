@@ -59,6 +59,40 @@ public class OsaUserServiceImpl implements OsaUserService {
 		List<OsaUser> list = mapper.selectByExample(example);
 		return list.size() <= 0? null : list.get(0) ;
 	}
+
+	@Override
+	public List<OsaUser> getUserList(int status) {
+		// TODO Auto-generated method stub
+		OsaUserExample example = new OsaUserExample();
+		OsaUserExample.Criteria  criteria= example.createCriteria();
+		if (status > -1){
+			criteria.andStatusEqualTo((byte)status);
+		}
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public OsaUser getUsersByInviteCode(String inviteCode) {
+		// TODO Auto-generated method stub
+		OsaUserExample example = new OsaUserExample();
+		OsaUserExample.Criteria  criteria= example.createCriteria();
+		criteria.andInviteCodeEqualTo(inviteCode);
+		criteria.andStatusEqualTo((byte)1);
+		List<OsaUser> list = mapper.selectByExample(example);
+		return list.size() > 0 ? list.get(0) : null; 
+	}
+
+	@Override
+	public List<OsaUser> getUsersByFatherName(String fatherName) {
+		// TODO Auto-generated method stub
+		OsaUserExample example = new OsaUserExample();
+		OsaUserExample.Criteria  criteria= example.createCriteria();
+		criteria.andFatherNameEqualTo(fatherName);
+		criteria.andStatusEqualTo((byte)1);
+		return mapper.selectByExample(example);
+	}
+
+
 	
 }
   

@@ -12,7 +12,7 @@ public class OsaProxyRecharge implements Serializable {
     /**
      * 代理名称
      */
-    private String agentName;
+    private String proxyName;
 
     /**
      * 充值的金额(rmb)
@@ -22,7 +22,7 @@ public class OsaProxyRecharge implements Serializable {
     /**
      * 是否是代理1为代理
      */
-    private Byte isAgent;
+    private Byte isProxy;
 
     /**
      * 申请充值时间
@@ -55,9 +55,14 @@ public class OsaProxyRecharge implements Serializable {
     private Double fetchMoney;
 
     /**
-     * 充值标志
+     * 充值标志,支付宝有用
      */
     private Integer flag;
+
+    /**
+     * 开放平台id
+     */
+    private String openId;
 
     /**
      * osa_proxy_recharge
@@ -72,12 +77,12 @@ public class OsaProxyRecharge implements Serializable {
         this.id = id;
     }
 
-    public String getAgentName() {
-        return agentName;
+    public String getProxyName() {
+        return proxyName;
     }
 
-    public void setAgentName(String agentName) {
-        this.agentName = agentName == null ? null : agentName.trim();
+    public void setProxyName(String proxyName) {
+        this.proxyName = proxyName == null ? null : proxyName.trim();
     }
 
     public Double getMoney() {
@@ -88,12 +93,12 @@ public class OsaProxyRecharge implements Serializable {
         this.money = money;
     }
 
-    public Byte getIsAgent() {
-        return isAgent;
+    public Byte getIsProxy() {
+        return isProxy;
     }
 
-    public void setIsAgent(Byte isAgent) {
-        this.isAgent = isAgent;
+    public void setIsProxy(Byte isProxy) {
+        this.isProxy = isProxy;
     }
 
     public Date getCreateTime() {
@@ -152,6 +157,14 @@ public class OsaProxyRecharge implements Serializable {
         this.flag = flag;
     }
 
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId == null ? null : openId.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -159,9 +172,9 @@ public class OsaProxyRecharge implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", agentName=").append(agentName);
+        sb.append(", proxyName=").append(proxyName);
         sb.append(", money=").append(money);
-        sb.append(", isAgent=").append(isAgent);
+        sb.append(", isProxy=").append(isProxy);
         sb.append(", createTime=").append(createTime);
         sb.append(", name=").append(name);
         sb.append(", traderOrder=").append(traderOrder);
@@ -169,6 +182,7 @@ public class OsaProxyRecharge implements Serializable {
         sb.append(", isFetch=").append(isFetch);
         sb.append(", fetchMoney=").append(fetchMoney);
         sb.append(", flag=").append(flag);
+        sb.append(", openId=").append(openId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

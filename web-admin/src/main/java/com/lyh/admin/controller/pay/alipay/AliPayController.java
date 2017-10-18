@@ -22,6 +22,18 @@ import com.alibaba.fastjson.JSON;
 import com.lyh.admin.alipay.AlipayConstants;
 import com.lyh.admin.alipay.internal.util.AlipaySignature;
 import com.lyh.admin.controller.BaseController;
+import com.lyh.admin.model.OsaGamePlayer;
+import com.lyh.admin.model.OsaGameWorld;
+import com.lyh.admin.model.OsaProxyConfig;
+import com.lyh.admin.model.OsaProxyRecharge;
+import com.lyh.admin.model.OsaShop;
+import com.lyh.admin.model.OsaUser;
+import com.lyh.admin.service.OsaGamePlayerService;
+import com.lyh.admin.service.OsaOperatorRechargeService;
+import com.lyh.admin.service.OsaProxyConfigService;
+import com.lyh.admin.service.OsaProxyRechargeService;
+import com.lyh.admin.service.OsaShopService;
+import com.lyh.admin.service.OsaUserService;
 import com.lyh.admin.tools.IdGenerateUtils;
 import com.lyh.admin.tools.ToolUtils;
 import com.lyh.admin.tools.pay.alipay.AlipayUtil;
@@ -41,31 +53,22 @@ import com.lyh.admin.tools.pay.alipay.AlipayUtil;
 public class AliPayController extends BaseController {
 	
 	@Autowired
-	private AgentRechargeService agentRechargeService;
+	private OsaUserService userService;
+	@Autowired
+	private OsaProxyRechargeService proxyRechargeService;
 	
 	@Autowired
-	private AgentInviteCodeService agentInviteCodeService;
+	private OsaGamePlayerService gamePlayerService;
 	
 	@Autowired
-	private AgentShopService agentShopService;
+	private OsaProxyConfigService proxyConfigService;
 	
 	@Autowired
-	private AgentListService agentListService;
-	
+	private OsaOperatorRechargeService operatorRechargeService;
+
 	@Autowired
-	private DataUpHandleService dataUpHandleService;
+	private OsaShopService shopService;
 	
-	@Autowired
-	private PlayerRechargeService playerRechargeService;
-	
-	@Autowired
-	private WorldService worldService;
-	
-	@Autowired
-	private AppService appService;
-	
-	@Autowired
-	private AgentConfigService agentConfigService;
 	
 	/**
 	 * 统一收单交易支付接口
@@ -76,7 +79,7 @@ public class AliPayController extends BaseController {
 	 * @param mercid 商品id
 	 * @param callback
 	 */
-	@RequestMapping(value = "{serverId}/pay", method = RequestMethod.POST)
+	@RequestMapping(value = "/{serverId}/pay", method = RequestMethod.POST)
 	public void orderPay(HttpServletRequest request, HttpServletResponse response, String fprice, String openId, String inviteCode, @PathVariable String serverId) throws Exception {
 		logger.info("[/order/pay]");
 		PrintWriter write = response.getWriter();
@@ -84,48 +87,39 @@ public class AliPayController extends BaseController {
 		double dPrice = Double.parseDouble(fprice);
 		// double dPrice = ((double) price) / 100;
 		int gold = 0;
-		OpOssQlzPassport player = null;
-		OpAgentList agent = null;
+		OsaGamePlayer player = null;
+		OsaUser agent = null;
 		double fetchMoneyRate = 0;
-		OpShop goods = agentShopService.findShopGoodsByPrice(dPrice, 0);
+		OsaShop goods = shopService.findShopGoodsByPrice(dPrice);
 		
 		if (goods != null) {
 			gold = goods.getGift() + goods.getNum();
 			
-			OpAgentInviteCode agentInviteCode = null;
-			if (ToolUtils.isStringNull(inviteCode)) {
-				agent = agentListService.findById(1);
-			} else {
-				agentInviteCode = agentInviteCodeService.findOpAgentInviteCodeByCode(inviteCode);
-				agent = agentListService.findById(agentInviteCode.getAgentId());
+			if (ToolUtils.isStringNull(inviteCode)){
+				agent = userService.findById(1);
+			}else{
+			agent = userService.getUsersByInviteCode(inviteCode);
 			}
-			
 			if (agent.getRemainMoney() == null) {
-				agent.setRemainMoney(0);
+				agent.setRemainMoney("0");
 			}
 			
-			OpAgentConfig agentConfig = agentConfigService.findById(1);
-			if (agentConfig != null && agentConfig.getOneLevel() != null) {
-				fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel());
+			OsaProxyConfig  agentConfig =  proxyConfigService.findById(1);
+			if (agentConfig != null && agentConfig.getOneLevel() != null){
+				fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel() );
 			}
 			if (agent != null) {// && agent.getRemainMoney() >= gold在线冲值不要减money
-				List<OpGameapp> appList = appService.getAppList();
-				OpGameapp gameApp = appList.size() > 0 ? appList.get(0) : null;
-				OpGameworld worldServer = null;
-				if (gameApp != null) {
-					List<OpGameworld> worldList = worldService.getWorldListByAppId(gameApp.getAppid());
-					worldServer = worldList.size() > 0 ? worldList.get(0) : null;
-				} else {
-					logger.error("没有找到world::" + openId);
+				player = gamePlayerService.getGamePlayerByOpenId(openId);
+				if (player != null){
+				OsaGameWorld gameWorld= gameWorldService.getWorldByWorldId(player.getWorldId());
+				if (gameWorld != null) {
+					
+					bCheck = true;
+				}else{
+					logger.error("没有服务器玩家::" + serverId);
 				}
-				
-				if (worldServer != null) {
-					player = dataUpHandleService.getPassportByOpenid(openId);
-					if (player != null) {
-						bCheck = true;
-					} else {
-						logger.error("没有找到玩家::" + openId);
-					}
+				}else{
+					logger.error("没有找到玩家::" + openId);
 				}
 			}
 		} else {
@@ -163,8 +157,9 @@ public class AliPayController extends BaseController {
 		try {
 			
 			param.put("sign", AlipaySignature.rsaSign(param, AlipayUtil.APP_PRIVATE_KEY, "UTF-8")); // 业务请求参数
+			addPlayerMoney(agent, player, gold,  (fetchMoneyRate * dPrice) / 100);
 			
-			addPlayerMoney(player, agent, gold, dPrice, orderId, (fetchMoneyRate * dPrice) / 100);
+		
 			
 			StringBuilder builder = new StringBuilder();
 			builder.append("return_code=").append("SUCCESS");
@@ -209,7 +204,7 @@ public class AliPayController extends BaseController {
 					// TODO 验签成功后
 					// 按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
 					String orderId = param.get("out_trade_no");
-					OpAgentRecharge myRecharge = agentRechargeService.getOpAgentRechargeByOrder(orderId);
+					OsaProxyRecharge  myRecharge = proxyRechargeService.getProxyRechargeByOrder(orderId);
 					if (myRecharge == null) {
 						logger.info("订单支付失败：" + orderId);
 						write.write("failure");
@@ -219,55 +214,44 @@ public class AliPayController extends BaseController {
 					boolean bCheck = false;
 					double dPrice = myRecharge.getMoney();
 					int gold = 0;
-					OpOssQlzPassport player = null;
-					OpAgentList agent = null;
+					OsaGamePlayer player = null;
+					OsaUser agent = null;
 					double fetchMoneyRate = 0;
-					OpGameworld worldServer = null;
-					
-					OpShop goods = agentShopService.findShopGoodsByPrice(dPrice, 0);
+					OsaShop goods = shopService.findShopGoodsByPrice(dPrice);
+					OsaGameWorld gameWorld = null;
 					if (goods != null) {
 						gold = goods.getGift() + goods.getNum();
 						
-						//OpAgentInviteCode agentInviteCode = null;
-						// if (ToolUtils.isStringNull(myRecharge.get)) {
-						// agent = agentListService.findByName(name)
-						// } else {
-						// agentInviteCode = agentInviteCodeService.findOpAgentInviteCodeByCode(inviteCode);
-						// agent = agentListService.findById(agentInviteCode.getAgentId());
-						// }
-						
-						agent = agentListService.findByName(myRecharge.getAgentName());
+						agent = userService.findUserByUserName(myRecharge.getProxyName());
 						
 						if (agent.getRemainMoney() == null) {
-							agent.setRemainMoney(0);
+							agent.setRemainMoney("0");
 						}
 						
-						OpAgentConfig agentConfig = agentConfigService.findById(1);
-						if (agentConfig != null && agentConfig.getOneLevel() != null) {
-							fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel());
+						OsaProxyConfig  agentConfig =  proxyConfigService.findById(1);
+						if (agentConfig != null && agentConfig.getOneLevel() != null){
+							fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel() );
 						}
+		
+						
 						if (agent != null) {// && agent.getRemainMoney() >= gold在线冲值不要减money
-							List<OpGameapp> appList = appService.getAppList();
-							OpGameapp gameApp = appList.size() > 0 ? appList.get(0) : null;
-							
-							if (gameApp != null) {
-								List<OpGameworld> worldList = worldService.getWorldListByAppId(gameApp.getAppid());
-								worldServer = worldList.size() > 0 ? worldList.get(0) : null;
-							} else {
-								logger.error("没有找到world::" + myRecharge.getName());
+							player = gamePlayerService.getGamePlayerByOpenId(myRecharge.getOpenId());
+							if (player != null){
+							 gameWorld= gameWorldService.getWorldByWorldId(player.getWorldId());
+							if (gameWorld != null) {
+								
+								bCheck = true;
+							}else{
+								logger.error("没有服务器玩家::" + player.getWorldId());
 							}
-							
-							if (worldServer != null) {
-								player = dataUpHandleService.getPassportByOpenid(myRecharge.getName());
-								if (player != null) {
-									bCheck = true;
-								} else {
-									logger.error("没有找到玩家::" + myRecharge.getName());
-								}
+							}else{
+								logger.error("没有找到玩家::" + myRecharge.getOpenId());
 							}
+						}else{
+							logger.error(dPrice + ":没有找到代理::" + orderId);
 						}
 					} else {
-						logger.error(dPrice + ":没有找到商品::" + myRecharge.getName());
+						logger.error(dPrice + ":没有找到商品::" + orderId);
 					}
 					
 					if (!bCheck) {
@@ -276,11 +260,12 @@ public class AliPayController extends BaseController {
 						return;
 					}
 					
-					int status = playerRechargeService.recharge(myRecharge.getName(), myRecharge.getTraderOrder(), dPrice, gold, (int) (System.currentTimeMillis() / 1000), worldServer.getWorldid(), "" + 1, worldServer);
+				
+					int status = operatorRechargeService.recharge(player.getOpenId(), myRecharge.getTraderOrder(),dPrice,myRecharge.getMoney(), (int) (System.currentTimeMillis() / 1000), gameWorld,1);
 					if (status == 1) {
 						//addPlayerMoney(player, agent, gold, dPrice, myRecharge.getTraderOrder(), (fetchMoneyRate * dPrice) / 100);
 						myRecharge.setFlag(1);
-						agentRechargeService.update(myRecharge);
+						proxyRechargeService.update(myRecharge);
 					} else {
 						logger.error("游戏服务器验证没有通过：" + status);
 						write.write("failure");
@@ -298,40 +283,30 @@ public class AliPayController extends BaseController {
 			}
 		}
 	}
+
+	
+
 	
 	@Transactional
-	public void addPlayerMoney(OpOssQlzPassport player, OpAgentList parentAgent, int gold, double price, String staderOrder, double fetchMoney) {
-		// parentAgent.setRemainMoney(parentAgent.getRemainMoney() - gold); 在线冲值不充值
-		// agentListService.update(parentAgent);
-		saveRecharge(parentAgent.getName(), 0, price, player.getRolename(), staderOrder, 0, fetchMoney);
-	}
-	
-	/**
-	 * saveRecharge:(). <br/>
-	 * TODO().<br/>
-	 * 预支付保存充值记录
-	 * 
-	 * @author lyh
-	 * @param agentName
-	 * @param isAgent
-	 * @param rmb
-	 * @param rechageName
-	 * @param traderOrder
-	 * @param onlinePay
-	 */
-	public void saveRecharge(String agentName, int isAgent, double rmb, String rechageName, String traderOrder, int onlinePay, double fetchMoney) {
-		OpAgentRecharge pay = new OpAgentRecharge();
-		pay.setAgentName(agentName);
-		pay.setIsAgent((byte) isAgent);
-		pay.setMoney(rmb);
-		pay.setName(rechageName);
-		pay.setTraderOrder(traderOrder);
-		pay.setOnlinePay(onlinePay);
+	public void addPlayerMoney(OsaUser proxyUser, OsaGamePlayer gamePlayer, double money,double fetchMoney) {
+		int fMoney = Integer.parseInt(proxyUser.getRemainMoney());
+
+		//proxyUser.setRemainMoney("" + (fMoney - money));
+
+	//	userService.update(proxyUser);
+		OsaProxyRecharge pay = new OsaProxyRecharge();
+		pay.setProxyName(proxyUser.getUserName());
+		pay.setIsProxy((byte) 0);
+		pay.setMoney(money);
+		pay.setName(gamePlayer.getRoleName());
+		pay.setTraderOrder("" + IdGenerateUtils.makeId());
+		pay.setOnlinePay(1);
 		pay.setCreateTime(new Date(System.currentTimeMillis()));
 		pay.setIsFetch(0);
 		pay.setFetchMoney(fetchMoney);
-		pay.setFlag(0);
-		agentRechargeService.insert(pay);
+		pay.setFlag(0);//支付宝要这个
+		pay.setOpenId(gamePlayer.getOpenId());
+		proxyRechargeService.insert(pay);
 	}
 	
 	

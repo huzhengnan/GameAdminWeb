@@ -3,9 +3,9 @@
 <mapper namespace="com.lyh.admin.mapper.OsaProxyRechargeMapper">
   <resultMap id="BaseResultMap" type="com.lyh.admin.model.OsaProxyRecharge">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="agent_name" jdbcType="VARCHAR" property="agentName" />
+    <result column="proxy_name" jdbcType="VARCHAR" property="proxyName" />
     <result column="money" jdbcType="DOUBLE" property="money" />
-    <result column="is_agent" jdbcType="TINYINT" property="isAgent" />
+    <result column="is_proxy" jdbcType="TINYINT" property="isProxy" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="trader_order" jdbcType="VARCHAR" property="traderOrder" />
@@ -13,6 +13,7 @@
     <result column="is_fetch" jdbcType="INTEGER" property="isFetch" />
     <result column="fetch_money" jdbcType="DOUBLE" property="fetchMoney" />
     <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, agent_name, money, is_agent, create_time, name, trader_order, online_pay, is_fetch, 
-    fetch_money, flag
+    id, proxy_name, money, is_proxy, create_time, name, trader_order, online_pay, is_fetch, 
+    fetch_money, flag, open_id
   </sql>
   <select id="selectByExample" parameterType="com.lyh.admin.model.OsaProxyRechargeExample" resultMap="BaseResultMap">
     select
@@ -108,14 +109,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaProxyRecharge">
-    insert into osa_proxy_recharge (id, agent_name, money, 
-      is_agent, create_time, name, 
+    insert into osa_proxy_recharge (id, proxy_name, money, 
+      is_proxy, create_time, name, 
       trader_order, online_pay, is_fetch, 
-      fetch_money, flag)
-    values (#{id,jdbcType=BIGINT}, #{agentName,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
-      #{isAgent,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
+      fetch_money, flag, open_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{proxyName,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
+      #{isProxy,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
       #{traderOrder,jdbcType=VARCHAR}, #{onlinePay,jdbcType=INTEGER}, #{isFetch,jdbcType=INTEGER}, 
-      #{fetchMoney,jdbcType=DOUBLE}, #{flag,jdbcType=INTEGER})
+      #{fetchMoney,jdbcType=DOUBLE}, #{flag,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaProxyRecharge">
     insert into osa_proxy_recharge
@@ -123,14 +126,14 @@
       <if test="id != null">
         id,
       </if>
-      <if test="agentName != null">
-        agent_name,
+      <if test="proxyName != null">
+        proxy_name,
       </if>
       <if test="money != null">
         money,
       </if>
-      <if test="isAgent != null">
-        is_agent,
+      <if test="isProxy != null">
+        is_proxy,
       </if>
       <if test="createTime != null">
         create_time,
@@ -153,19 +156,22 @@
       <if test="flag != null">
         flag,
       </if>
+      <if test="openId != null">
+        open_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="agentName != null">
-        #{agentName,jdbcType=VARCHAR},
+      <if test="proxyName != null">
+        #{proxyName,jdbcType=VARCHAR},
       </if>
       <if test="money != null">
         #{money,jdbcType=DOUBLE},
       </if>
-      <if test="isAgent != null">
-        #{isAgent,jdbcType=TINYINT},
+      <if test="isProxy != null">
+        #{isProxy,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -188,6 +194,9 @@
       <if test="flag != null">
         #{flag,jdbcType=INTEGER},
       </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.lyh.admin.model.OsaProxyRechargeExample" resultType="java.lang.Long">
@@ -202,14 +211,14 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.agentName != null">
-        agent_name = #{record.agentName,jdbcType=VARCHAR},
+      <if test="record.proxyName != null">
+        proxy_name = #{record.proxyName,jdbcType=VARCHAR},
       </if>
       <if test="record.money != null">
         money = #{record.money,jdbcType=DOUBLE},
       </if>
-      <if test="record.isAgent != null">
-        is_agent = #{record.isAgent,jdbcType=TINYINT},
+      <if test="record.isProxy != null">
+        is_proxy = #{record.isProxy,jdbcType=TINYINT},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -232,6 +241,9 @@
       <if test="record.flag != null">
         flag = #{record.flag,jdbcType=INTEGER},
       </if>
+      <if test="record.openId != null">
+        open_id = #{record.openId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -240,16 +252,17 @@
   <update id="updateByExample" parameterType="map">
     update osa_proxy_recharge
     set id = #{record.id,jdbcType=BIGINT},
-      agent_name = #{record.agentName,jdbcType=VARCHAR},
+      proxy_name = #{record.proxyName,jdbcType=VARCHAR},
       money = #{record.money,jdbcType=DOUBLE},
-      is_agent = #{record.isAgent,jdbcType=TINYINT},
+      is_proxy = #{record.isProxy,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       name = #{record.name,jdbcType=VARCHAR},
       trader_order = #{record.traderOrder,jdbcType=VARCHAR},
       online_pay = #{record.onlinePay,jdbcType=INTEGER},
       is_fetch = #{record.isFetch,jdbcType=INTEGER},
       fetch_money = #{record.fetchMoney,jdbcType=DOUBLE},
-      flag = #{record.flag,jdbcType=INTEGER}
+      flag = #{record.flag,jdbcType=INTEGER},
+      open_id = #{record.openId,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -257,14 +270,14 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.lyh.admin.model.OsaProxyRecharge">
     update osa_proxy_recharge
     <set>
-      <if test="agentName != null">
-        agent_name = #{agentName,jdbcType=VARCHAR},
+      <if test="proxyName != null">
+        proxy_name = #{proxyName,jdbcType=VARCHAR},
       </if>
       <if test="money != null">
         money = #{money,jdbcType=DOUBLE},
       </if>
-      <if test="isAgent != null">
-        is_agent = #{isAgent,jdbcType=TINYINT},
+      <if test="isProxy != null">
+        is_proxy = #{isProxy,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -287,21 +300,25 @@
       <if test="flag != null">
         flag = #{flag,jdbcType=INTEGER},
       </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lyh.admin.model.OsaProxyRecharge">
     update osa_proxy_recharge
-    set agent_name = #{agentName,jdbcType=VARCHAR},
+    set proxy_name = #{proxyName,jdbcType=VARCHAR},
       money = #{money,jdbcType=DOUBLE},
-      is_agent = #{isAgent,jdbcType=TINYINT},
+      is_proxy = #{isProxy,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       name = #{name,jdbcType=VARCHAR},
       trader_order = #{traderOrder,jdbcType=VARCHAR},
       online_pay = #{onlinePay,jdbcType=INTEGER},
       is_fetch = #{isFetch,jdbcType=INTEGER},
       fetch_money = #{fetchMoney,jdbcType=DOUBLE},
-      flag = #{flag,jdbcType=INTEGER}
+      flag = #{flag,jdbcType=INTEGER},
+      open_id = #{openId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

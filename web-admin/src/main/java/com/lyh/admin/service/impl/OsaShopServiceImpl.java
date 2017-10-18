@@ -1,11 +1,14 @@
 package com.lyh.admin.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.mapper.OsaShopMapper;
 import com.lyh.admin.model.OsaShop;
+import com.lyh.admin.model.OsaShopExample;
 import com.lyh.admin.service.OsaShopService;
 
 /** 
@@ -42,6 +45,16 @@ public class OsaShopServiceImpl implements OsaShopService {
 	public OsaShop findById(long id) {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public OsaShop findShopGoodsByPrice(double price) {
+		// TODO Auto-generated method stub
+		OsaShopExample example = new OsaShopExample();
+		OsaShopExample.Criteria criteria =  example.createCriteria();
+		criteria.andPriceEqualTo(price);
+		List<OsaShop> list = mapper.selectByExample(example);
+		return list.size() > 0 ?  list.get(0): null;
 	}
 	
 }

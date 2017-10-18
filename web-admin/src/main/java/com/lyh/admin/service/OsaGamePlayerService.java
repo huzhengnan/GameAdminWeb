@@ -36,5 +36,17 @@ public interface OsaGamePlayerService extends BaseService<OsaGamePlayer> {
 	 * @return 
 	 */  
 	List<OsaGamePlayer> getGamePlayerList(long playerId,String openId);
+	
+	
+	/** 
+	 * getGamePlayersByInviteCode:(). <br/> 
+	 * TODO().<br/> 
+	 * 获取玩家用邀请码
+	 * @author lyh 
+	 * @param inviteCode
+	 * @return 
+	 */  
+	List<OsaGamePlayer> getGamePlayersByInviteCode(String inviteCode);
+	
 }
   

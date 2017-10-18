@@ -1,5 +1,7 @@
 package com.lyh.admin.service;
 
+import java.util.List;
+
 import com.lyh.admin.model.OsaProxyRecharge;
 
 /** 
@@ -11,5 +13,46 @@ import com.lyh.admin.model.OsaProxyRecharge;
  */
 public interface OsaProxyRechargeService extends BaseService<OsaProxyRecharge> {
 	
+	/** 
+	 * getMyBuyCardList:(). <br/> 
+	 * TODO().<br/> 
+	 * 我的购卡记录
+	 * @author lyh 
+	 * @param userName
+	 * @return 
+	 */  
+	List<OsaProxyRecharge> getMyBuyCardList(String userName);
+	
+	
+	/** 
+	 * getMySellCardList:(). <br/> 
+	 * TODO().<br/> 
+	 * 我的售卡记录
+	 * @author lyh 
+	 * @param fatherName
+	 * @return 
+	 */  
+	List<OsaProxyRecharge> getMySellCardList(String fatherName);
+	
+	
+	/** 
+	 * getPlayerRechargeList:(). <br/> 
+	 * TODO().<br/> 
+	 * 玩家充值
+	 * @author lyh 
+	 * @param online
+	 * @return 
+	 */  
+	List<OsaProxyRecharge> getPlayerRechargeList(String fatherName,int online);
+	
+	/** 
+	 * getProxyRechargeByOrder:(). <br/> 
+	 * TODO().<br/> 
+	 *  
+	 * @author lyh 
+	 * @param orderId
+	 * @return 
+	 */  
+	OsaProxyRecharge getProxyRechargeByOrder(String orderId);
 }
   
