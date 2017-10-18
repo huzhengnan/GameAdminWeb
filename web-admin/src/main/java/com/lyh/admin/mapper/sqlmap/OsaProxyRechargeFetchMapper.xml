@@ -7,6 +7,7 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="ids" jdbcType="VARCHAR" property="ids" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, money, create_time, name, ids
+    id, money, create_time, name, ids, status
   </sql>
   <select id="selectByExample" parameterType="com.lyh.admin.model.OsaProxyRechargeFetchExample" resultMap="BaseResultMap">
     select
@@ -102,9 +103,9 @@
   </delete>
   <insert id="insert" parameterType="com.lyh.admin.model.OsaProxyRechargeFetch">
     insert into osa_proxy_recharge_fetch (id, money, create_time, 
-      name, ids)
+      name, ids, status)
     values (#{id,jdbcType=BIGINT}, #{money,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{name,jdbcType=VARCHAR}, #{ids,jdbcType=VARCHAR})
+      #{name,jdbcType=VARCHAR}, #{ids,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaProxyRechargeFetch">
     insert into osa_proxy_recharge_fetch
@@ -124,6 +125,9 @@
       <if test="ids != null">
         ids,
       </if>
+      <if test="status != null">
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -140,6 +144,9 @@
       </if>
       <if test="ids != null">
         #{ids,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -167,6 +174,9 @@
       <if test="record.ids != null">
         ids = #{record.ids,jdbcType=VARCHAR},
       </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -178,7 +188,8 @@
       money = #{record.money,jdbcType=DOUBLE},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       name = #{record.name,jdbcType=VARCHAR},
-      ids = #{record.ids,jdbcType=VARCHAR}
+      ids = #{record.ids,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -198,6 +209,9 @@
       <if test="ids != null">
         ids = #{ids,jdbcType=VARCHAR},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -206,7 +220,8 @@
     set money = #{money,jdbcType=DOUBLE},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       name = #{name,jdbcType=VARCHAR},
-      ids = #{ids,jdbcType=VARCHAR}
+      ids = #{ids,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

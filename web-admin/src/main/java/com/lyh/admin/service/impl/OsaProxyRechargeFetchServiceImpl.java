@@ -1,11 +1,14 @@
 package com.lyh.admin.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.mapper.OsaProxyRechargeFetchMapper;
 import com.lyh.admin.model.OsaProxyRechargeFetch;
+import com.lyh.admin.model.OsaProxyRechargeFetchExample;
 import com.lyh.admin.service.OsaProxyRechargeFetchService;
 
 /** 
@@ -42,6 +45,15 @@ public class OsaProxyRechargeFetchServiceImpl implements OsaProxyRechargeFetchSe
 	public OsaProxyRechargeFetch findById(long id) {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<OsaProxyRechargeFetch> getProxyRechargeFetchList(int status) {
+		// TODO Auto-generated method stub
+		OsaProxyRechargeFetchExample example = new OsaProxyRechargeFetchExample();
+		OsaProxyRechargeFetchExample.Criteria criteria = example.createCriteria();
+		criteria.andStatusEqualTo(status);
+		return mapper.selectByExample(example);
 	}
 	
 }

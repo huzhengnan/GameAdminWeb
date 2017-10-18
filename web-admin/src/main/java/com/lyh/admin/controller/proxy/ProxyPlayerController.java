@@ -34,10 +34,6 @@ import com.lyh.admin.tools.ShowPage;
 @RequestMapping("/proxy")
 public class ProxyPlayerController extends BaseController {
 	
-	@Autowired
-	private OsaUserService userService;
-	@Autowired
-	private OsaGamePlayerService gamePlayerService;
 	/** 
 	 * getProxyPlayerList:(). <br/> 
 	 * TODO().<br/> 

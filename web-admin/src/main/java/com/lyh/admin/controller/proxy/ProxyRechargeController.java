@@ -45,19 +45,7 @@ import com.lyh.admin.tools.ToolUtils;
 @RequestMapping("/proxy")
 public class ProxyRechargeController extends BaseController {
 	
-	@Autowired
-	private OsaUserService userService;
-	@Autowired
-	private OsaProxyRechargeService proxyRechargeService;
-	
-	@Autowired
-	private OsaGamePlayerService gamePlayerService;
-	
-	@Autowired
-	private OsaProxyConfigService proxyConfigService;
-	
-	@Autowired
-	private OsaOperatorRechargeService operatorRechargeService;
+
 	
 	@RequestMapping("/recharge_sub_proxy")
 	public ModelAndView rechargeSubProxy(HttpSession session, HttpServletRequest request) {

@@ -31,9 +31,6 @@ import com.lyh.admin.tools.ShowPage;
 @Controller
 public class ProxyController extends BaseController {
 	
-	@Autowired
-	private OsaUserService userService;
-	
 	/**
 	 * getProxyMyList:(). <br/>
 	 * TODO().<br/>
@@ -91,25 +88,26 @@ public class ProxyController extends BaseController {
 		return view;
 	}
 	
-	/** 
-	 * getProxyDel:(). <br/> 
-	 * TODO().<br/> 
+	/**
+	 * getProxyDel:(). <br/>
+	 * TODO().<br/>
 	 * 删除代理
-	 * @author lyh 
+	 * 
+	 * @author lyh
 	 * @param session
 	 * @param request
 	 * @param curPage
-	 * @return 
-	 */  
+	 * @return
+	 */
 	@RequestMapping("/proxy/proxy_del")
 	public ModelAndView getProxyDel(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage) {
 		ModelAndView view = new ModelAndView("/ProxyMyList");
 		
-		if (isPost(request)){
+		if (isPost(request)) {
 			String id = request.getParameter("id");
 			OsaUser oUser = userService.findById(Long.parseLong(id));
-			if (oUser != null){
-				oUser.setStatus((byte)0);
+			if (oUser != null) {
+				oUser.setStatus((byte) 0);
 				userService.update(oUser);
 			}
 		}
@@ -127,5 +125,19 @@ public class ProxyController extends BaseController {
 		return view;
 	}
 	
+	/** 
+	 * proxyAdd:(). <br/> 
+	 * TODO().<br/> 
+	 * 添加代理
+	 * @author lyh 
+	 * @param session
+	 * @param request
+	 * @return 
+	 */  
+	@RequestMapping("/proxy/add")
+	public ModelAndView proxyAdd(HttpSession session, HttpServletRequest request) {
+		ModelAndView view = new ModelAndView("/ProxyAdd");
+		return view;
+	}
 	
 }

@@ -1,5 +1,7 @@
 package com.lyh.admin.service;
 
+import java.util.List;
+
 import com.lyh.admin.model.OsaProxyConfig;
 
 /** 
@@ -11,5 +13,13 @@ import com.lyh.admin.model.OsaProxyConfig;
  */
 public interface OsaProxyConfigService extends BaseService<OsaProxyConfig> {
 	
+	/** 
+	 * getProxyConfigList:(). <br/> 
+	 * TODO().<br/> 
+	 * 代理配置列表
+	 * @author lyh 
+	 * @return 
+	 */  
+	List<OsaProxyConfig> getProxyConfigList();
 }
   

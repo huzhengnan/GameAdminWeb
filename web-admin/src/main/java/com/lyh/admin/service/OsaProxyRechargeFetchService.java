@@ -1,5 +1,7 @@
 package com.lyh.admin.service;
 
+import java.util.List;
+
 import com.lyh.admin.model.OsaProxyRechargeFetch;
 
 /** 
@@ -11,5 +13,14 @@ import com.lyh.admin.model.OsaProxyRechargeFetch;
  */
 public interface OsaProxyRechargeFetchService extends BaseService<OsaProxyRechargeFetch> {
 	
+	/** 
+	 * getProxyRechargeFetchList:(). <br/> 
+	 * TODO().<br/> 
+	 * 获取结算列表 
+	 * @author lyh 
+	 * @param status
+	 * @return 
+	 */  
+	List<OsaProxyRechargeFetch> getProxyRechargeFetchList(int status);
 }
   

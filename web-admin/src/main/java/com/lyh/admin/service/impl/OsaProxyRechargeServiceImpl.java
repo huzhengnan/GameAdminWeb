@@ -93,6 +93,26 @@ public class OsaProxyRechargeServiceImpl implements OsaProxyRechargeService {
 		
 		return list.size() > 0 ? list.get(0): null;
 	}
+
+	@Override
+	public List<OsaProxyRecharge> getSettlementListByFetch(String proxyName,int isFetch) {
+		// TODO Auto-generated method stub
+		OsaProxyRechargeExample example  = new OsaProxyRechargeExample();
+		OsaProxyRechargeExample.Criteria criteria = example.createCriteria();
+		criteria.andProxyNameEqualTo(proxyName);
+		criteria.andIsFetchEqualTo(isFetch);
+		criteria.andFetchMoneyGreaterThan(0.0);
+		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public List<OsaProxyRecharge> getProxyRechargeByIds(List<Long> ids) {
+		// TODO Auto-generated method stub
+		OsaProxyRechargeExample example  = new OsaProxyRechargeExample();
+		OsaProxyRechargeExample.Criteria criteria = example.createCriteria();
+		criteria.andIdIn(ids);
+		return mapper.selectByExample(example);
+	}
 	
 }
   

@@ -54,5 +54,26 @@ public interface OsaProxyRechargeService extends BaseService<OsaProxyRecharge> {
 	 * @return 
 	 */  
 	OsaProxyRecharge getProxyRechargeByOrder(String orderId);
+	
+	/** 
+	 * getSettlementListByFetch:(). <br/> 
+	 * TODO().<br/> 
+	 * 获取结算列表
+	 * @author lyh 
+	 * @param isFetch
+	 * @return 
+	 */  
+	List<OsaProxyRecharge> getSettlementListByFetch(String proxyName,int isFetch);
+	
+	/** 
+	 * getProxyRechargeByIds:(). <br/> 
+	 * TODO().<br/> 
+	 * 得到充值列表
+	 * @author lyh 
+	 * @param ids
+	 * @return 
+	 */  
+	List<OsaProxyRecharge> getProxyRechargeByIds(List<Long> ids);
+
 }
   
