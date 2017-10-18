@@ -30,7 +30,7 @@
 				</div>
 
 			
-				<label>IP</label>
+				<label>玩家ID</label>
 				<input type="number" name="playerId" value="" class="input-xlarge" required="required" placeholder="请输入玩家ID">
 				<p class="help-block">请在玩家进入房间后输入玩家Id</p>
 				

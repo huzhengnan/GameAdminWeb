@@ -601,6 +601,39 @@ public class ToolUtils {
 		return m.matches();
 	}
 	
+	/** 
+	 * isNumAndLetter:(). <br/> 
+	 * TODO().<br/> 
+	 * 数字和字母
+	 * @author lyh 
+	 * @param num
+	 * @param len
+	 * @return 
+	 */  
+	public static boolean isNumAndLetter(String num,int min,int max) {
+		String reg = "^[0-9A-Za-z]+$";
+		Pattern p = Pattern.compile(reg);
+		Matcher m = p.matcher(num);
+		return m.find();
+	}
+	
+	 /** 
+	 * isContainChinese:(). <br/> 
+	 * TODO().<br/> 
+	 * 中文
+	 * @author lyh 
+	 * @param str
+	 * @return 
+	 */  
+	public static boolean isContainChinese(String str) {
+
+		        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+		        Matcher m = p.matcher(str);
+		        if (m.find()) {
+		            return true;
+		        }
+		        return false;
+		    }
 	/**
 	 * 大陆手机号码11位数，匹配格式：前三位固定格式+后8位任意数 此方法中前三位格式有： 13+任意数 15+除4的任意数 18+除1和4的任意数 17+除9的任意数 147
 	 */

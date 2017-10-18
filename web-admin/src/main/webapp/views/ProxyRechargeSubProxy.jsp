@@ -18,16 +18,7 @@
 		<div class="tab-pane active in" id="home">
 
 			<form id="tab" method="post" action="${ctxPage}/proxy/recharge_sub_proxy" autocomplete="off">
-				<input type="hidden" name="opttype" value="5050" />
-				<label class="control-label">区服</label>
-				<div class="controls">
-					<select id="worldId" name="worldId" class="input-xlarge with-search">
-						<c:forEach var="item" items="${worldList}">
-							<option value="${item.worldId}" selected="selected" />
-                                           ${item.wName}
-                                    </c:forEach>
-					</select>
-				</div>
+	
 
 				<!--  
 				<label>发送类型</label>
@@ -43,7 +34,7 @@
 				<input type="number" name="myMoney" value="${fatherUser.remainMoney}" class="input-xlarge" readonly="readonly">
 				
 				<label>下级代理</label>
-				<input type="number" name="nextProxy" value="${myUser.userName}" class="input-xlarge" readonly="readonly">
+				<input type="text" name="nextProxy" value="${myUser.userName}" class="input-xlarge" readonly="readonly">
 				
 				<label>充值金额</label>
 				<input type="number" name="money" value="" class="input-xlarge" required="required"  onkeyup="clearNoNum(this);">

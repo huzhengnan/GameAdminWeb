@@ -45,6 +45,16 @@ public interface OsaUserService extends BaseService<OsaUser> {
 	
 	
 	/** 
+	 * getUserByPhone:(). <br/> 
+	 * TODO().<br/> 
+	 * 用电话查获取对象
+	 * @author lyh 
+	 * @param phone
+	 * @return 
+	 */  
+	OsaUser getUserByPhone(long phone);
+	
+	/** 
 	 * getUsersByFatherName:(). <br/> 
 	 * TODO().<br/> 
 	 * 获取代理列表用上级代理名

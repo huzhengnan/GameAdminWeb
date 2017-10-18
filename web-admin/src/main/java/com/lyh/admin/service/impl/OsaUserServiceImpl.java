@@ -92,6 +92,17 @@ public class OsaUserServiceImpl implements OsaUserService {
 		return mapper.selectByExample(example);
 	}
 
+	@Override
+	public OsaUser getUserByPhone(long phone) {
+		// TODO Auto-generated method stub
+		OsaUserExample example = new OsaUserExample();
+		OsaUserExample.Criteria  criteria= example.createCriteria();
+		criteria.andMobileEqualTo(phone);
+		criteria.andStatusEqualTo((byte)1);
+		List<OsaUser> list = mapper.selectByExample(example);
+		return list.size() > 0 ? list.get(0) : null; 
+	}
+
 
 	
 }

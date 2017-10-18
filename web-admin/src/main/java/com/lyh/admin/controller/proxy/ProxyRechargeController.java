@@ -50,7 +50,7 @@ public class ProxyRechargeController extends BaseController {
 	@RequestMapping("/recharge_sub_proxy")
 	public ModelAndView rechargeSubProxy(HttpSession session, HttpServletRequest request) {
 		ModelAndView view = new ModelAndView("/ProxyRechargeSubProxy");
-		String id = request.getParameter("id");
+		String id = request.getParameter("id").trim();
 		
 		String myName = request.getParameter("myName");
 		OsaUser fatherUser = userService.findUserByUserName(myName);
@@ -84,8 +84,6 @@ public class ProxyRechargeController extends BaseController {
 			// result = executeForbid(forbidMsg, request);
 			if (result.equals("1")) {
 				result = "充值成功";
-			} else {
-				result = "操作失败";
 			}
 			view.addObject("msg", result);
 		}

@@ -50,13 +50,13 @@
 						<td>${item.fatherName}</td>
 						<td>${item.remainMoney}</td>
 						<td>${item.bank}</td>
-						<td>${item.fatherName}</td>
+					
 						<td>
 							<fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss" />
 						</td>
 						<td>
 							<c:if test="${ !empty name}">
-								<a href="${ctxPage}/proxy/recharge_sub_proxy?id=${item.id} &myName=name">充值</a>
+								<a href="${ctxPage}/proxy/recharge_sub_proxy?id=${item.id}&myName=${name}">充值</a>
 							</c:if>
 						</td>
 					</tr>
