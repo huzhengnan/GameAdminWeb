@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.lyh.admin.model.OsaMenuUrl;
 import com.lyh.admin.model.OsaUser;
 
 

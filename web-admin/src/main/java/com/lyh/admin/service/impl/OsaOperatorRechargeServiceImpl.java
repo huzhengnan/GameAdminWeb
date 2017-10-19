@@ -123,7 +123,6 @@ public int recharge(String openId, String billno,double dPrice, double money, in
 				opOperatorRecharge.setGold(money);
 				opOperatorRecharge.setTime(time);
 				opOperatorRecharge.setWorldId(""+gameworld.getWorldId());
-			
 				opOperatorRecharge.setAddtime(ToolUtils.getNowDate());
 				opOperatorRecharge.setRes(res);
 				mapper.insert(opOperatorRecharge);

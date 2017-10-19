@@ -2,30 +2,27 @@ package com.lyh.admin.task;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.Resource;
 
-import org.apache.lucene.spatial3d.geom.Tools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.game.protocol.gm.GmOnLineNumHttpProtocol;
 import com.game.protocol.gm.GmOnLineNumProtocolRequest;
 import com.lyh.admin.model.OsaGameWorld;
 import com.lyh.admin.model.OsaOnlineLog;
 import com.lyh.admin.service.OsaGameWorldService;
-import com.lyh.admin.service.OsaGmNoticeService;
 import com.lyh.admin.service.OsaOnlineLogService;
-import com.lyh.admin.tools.IdGenerateUtils;
 import com.lyh.admin.tools.PlatformToServerConnection;
 import com.lyh.admin.tools.ToolUtils;
-import com.lyh.admin.vo.bean.OnlineDataByDay;
 import com.lyh.admin.vo.bean.WorldOnlineData;
 
 /**
  * 区服实时在线人数 Created by IntelliJ IDEA. User: Administrator Date: 13-8-15 Time: 下午3:38 To change this template use File | Settings | File Templates.
  */
 public class WorldOnlineNum {
-	
+	private static final Logger logger = LoggerFactory.getLogger(WorldOnlineNum.class);
 	/**
 	 * 缓存实时数据 5分钟。 key:worldid
 	 */
@@ -64,14 +61,16 @@ public class WorldOnlineNum {
 //					onlineMap.put(wobj.getWorldId(), worldOnline);
 //				}
 				
+				try{
 				// 获取数据
 				int num = getPersonNum(wobj);
 				if (num >= 0) {
 					WorldOnlineData curObj = onlineMap.get(wobj.getWorldId());
 					// 数据入缓存
+					if (curObj.onlineData != null){
 					curObj.onlineData.poll();
 					curObj.onlineData.add(num);
-					
+					}
 					// 缓存更新
 					if (num > curObj.maxNum) {
 						curObj.maxNum = num;
@@ -94,7 +93,9 @@ public class WorldOnlineNum {
 				} else {
 					System.out.println("数据获取异常：" + num + "[游戏区:" + wobj.getwName() + "]");
 				}
-				
+				}catch(Exception e){
+					logger.error("异常::",e);
+				}
 			}
 		}
 	}

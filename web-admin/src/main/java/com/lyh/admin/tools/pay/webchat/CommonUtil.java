@@ -1,12 +1,5 @@
 package com.lyh.admin.tools.pay.webchat;
 
-import com.lyh.admin.tools.MyX509TrustManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,6 +7,15 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.URL;
 import java.util.concurrent.ThreadLocalRandom;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.lyh.admin.tools.MyX509TrustManager;
 
 /** 
  * ClassName:CommonUtil <br/> 

@@ -19,7 +19,6 @@ import com.lyh.admin.model.OsaGmNoticeExample;
 import com.lyh.admin.service.OsaGameWorldService;
 import com.lyh.admin.service.OsaGmNoticeService;
 import com.lyh.admin.task.SendNoticeCycle;
-import com.lyh.admin.tools.IdGenerateUtils;
 import com.lyh.admin.tools.PlatformToServerConnection;
 import com.lyh.admin.tools.ToolUtils;
 import com.lyh.admin.vo.bean.GmtSendNoticeBean;

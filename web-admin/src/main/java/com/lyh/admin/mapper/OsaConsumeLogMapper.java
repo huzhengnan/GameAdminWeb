@@ -1,9 +1,11 @@
 package com.lyh.admin.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lyh.admin.model.OsaConsumeLog;
 import com.lyh.admin.model.OsaConsumeLogExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface OsaConsumeLogMapper {
     long countByExample(OsaConsumeLogExample example);

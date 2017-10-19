@@ -7,12 +7,40 @@
 <%@include file="sys/navibar.jsp"%>
 <%@include file="sys/sidebar.jsp"%>
 
-<div class="btn-toolbar" style="margin-bottom:2px;">
-	<a href="${ctxPage}/proxy/settlement_request" class="btn btn-primary">
-		<i class="icon-plus"></i>
-		结算请求
-	</a>
+
+<div style="border:0px;padding-bottom:5px;height:auto">
+	<form action="" method="POST" style="margin-bottom:0px">
+
+		<div style="float:left;margin-right:5px">
+			<label> 选择起始时间 </label>
+			<input type="text" id="start_date" name="startDate" value="${startDate}" placeholder="起始时间">
+		</div>
+		<div style="float:left;margin-right:5px">
+			<label>选择结束时间</label>
+			<input type="text" id="end_date" name="endDate" value="${endDate}" placeholder="结束时间">
+		</div>
+		<!-- 
+		<div style="float:left;margin-right:5px">
+			<label>用户名，查询所有用户请留空</label>
+			<input type="text" name="user_name" value="${user_name}" placeholder="输入用户名">
+		</div>
+		 -->
+		<div class="btn-toolbar" style="padding-top:25px;padding-bottom:0px;margin-bottom:0px">
+			<button type="submit" class="btn btn-primary">
+				<strong>检索</strong>
+			</button>
+		</div>
+		
+		<div class="btn-toolbar" style="margin-bottom:2px;">
+			<a href="${ctxPage}/proxy/settlement_request" class="btn btn-primary">
+				<i class="icon-plus"></i>
+				结算请求
+			</a>
+		</div>
+		<div style="clear:both;"></div>
+	</form>
 </div>
+
 
 <div class="block">
 	<a href="#page-stats" class="block-heading" data-toggle="collapse">${page_title}</a>
@@ -20,14 +48,14 @@
 		<table class="table table-striped table-bordered table-condensed">
 			<thead>
 				<tr>
-		<th style="width: 50px">序</th>
+					<th style="width: 50px">序</th>
 					<th style="width: 150px">交易号</th>
 					<th style="width: 80px">充值者名称</th>
 					<th style="width: 80px">充值金额</th>
 					<th style="width: 80px">提成金额</th>
 					<th style="width: 80px">是否是代理</th>
 					<th style="width: 200px">充值时间</th>
-				
+
 				</tr>
 			</thead>
 
@@ -43,16 +71,16 @@
 						<td>${item.money}</td>
 						<td>${item.fetchMoney}</td>
 						<td>
-						<c:choose>
-							<c:when test="${item.isProxy eq '1'}">代理</c:when>
-							<c:otherwise>玩家</c:otherwise>
-						</c:choose>
-						
+							<c:choose>
+								<c:when test="${item.isProxy eq '1'}">代理</c:when>
+								<c:otherwise>玩家</c:otherwise>
+							</c:choose>
+
 						</td>
 						<td>
 							<fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss" />
 						</td>
-			
+
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -67,7 +95,21 @@
 	if (msg != null && msg != "") {
 		alert(msg);
 	}
-	</script>
-	
-	
+	$(function() {
+		var date = $("#start_date");
+		date.datepicker({
+			dateFormat : "yy-mm-dd"
+		});
+		date.datepicker("option", "firstDay", 1);
+	});
+	$(function() {
+		var date = $("#end_date");
+		date.datepicker({
+			dateFormat : "yy-mm-dd"
+		});
+		date.datepicker("option", "firstDay", 1);
+	});
+</script>
+
+
 <%@include file="sys/footer.jsp"%>

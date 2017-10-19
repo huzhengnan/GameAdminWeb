@@ -19,12 +19,9 @@ import com.github.pagehelper.PageInfo;
 import com.lyh.admin.controller.BaseController;
 import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.entity.SysUser;
-import com.lyh.admin.model.OsaGamePlayer;
-import com.lyh.admin.model.OsaGameWorld;
 import com.lyh.admin.model.OsaProxyConfig;
 import com.lyh.admin.model.OsaProxyRecharge;
 import com.lyh.admin.model.OsaProxyRechargeFetch;
-import com.lyh.admin.model.OsaUser;
 import com.lyh.admin.tools.ShowPage;
 import com.lyh.admin.tools.ToolUtils;
 
@@ -91,7 +88,7 @@ public class ProxySettlementController extends BaseController {
 			proxyConfig.setOneLevel(oneLevel);
 			proxyConfig.setTwoLevel(twoLevel);
 			proxyConfig.setThreeLevel(threeLevel);
-			
+			proxyConfigService.update(proxyConfig);
 			view = "redirect:/proxy/settlement_config_list";
 			// view.addObject("msg", result);
 		} else {
@@ -117,7 +114,7 @@ public class ProxySettlementController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/my_settlement_list")
-	public ModelAndView getProxySettlementList(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage) {
+	public ModelAndView getProxySettlementList(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage,String startDate,String endDate) {
 		ModelAndView view = new ModelAndView("/ProxySettlementList");
 		PageHelper.startPage(curPage, ShowPage.PAGE_SIZE);
 		SysUser sysUser = ShiroSysUser.getShiroSubject();

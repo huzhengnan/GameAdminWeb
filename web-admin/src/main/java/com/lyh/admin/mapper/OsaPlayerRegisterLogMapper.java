@@ -1,9 +1,11 @@
 package com.lyh.admin.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lyh.admin.model.OsaPlayerRegisterLog;
 import com.lyh.admin.model.OsaPlayerRegisterLogExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface OsaPlayerRegisterLogMapper {
     long countByExample(OsaPlayerRegisterLogExample example);

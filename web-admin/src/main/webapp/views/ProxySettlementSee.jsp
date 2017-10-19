@@ -7,12 +7,34 @@
 <%@include file="sys/navibar.jsp"%>
 <%@include file="sys/sidebar.jsp"%>
 
-<div class="btn-toolbar" style="margin-bottom:2px;">
+<div style="border:0px;padding-bottom:5px;height:auto">
+	<form action="" method="POST" style="margin-bottom:0px">
+
+	<div style="float:left;margin-right:5px">
+		<label> 选择起始时间 </label>
+		<input type="text" id="start_date" name="startDate" value="${startDate}>" placeholder="起始时间" >
+	</div>
+	<div style="float:left;margin-right:5px">
+		<label>选择结束时间</label>	
+		<input type="text" id="end_date" name="endDate" value="${endDate}" placeholder="结束时间" > 
+	</div>
+	<div style="float:left;margin-right:5px">
+		<label>用户名，查询所有用户请留空</label>
+		<input type="text" name="user_name" value="<{$_GET.user_name}>" placeholder="输入用户名" > 
+	</div>
+		<div class="btn-toolbar" style="padding-top:25px;padding-bottom:0px;margin-bottom:0px">
+		<button type="submit" class="btn btn-primary"><strong>检索</strong></button>
+	</div>
+	<div style="clear:both;"></div>
+	</form>
+	<div class="btn-toolbar" style="margin-bottom:2px;">
 	<a href="${ctxPage}/proxy/settlement_pay?id=${id}" class="btn btn-primary">
 		<i class="icon-plus"></i>
 		结算
 	</a>
 </div>
+</div>
+
 
 <div class="block">
 	<a href="#page-stats" class="block-heading" data-toggle="collapse">${page_title}</a>

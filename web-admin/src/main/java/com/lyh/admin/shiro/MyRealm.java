@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.lyh.admin.entity.SysMenu;
 import com.lyh.admin.entity.SysModule;
 import com.lyh.admin.entity.SysUser;
-import com.lyh.admin.exception.MyWebException;
 import com.lyh.admin.model.OsaMenuUrl;
 import com.lyh.admin.model.OsaModule;
 import com.lyh.admin.model.OsaUser;

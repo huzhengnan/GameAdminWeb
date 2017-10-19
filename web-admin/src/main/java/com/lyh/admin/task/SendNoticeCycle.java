@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
-import com.lyh.admin.mapper.OsaGmNoticeCycleMapper;
 import com.lyh.admin.model.OsaGmNoticeCycle;
 import com.lyh.admin.service.OsaGmNoticeCycleService;
 import com.lyh.admin.service.OsaGmNoticeService;

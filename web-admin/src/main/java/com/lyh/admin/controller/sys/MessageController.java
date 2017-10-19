@@ -1,6 +1,5 @@
 package com.lyh.admin.controller.sys;
 
-import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 

@@ -2,12 +2,12 @@ package com.lyh.admin.listener;
 
 
 
-import com.lyh.admin.properites.ServletPath;
-import com.lyh.admin.properites.WeChatConfig;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
+import com.lyh.admin.properites.ServletPath;
+import com.lyh.admin.properites.WeChatConfig;
 
 /**
  * ClassName: ServerContextListener <br/>

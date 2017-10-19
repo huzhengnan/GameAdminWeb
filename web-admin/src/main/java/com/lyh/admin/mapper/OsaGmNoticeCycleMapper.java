@@ -1,9 +1,11 @@
 package com.lyh.admin.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lyh.admin.model.OsaGmNoticeCycle;
 import com.lyh.admin.model.OsaGmNoticeCycleExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface OsaGmNoticeCycleMapper {
     long countByExample(OsaGmNoticeCycleExample example);

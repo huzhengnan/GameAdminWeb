@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-10-18 18:40:03
+Date: 2017-10-19 18:50:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -426,7 +426,7 @@ CREATE TABLE `osa_game_player` (
 -- ----------------------------
 -- Records of osa_game_player
 -- ----------------------------
-INSERT INTO `osa_game_player` VALUES ('1000162', '1', '1001', '1', '1', '1.00', null, '1', '1', '192.168.0.189', '2017-09-22 17:32:02', null, '1', '', null, null, null, '2017-10-11 15:30:28');
+INSERT INTO `osa_game_player` VALUES ('1000162', '1', '1001', '1', '1', '1.00', null, '1', '1', '192.168.0.189', '2017-09-22 17:32:02', null, '1', '17776', null, null, null, '2017-10-19 16:53:15');
 INSERT INTO `osa_game_player` VALUES ('1000163', '2', '1001', '2', '1', '0.00', null, '1', '1', '192.168.0.189', '2017-09-22 17:32:05', null, '1', '', null, null, null, '2017-10-11 15:30:29');
 INSERT INTO `osa_game_player` VALUES ('1000164', '3', '1001', '3', '1', '0.00', null, '1', '1', '192.168.0.189', '2017-09-22 17:32:17', null, '1', '', null, null, null, '2017-10-11 15:30:29');
 INSERT INTO `osa_game_player` VALUES ('1000165', '4', '1001', '4', '1', '0.00', null, '1', '1', '192.168.0.189', '2017-09-22 17:32:21', null, '1', '', null, null, null, '2017-10-11 15:31:01');
@@ -2326,7 +2326,7 @@ INSERT INTO `osa_menu_url` VALUES ('37', '代理添加', '/proxy/add', '7', '1',
 INSERT INTO `osa_menu_url` VALUES ('38', '结算配置', '/proxy/settlement_config_list', '10', '1', '1', '1', '结算配置', '0');
 INSERT INTO `osa_menu_url` VALUES ('39', '我的结算列表', '/proxy/my_settlement_list', '10', '1', '1', '1', '我的结算列表', '0');
 INSERT INTO `osa_menu_url` VALUES ('40', '修改结算配置', '/proxy/settlement_config_add', '10', '0', '1', '1', '修改结算配置', '38');
-INSERT INTO `osa_menu_url` VALUES ('41', '批付申请结算列表', '/proxy/settlement_apply', '10', '1', '1', '1', '批付申请结算列表', '0');
+INSERT INTO `osa_menu_url` VALUES ('41', '批付申请结算列表', '/proxy/settlement_apply_list', '10', '1', '1', '1', '批付申请结算列表', '0');
 INSERT INTO `osa_menu_url` VALUES ('42', '结算请求(主动)', '/proxy/settlement_request', '10', '0', '1', '1', '结算请求(主动)', '39');
 INSERT INTO `osa_menu_url` VALUES ('43', '结算支付', '/proxy/settlement_pay', '10', '0', '1', '1', '结算支付', '41');
 INSERT INTO `osa_menu_url` VALUES ('44', '批付申请结算列表查看', '/proxy/settlement_see', '10', '0', '1', '1', '结算查看', '41');
@@ -4294,7 +4294,7 @@ CREATE TABLE `osa_proxy_config` (
 -- ----------------------------
 -- Records of osa_proxy_config
 -- ----------------------------
-INSERT INTO `osa_proxy_config` VALUES ('1', '15', '8', '4', '1');
+INSERT INTO `osa_proxy_config` VALUES ('1', '12', '8', '4', '1');
 
 -- ----------------------------
 -- Table structure for osa_proxy_recharge
@@ -4315,7 +4315,7 @@ CREATE TABLE `osa_proxy_recharge` (
   `open_id` varchar(255) DEFAULT NULL COMMENT '开放平台id',
   PRIMARY KEY (`id`),
   KEY `agent_name` (`proxy_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of osa_proxy_recharge
@@ -4326,6 +4326,32 @@ INSERT INTO `osa_proxy_recharge` VALUES ('3', 'proxy12', '1.00', '0', '2017-06-2
 INSERT INTO `osa_proxy_recharge` VALUES ('4', 'proxy12', '5.00', '0', '2017-06-28 11:03:39', 'c:esmj879611060301070336', 'player:879887196549545984', '0', '2', '0.75', '1', null);
 INSERT INTO `osa_proxy_recharge` VALUES ('5', '超级管理员', '400.00', '0', '2017-07-11 13:40:26', 'c:esmj879611060301070336', 'test1470654170170', '0', '0', '60.00', '1', null);
 INSERT INTO `osa_proxy_recharge` VALUES ('6', 'proxy12', '400.00', '0', '2017-07-11 13:52:37', 'c:esmj879611060301070336', 'test1470654170171', '0', '0', '60.00', '1', null);
+INSERT INTO `osa_proxy_recharge` VALUES ('7', 'admin', '100.00', '1', '2017-10-19 12:41:17', 'p1001', '920861619477544960', '0', '0', '0.00', '1', null);
+INSERT INTO `osa_proxy_recharge` VALUES ('8', 'admin', '100.00', '1', '2017-10-19 16:51:20', 'p1001', '920870765740425216', '0', '0', '0.00', '1', null);
+INSERT INTO `osa_proxy_recharge` VALUES ('9', 'admin', '1000.00', '1', '2017-10-19 16:51:31', 'p1002', '920873637106417664', '0', '0', '0.00', '1', null);
+INSERT INTO `osa_proxy_recharge` VALUES ('10', 'p1001', '7.00', '0', '2017-10-19 16:51:43', '1', '920927470377500672', '0', '2', '1.00', '1', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('11', 'p1001', '7.00', '0', '2017-10-19 16:51:45', '1', '920927712120406016', '1', '2', '1.00', '1', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('12', 'p1001', '7.00', '0', '2017-10-19 16:51:46', '1', '920927802092421120', '1', '2', '1.00', '1', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('13', 'p1001', '7.00', '0', '2017-10-19 16:51:48', '1', '920928591271690240', '1', '2', '1.00', '1', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('14', 'p1001', '7.00', '0', '2017-10-19 16:51:52', '1', '920930089422553088', '1', '2', '1.00', '1', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('15', 'admin', '7.00', '0', '2017-10-19 16:38:12', '1', '920932075329028096', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('16', 'admin', '7.00', '0', '2017-10-19 16:38:46', '1', '920932221412442112', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('17', 'admin', '7.00', '0', '2017-10-19 16:39:38', '1', '920932439147151360', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('18', 'admin', '7.00', '0', '2017-10-19 16:48:18', '1', '920934618096467968', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('19', 'admin', '7.00', '0', '2017-10-19 17:08:42', '1', '920939753182855168', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('20', 'admin', '7.00', '0', '2017-10-19 17:08:56', '1', '920939811924082688', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('21', 'admin', '7.00', '0', '2017-10-19 17:39:29', '1', '920947499001184256', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('22', 'admin', '7.00', '0', '2017-10-19 17:40:13', '1', '920947686159417344', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('23', 'admin', '7.00', '0', '2017-10-19 17:40:26', '1', '920947740974776320', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('24', 'admin', '7.00', '0', '2017-10-19 17:41:12', '1', '920947929877839872', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('25', 'admin', '7.00', '0', '2017-10-19 17:41:26', '1', '920947992431689728', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('26', 'admin', '7.00', '0', '2017-10-19 18:07:59', '1', '920954671894364160', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('27', 'admin', '7.00', '0', '2017-10-19 18:10:28', '1', '920955296271040512', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('28', 'admin', '7.00', '0', '2017-10-19 18:20:59', '1', '920957945334726656', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('29', 'admin', '7.00', '0', '2017-10-19 18:24:32', '1', '920958835147931648', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('30', 'admin', '7.00', '0', '2017-10-19 18:24:32', '1', '920958835118571520', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('31', 'admin', '7.00', '0', '2017-10-19 18:25:23', '1', '920959052748423168', '1', '0', '0.00', '0', '1');
+INSERT INTO `osa_proxy_recharge` VALUES ('32', 'admin', '7.00', '0', '2017-10-19 18:26:44', '1', '920959389819469824', '1', '0', '0.00', '0', '1');
 
 -- ----------------------------
 -- Table structure for osa_proxy_recharge_fetch
@@ -4337,12 +4363,14 @@ CREATE TABLE `osa_proxy_recharge_fetch` (
   `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '申请充值时间',
   `name` varchar(255) DEFAULT NULL COMMENT '申请结算的代理名',
   `ids` varchar(512) DEFAULT NULL COMMENT '申请结算的充值id',
+  `status` int(11) DEFAULT '0' COMMENT '1为已领取',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of osa_proxy_recharge_fetch
 -- ----------------------------
+INSERT INTO `osa_proxy_recharge_fetch` VALUES ('1', '5.00', '2017-10-19 17:08:00', 'p1001', '[10,11,12,13,14]', '1');
 
 -- ----------------------------
 -- Table structure for osa_proxy_request
@@ -4568,9 +4596,10 @@ CREATE TABLE `osa_user` (
 -- ----------------------------
 -- Records of osa_user
 -- ----------------------------
-INSERT INTO `osa_user` VALUES ('1', 'admin', '123456', 'SomewhereYu', '13800138001', 'admin@osadmin.org', '初始的超级管理员!', '2017-10-18 18:32:36', '1', '192.168.0.100', '1', 'schoolpainting', '2,7,10,11,13,14,18,21,24', '0', null, '1', null, '88888', '10', '', '10000000000', '0', '2017-10-11 16:10:59');
+INSERT INTO `osa_user` VALUES ('1', 'admin', '123456', 'SomewhereYu', '13800138001', 'admin@osadmin.org', '初始的超级管理员!', '2017-10-19 17:03:46', '1', '192.168.0.189', '1', 'schoolpainting', '2,7,10,11,13,14,18,21,24', '0', null, '1', null, '88888', '10', '', '999998600', '0', '2017-10-11 16:10:59');
 INSERT INTO `osa_user` VALUES ('26', 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'SomewhereYu', '15812345678', 'yuwenqi@osadmin.org', '默认用户组成员', '2017-10-10 16:16:34', '1', '127.0.0.1', '2', 'schoolpainting', '', '1', null, '0', null, null, '1', '', '0', '0', '2017-10-20 16:11:03');
-INSERT INTO `osa_user` VALUES ('920549016024907776', 'p1001', '123123', 'dsweew', '15847125895', '1548@126.com', null, null, '1', null, '2', 'schoolpainting', null, null, null, '1', 'ewreq', '17776', '1', 'admin', '0', '0', '2017-10-18 15:16:24');
+INSERT INTO `osa_user` VALUES ('920549016024907776', 'p1001', '123123', 'dsweew', '15847125895', '1548@126.com', null, '2017-10-19 17:15:21', '1', '192.168.0.189', '2', 'schoolpainting', null, null, null, '1', 'ewreq', '17776', '1', 'admin', '1100', '0', '2017-10-18 15:16:24');
+INSERT INTO `osa_user` VALUES ('920861890291171328', 'p1002', '123123', 'fcfffd', '18874584695', '1548@126.com', null, null, '1', null, '3', 'schoolpainting', null, null, null, '1', 'sdafsafas', '71328', '2', 'admin', '300', '0', '2017-10-19 11:59:38');
 
 -- ----------------------------
 -- Table structure for osa_user_group
@@ -4588,6 +4617,6 @@ CREATE TABLE `osa_user_group` (
 -- ----------------------------
 -- Records of osa_user_group
 -- ----------------------------
-INSERT INTO `osa_user_group` VALUES ('1', '超级管理员组', '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44', '1', '万能的不是神，是程序员');
-INSERT INTO `osa_user_group` VALUES ('2', '一级代理', '27,28,29,30,31,32,33,34,35,36,39,42', '1', '一级代理');
-INSERT INTO `osa_user_group` VALUES ('3', '二级代理', '27,28,29,30,31,32,33,34,35,36,37,39,42', '1', '二级');
+INSERT INTO `osa_user_group` VALUES ('1', '超级管理员组', '1,2,3,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44', '1', '万能的不是神，是程序员');
+INSERT INTO `osa_user_group` VALUES ('2', '一级代理', '1,27,28,29,30,31,32,33,34,35,36,39,42', '1', '一级代理');
+INSERT INTO `osa_user_group` VALUES ('3', '二级代理', '1,27,28,29,30,31,32,33,34,35,36,37,39,42', '1', '二级');

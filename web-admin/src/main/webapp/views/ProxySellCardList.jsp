@@ -23,7 +23,7 @@
 
 					<th style="width: 50px">序</th>
 					<th style="width: 150px">交易号</th>
-					<th style="width: 80px">上级代理名称</th>
+					<th style="width: 80px">名称</th>
 					<th style="width: 80px">充值金额</th>
 					<th style="width: 200px">充值时间</th>
 				</tr>
@@ -37,7 +37,7 @@
 						</td>
 
 						<td>${item.traderOrder}</td>
-						<td>${item.proxyName}</td>
+						<td>${item.name}</td>
 						<td>${item.money}</td>
 						<td>
 							<fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss" />

@@ -41,7 +41,7 @@
 						<td>${item.id}</td>
 						<td>
 							[
-							<a href="${ctxPage}/proxy/see_sub_proxyt?id=${item.id}">查看下级代理</a>
+							<a href="${ctxPage}/proxy/see_sub_proxy?id=${item.id}">查看下级代理</a>
 							] ${item.userName}
 						</td>
 						<td>${item.mobile}</td>

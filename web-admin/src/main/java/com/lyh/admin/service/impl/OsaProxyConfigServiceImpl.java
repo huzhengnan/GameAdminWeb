@@ -2,6 +2,8 @@ package com.lyh.admin.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.lyh.admin.mapper.OsaProxyConfigMapper;
@@ -9,16 +11,18 @@ import com.lyh.admin.model.OsaProxyConfig;
 import com.lyh.admin.model.OsaProxyConfigExample;
 import com.lyh.admin.service.OsaProxyConfigService;
 
-/** 
- * ClassName:OsaProxyConfigServiceImpl <br/> 
- * TODO:
- * Date:     2017年10月5日 下午5:10:22 <br/> 
- * @author   lyh 
- * @version    
+/**
+ * ClassName:OsaProxyConfigServiceImpl <br/>
+ * TODO: Date: 2017年10月5日 下午5:10:22 <br/>
+ * 
+ * @author lyh
+ * @version
  */
 @Service
 public class OsaProxyConfigServiceImpl implements OsaProxyConfigService {
+	@Resource
 	private OsaProxyConfigMapper mapper;
+	
 	@Override
 	public void insert(OsaProxyConfig t) {
 		// TODO Auto-generated method stub
@@ -42,14 +46,13 @@ public class OsaProxyConfigServiceImpl implements OsaProxyConfigService {
 		// TODO Auto-generated method stub
 		return mapper.selectByPrimaryKey(id);
 	}
-
+	
 	@Override
 	public List<OsaProxyConfig> getProxyConfigList() {
 		// TODO Auto-generated method stub
 		OsaProxyConfigExample example = new OsaProxyConfigExample();
-
+		
 		return mapper.selectByExample(example);
 	}
 	
 }
-  

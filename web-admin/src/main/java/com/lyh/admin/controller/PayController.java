@@ -20,7 +20,6 @@ import com.github.pagehelper.PageInfo;
 import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.model.OsaGamePlayer;
 import com.lyh.admin.model.OsaGameWorld;
-import com.lyh.admin.model.OsaGmForbidmsg;
 import com.lyh.admin.model.OsaGmSendMoneyPay;
 import com.lyh.admin.model.OsaOperatorRecharge;
 import com.lyh.admin.service.OsaGamePlayerService;

@@ -1,9 +1,11 @@
 package com.lyh.admin.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lyh.admin.model.OsaGameWorld;
 import com.lyh.admin.model.OsaGameWorldExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface OsaGameWorldMapper {
     long countByExample(OsaGameWorldExample example);

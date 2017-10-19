@@ -79,7 +79,7 @@ public class OsaGamePlayerServiceImpl implements OsaGamePlayerService {
 		OsaGamePlayerExample example = new OsaGamePlayerExample();
 		OsaGamePlayerExample.Criteria criteria = example.createCriteria();
 		if (!ToolUtils.isStringNull(inviteCode)){
-			criteria.andOpenIdEqualTo(inviteCode);
+			criteria.andInviteCodeEqualTo(inviteCode);
 		}
 		
 		return mapper.selectByExample(example);

@@ -1,9 +1,11 @@
 package com.lyh.admin.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lyh.admin.model.OsaFeedbackQuestion;
 import com.lyh.admin.model.OsaFeedbackQuestionExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface OsaFeedbackQuestionMapper {
     long countByExample(OsaFeedbackQuestionExample example);

@@ -1,9 +1,11 @@
 package com.lyh.admin.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.lyh.admin.model.OsaProxyRechargeFetch;
 import com.lyh.admin.model.OsaProxyRechargeFetchExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface OsaProxyRechargeFetchMapper {
     long countByExample(OsaProxyRechargeFetchExample example);

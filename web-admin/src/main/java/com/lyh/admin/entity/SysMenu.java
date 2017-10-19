@@ -2,8 +2,6 @@ package com.lyh.admin.entity;
 
 import java.io.Serializable;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 import com.lyh.admin.model.OsaMenuUrl;
 
 

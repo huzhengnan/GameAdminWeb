@@ -17,7 +17,7 @@
 	<div id="myTabContent" class="tab-content">
 	<div class="tab-pane active in" id="home">
 			<form id="tab" method="post" action="${ctxPage}/proxy/settlement_config_add" autocomplete="off">
-			<input type="hidden"  name ="id" value="${proxyConfig.oneLevel}">
+			<input type="hidden"  name ="id" value="${proxyConfig.id}">
 				<label>一级代理提成比例</label>
 				<input type="number" maxlength="3" id="oneLevel" name="oneLevel"  class="input-xlarge"  value="${proxyConfig.oneLevel}" placeholder="请填写你的一级代理提成比例" />
 

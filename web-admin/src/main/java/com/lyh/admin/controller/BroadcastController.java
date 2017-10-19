@@ -15,7 +15,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.model.OsaGameWorld;
-import com.lyh.admin.model.OsaGmForbidmsg;
 import com.lyh.admin.model.OsaGmNotice;
 import com.lyh.admin.model.OsaGmNoticeCycle;
 import com.lyh.admin.service.OsaGmNoticeCycleService;

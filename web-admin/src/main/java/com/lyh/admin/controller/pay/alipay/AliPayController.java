@@ -2,9 +2,8 @@ package com.lyh.admin.controller.pay.alipay;
 
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.alibaba.fastjson.JSON;
-
-import com.lyh.admin.alipay.AlipayConstants;
-import com.lyh.admin.alipay.internal.util.AlipaySignature;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.AlipayConstants;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.lyh.admin.controller.BaseController;
 import com.lyh.admin.model.OsaGamePlayer;
 import com.lyh.admin.model.OsaGameWorld;
@@ -65,10 +69,9 @@ public class AliPayController extends BaseController {
 	
 	@Autowired
 	private OsaOperatorRechargeService operatorRechargeService;
-
+	
 	@Autowired
 	private OsaShopService shopService;
-	
 	
 	/**
 	 * 统一收单交易支付接口
@@ -95,30 +98,31 @@ public class AliPayController extends BaseController {
 		if (goods != null) {
 			gold = goods.getGift() + goods.getNum();
 			
-			if (ToolUtils.isStringNull(inviteCode)){
+			if (ToolUtils.isStringNull(inviteCode)) {
 				agent = userService.findById(1);
-			}else{
-			agent = userService.getUsersByInviteCode(inviteCode);
+			} else {
+				agent = userService.getUsersByInviteCode(inviteCode);
 			}
+			
 			if (agent.getRemainMoney() == null) {
 				agent.setRemainMoney("0");
 			}
 			
-			OsaProxyConfig  agentConfig =  proxyConfigService.findById(1);
-			if (agentConfig != null && agentConfig.getOneLevel() != null){
-				fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel() );
+			OsaProxyConfig agentConfig = proxyConfigService.findById(1);
+			if (agentConfig != null && agentConfig.getOneLevel() != null) {
+				fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel());
 			}
 			if (agent != null) {// && agent.getRemainMoney() >= gold在线冲值不要减money
 				player = gamePlayerService.getGamePlayerByOpenId(openId);
-				if (player != null){
-				OsaGameWorld gameWorld= gameWorldService.getWorldByWorldId(player.getWorldId());
-				if (gameWorld != null) {
-					
-					bCheck = true;
-				}else{
-					logger.error("没有服务器玩家::" + serverId);
-				}
-				}else{
+				if (player != null) {
+					OsaGameWorld gameWorld = gameWorldService.getWorldByWorldId(player.getWorldId());
+					if (gameWorld != null) {
+						
+						bCheck = true;
+					} else {
+						logger.error("没有服务器玩家::" + serverId);
+					}
+				} else {
 					logger.error("没有找到玩家::" + openId);
 				}
 			}
@@ -132,40 +136,37 @@ public class AliPayController extends BaseController {
 			return;
 		}
 		
-		Map<String, String> param = new HashMap<>();
-		// 公共请求参数
-		param.put("app_id", AlipayUtil.ALIPAY_APPID);// 商户订单号
-		param.put("method", "alipay.trade.app.pay");// 交易金额
-		param.put("format", AlipayConstants.FORMAT_JSON);
-		param.put("charset", AlipayConstants.CHARSET_UTF8);
-		param.put("timestamp", ToolUtils.dateFormat("yyyy-MM-dd HH:mm:ss", new Date()));// "yyyy-MM-dd HH:mm:ss"
-		
-		param.put("version", "1.0");
-		param.put("notify_url", AlipayUtil.NOTIFY_URL); // 支付宝服务器主动通知商户服务
-		param.put("sign_type", AlipayConstants.SIGN_TYPE_RSA);
-		String orderId = String.valueOf(IdGenerateUtils.makeId());
-		Map<String, Object> pcont = new HashMap<>();
-		// 支付业务请求参数
-		pcont.put("out_trade_no", orderId); // 商户订单号
-		pcont.put("total_amount", String.valueOf(dPrice));// 交易金额
-		pcont.put("subject", "商品"); // 订单标题
-		pcont.put("body", "虚拟商品");// 对交易或商品的描述
-		pcont.put("product_code", "QUICK_MSECURITY_PAY");// 销售产品码
-		
-		param.put("biz_content", JSON.toJSONString(pcont)); // 业务请求参数 不需要对json字符串转义
-		// Map<String, String> payMap = new HashMap<>();
 		try {
+
+			//实例化客户端
+			OsaProxyRecharge oPay = addPlayerMoney(agent, player, gold, (fetchMoneyRate * dPrice) / 100);
+			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", AlipayUtil.ALIPAY_APPID, AlipayUtil.APP_PRIVATE_KEY, "json", AlipayConstants.CHARSET_UTF8, AlipayUtil.ALIPAY_PUBLIC_KEY, "RSA2");
+			//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+			AlipayTradeAppPayRequest req = new AlipayTradeAppPayRequest();
+			//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
+			model.setBody("虚拟商品");
+			model.setSubject("商品");
+			model.setOutTradeNo(oPay.getTraderOrder());
+			model.setTimeoutExpress("30m");
+			model.setTotalAmount(fprice);
+			model.setProductCode("QUICK_MSECURITY_PAY");
+			req.setBizModel(model);
+			req.setNotifyUrl( AlipayUtil.NOTIFY_URL);
+			try {
+			        //这里和普通的接口调用不同，使用的是sdkExecute
+			        AlipayTradeAppPayResponse resp = alipayClient.sdkExecute(req);
+			        StringBuilder builder = new StringBuilder();
+				builder.append("return_code=").append("SUCCESS");
+				builder.append("&orderStr=").append(resp.getBody());
+				write.write(builder.toString());
+			        System.out.println(resp.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
+			    } catch (AlipayApiException e) {
+			        e.printStackTrace();
+			        logger.error("支付宝异常::",e);
+			}
 			
-			param.put("sign", AlipaySignature.rsaSign(param, AlipayUtil.APP_PRIVATE_KEY, "UTF-8")); // 业务请求参数
-			addPlayerMoney(agent, player, gold,  (fetchMoneyRate * dPrice) / 100);
 			
-		
-			
-			StringBuilder builder = new StringBuilder();
-			builder.append("return_code=").append("SUCCESS");
-			builder.append("&orderStr=").append(AlipayUtil.getSignEncodeUrl(param, true));
-			write.write(builder.toString());
-			// payMap.put("orderStr", PayUtil.getSignEncodeUrl(param, true));
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("下订单异常::", e);
@@ -184,27 +185,46 @@ public class AliPayController extends BaseController {
 	@RequestMapping(value = "/pay/notify", method = RequestMethod.POST)
 	public void orderPayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info("[/order/pay/notify]");
+		
+		
+		//获取支付宝POST过来反馈信息
+		Map<String,String> params = new HashMap<String,String>();
+		Map requestParams = request.getParameterMap();
+		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+		    String name = (String) iter.next();
+		    String[] values = (String[]) requestParams.get(name);
+		    String valueStr = "";
+		    for (int i = 0; i < values.length; i++) {
+		        valueStr = (i == values.length - 1) ? valueStr + values[i]
+		                    : valueStr + values[i] + ",";
+		  }
+		  //乱码解决，这段代码在出现乱码时使用。
+		  //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+		  params.put(name, valueStr);
+		 }
+			
 		PrintWriter write = response.getWriter();
 		// 获取到返回的所有参数 先判断是否交易成功trade_status 再做签名校验
 		// 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号，
 		// 2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额），
 		// 3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email），
 		// 4、验证app_id是否为该商户本身。上述1、2、3、4有任何一个验证不通过，则表明本次通知是异常通知，务必忽略。在上述验证通过后商户必须根据支付宝不同类型的业务通知，正确的进行不同的业务处理，并且过滤重复的通知结果数据。在支付宝的业务通知中，只有交易通知状态为TRADE_SUCCESS或TRADE_FINISHED时，支付宝才会认定为买家付款成功。
-		if ("TRADE_SUCCESS".equals(request.getParameter("trade_status")) || "TRADE_FINISHED".equals(request.getParameter("trade_status"))) {
-			Enumeration<?> pNames = request.getParameterNames();
-			Map<String, String> param = new HashMap<String, String>();
+		if ("TRADE_SUCCESS".equals(params.get("trade_status")) || "TRADE_FINISHED".equals(params.get("trade_status"))) {
+//			Enumeration<?> pNames = request.getParameterNames();
+//			Map<String, String> param = new HashMap<String, String>();
 			try {
-				while (pNames.hasMoreElements()) {
-					String pName = (String) pNames.nextElement();
-					param.put(pName, request.getParameter(pName));
-				}
+//				while (pNames.hasMoreElements()) {
+//					String pName = (String) pNames.nextElement();
+//					param.put(pName, request.getParameter(pName));
+//				}
+			boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayUtil.ALIPAY_PUBLIC_KEY, AlipayConstants.CHARSET_UTF8);// 校验签名是否正确
 				
-				boolean signVerified = AlipaySignature.rsaCheckV1(param, AlipayUtil.ALIPAY_PUBLIC_KEY, AlipayConstants.CHARSET_UTF8); // 校验签名是否正确
+			
 				if (signVerified) {
 					// TODO 验签成功后
 					// 按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
-					String orderId = param.get("out_trade_no");
-					OsaProxyRecharge  myRecharge = proxyRechargeService.getProxyRechargeByOrder(orderId);
+					String orderId = params.get("out_trade_no");
+					OsaProxyRecharge myRecharge = proxyRechargeService.getProxyRechargeByOrder(orderId);
 					if (myRecharge == null) {
 						logger.info("订单支付失败：" + orderId);
 						write.write("failure");
@@ -228,26 +248,25 @@ public class AliPayController extends BaseController {
 							agent.setRemainMoney("0");
 						}
 						
-						OsaProxyConfig  agentConfig =  proxyConfigService.findById(1);
-						if (agentConfig != null && agentConfig.getOneLevel() != null){
-							fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel() );
+						OsaProxyConfig agentConfig = proxyConfigService.findById(1);
+						if (agentConfig != null && agentConfig.getOneLevel() != null) {
+							fetchMoneyRate = Double.parseDouble(agentConfig.getOneLevel());
 						}
-		
 						
 						if (agent != null) {// && agent.getRemainMoney() >= gold在线冲值不要减money
 							player = gamePlayerService.getGamePlayerByOpenId(myRecharge.getOpenId());
-							if (player != null){
-							 gameWorld= gameWorldService.getWorldByWorldId(player.getWorldId());
-							if (gameWorld != null) {
-								
-								bCheck = true;
-							}else{
-								logger.error("没有服务器玩家::" + player.getWorldId());
-							}
-							}else{
+							if (player != null) {
+								gameWorld = gameWorldService.getWorldByWorldId(player.getWorldId());
+								if (gameWorld != null) {
+									
+									bCheck = true;
+								} else {
+									logger.error("没有服务器玩家::" + player.getWorldId());
+								}
+							} else {
 								logger.error("没有找到玩家::" + myRecharge.getOpenId());
 							}
-						}else{
+						} else {
 							logger.error(dPrice + ":没有找到代理::" + orderId);
 						}
 					} else {
@@ -255,15 +274,14 @@ public class AliPayController extends BaseController {
 					}
 					
 					if (!bCheck) {
-						logger.error("openid验证没有通过：" + JSON.toJSONString(param));
+						logger.error("openid验证没有通过：" + JSON.toJSONString(params));
 						write.write("failure");
 						return;
 					}
 					
-				
-					int status = operatorRechargeService.recharge(player.getOpenId(), myRecharge.getTraderOrder(),dPrice,myRecharge.getMoney(), (int) (System.currentTimeMillis() / 1000), gameWorld,1);
+					int status = operatorRechargeService.recharge(player.getOpenId(), myRecharge.getTraderOrder(), dPrice, myRecharge.getMoney(), (int) (System.currentTimeMillis() / 1000), gameWorld, 1);
 					if (status == 1) {
-						//addPlayerMoney(player, agent, gold, dPrice, myRecharge.getTraderOrder(), (fetchMoneyRate * dPrice) / 100);
+						// addPlayerMoney(player, agent, gold, dPrice, myRecharge.getTraderOrder(), (fetchMoneyRate * dPrice) / 100);
 						myRecharge.setFlag(1);
 						proxyRechargeService.update(myRecharge);
 					} else {
@@ -274,7 +292,7 @@ public class AliPayController extends BaseController {
 					logger.info("订单支付成功：" + orderId);
 					write.write("success");
 				} else {
-					logger.error("订单支付签名失败11：" + JSON.toJSONString(param));
+					logger.error("订单支付签名失败11：" + JSON.toJSONString(params));
 					// TODO 验签失败则记录异常日志，并在response中返回failure.
 					write.write("failure");
 				}
@@ -283,17 +301,14 @@ public class AliPayController extends BaseController {
 			}
 		}
 	}
-
-	
-
 	
 	@Transactional
-	public void addPlayerMoney(OsaUser proxyUser, OsaGamePlayer gamePlayer, double money,double fetchMoney) {
+	public OsaProxyRecharge addPlayerMoney(OsaUser proxyUser, OsaGamePlayer gamePlayer, double money, double fetchMoney) {
 		int fMoney = Integer.parseInt(proxyUser.getRemainMoney());
-
-		//proxyUser.setRemainMoney("" + (fMoney - money));
-
-	//	userService.update(proxyUser);
+		
+		// proxyUser.setRemainMoney("" + (fMoney - money));
+		
+		// userService.update(proxyUser);
 		OsaProxyRecharge pay = new OsaProxyRecharge();
 		pay.setProxyName(proxyUser.getUserName());
 		pay.setIsProxy((byte) 0);
@@ -304,10 +319,10 @@ public class AliPayController extends BaseController {
 		pay.setCreateTime(new Date(System.currentTimeMillis()));
 		pay.setIsFetch(0);
 		pay.setFetchMoney(fetchMoney);
-		pay.setFlag(0);//支付宝要这个
+		pay.setFlag(0);// 支付宝要这个
 		pay.setOpenId(gamePlayer.getOpenId());
 		proxyRechargeService.insert(pay);
+		return pay;
 	}
-	
 	
 }

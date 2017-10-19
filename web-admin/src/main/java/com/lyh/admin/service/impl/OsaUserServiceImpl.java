@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.lyh.admin.mapper.OsaUserMapper;
 import com.lyh.admin.model.OsaUser;
 import com.lyh.admin.model.OsaUserExample;
-import com.lyh.admin.model.OsaUserGroupExample;
 import com.lyh.admin.service.OsaUserService;
 
 

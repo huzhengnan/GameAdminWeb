@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,10 +16,6 @@ import com.lyh.admin.controller.BaseController;
 import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.entity.SysUser;
 import com.lyh.admin.model.OsaGamePlayer;
-import com.lyh.admin.model.OsaProxyRecharge;
-import com.lyh.admin.model.OsaUser;
-import com.lyh.admin.service.OsaGamePlayerService;
-import com.lyh.admin.service.OsaUserService;
 import com.lyh.admin.tools.ShowPage;
 
 /** 

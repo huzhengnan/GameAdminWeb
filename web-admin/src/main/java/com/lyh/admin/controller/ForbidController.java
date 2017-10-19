@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.lucene.spatial3d.geom.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +30,7 @@ import com.github.pagehelper.PageInfo;
 import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.model.OsaGameWorld;
 import com.lyh.admin.model.OsaGmForbidmsg;
-import com.lyh.admin.service.OsaGameWorldService;
 import com.lyh.admin.service.OsaGmForbidmsgService;
-import com.lyh.admin.tools.IdGenerateUtils;
 import com.lyh.admin.tools.PlatformToServerConnection;
 import com.lyh.admin.tools.ShowPage;
 import com.lyh.admin.tools.ToolUtils;

@@ -55,7 +55,7 @@
 
 						</td>
 						<td>${item.lastLoginTime}</td>
-						<td>	<a  href="${ctxPage}/proxy/recharge_player?id=${item.playerId}"  ></a> 充值</td>
+						<td>	<a  href="${ctxPage}/proxy/recharge_player?id=${item.playerId}"  >充值</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>

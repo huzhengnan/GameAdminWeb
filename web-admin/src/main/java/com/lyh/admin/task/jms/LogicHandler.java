@@ -31,7 +31,6 @@ import com.lyh.admin.service.OsaLogoutLogService;
 import com.lyh.admin.service.OsaOnlineLogService;
 import com.lyh.admin.service.OsaPlayerRegisterLogService;
 import com.lyh.admin.service.OsaRechargeLogService;
-import com.lyh.admin.tools.IdGenerateUtils;
 import com.lyh.admin.tools.ToolUtils;
 import com.lyh.common.IMsgCode;
 import com.lyh.dataup.log.CreateRoleLog;
@@ -72,46 +71,46 @@ public class LogicHandler implements MessageListener {
 	
 	@Resource
 	private OsaRechargeLogService rechargeLogService;
-	/**String = openId**/  
-	public static  Map<String,OsaGamePlayer> gameLogPlayer = new ConcurrentHashMap<String,OsaGamePlayer>();
-//	DataUpHandleService dataUpHandleService;
+	/** String = openId **/
+	public static Map<String, OsaGamePlayer> gameLogPlayer = new ConcurrentHashMap<String, OsaGamePlayer>();
+	// DataUpHandleService dataUpHandleService;
 	
 	public void onMessage(Message message) {
 		try {
 			
 			String msg = ((TextMessage) message).getText();
-			String [] array =msg.split("\\|");
-			if (array.length > 1){
+			String[] array = msg.split("\\|");
+			if (array.length > 1) {
 				int head = Integer.parseInt(array[0]);
 				String data = array[1].toString();
-				if (head == IMsgCode.DATAUP_REGISTER_LOG_HTTP_PROTOCOL){//注册
+				if (head == IMsgCode.DATAUP_REGISTER_LOG_HTTP_PROTOCOL) {// 注册
 					RegisterLog log = JSON.parseObject(data, RegisterLog.class);
 					reg(log);
-				}else if (head == IMsgCode.DATAUP_CREATE_ROLE_LOG_HTTP_PROTOCOL){//创建角色
+				} else if (head == IMsgCode.DATAUP_CREATE_ROLE_LOG_HTTP_PROTOCOL) {// 创建角色
 					CreateRoleLog log = JSON.parseObject(data, CreateRoleLog.class);
 					createRole(log);
-				}else if (head == IMsgCode.DATAUP_LOGIN_LOG_HTTP_PROTOCOL){//角色登录
+				} else if (head == IMsgCode.DATAUP_LOGIN_LOG_HTTP_PROTOCOL) {// 角色登录
 					LoginLog log = JSON.parseObject(data, LoginLog.class);
 					login(log);
-				}else if (head == IMsgCode.DATAUP_LOGIN_OUT_LOG_HTTP_PROTOCOL){//游戏退出
+				} else if (head == IMsgCode.DATAUP_LOGIN_OUT_LOG_HTTP_PROTOCOL) {// 游戏退出
 					
 					LoginOutLog log = JSON.parseObject(data, LoginOutLog.class);
 					out(log);
-				}else if (head == IMsgCode.DATAUP_ONLINE_NUM_LOG_HTTP_PROTOCOL){//在线
+				} else if (head == IMsgCode.DATAUP_ONLINE_NUM_LOG_HTTP_PROTOCOL) {// 在线
 					OnLineNumLog log = JSON.parseObject(data, OnLineNumLog.class);
 					online(log);
-				}else if (head == IMsgCode.DATAUP_RECHARGE_LOG_HTTP_PROTOCOL){//角色充值
+				} else if (head == IMsgCode.DATAUP_RECHARGE_LOG_HTTP_PROTOCOL) {// 角色充值
 					RechargeLog log = JSON.parseObject(data, RechargeLog.class);
 					recharge(log);
-				}else if(head == IMsgCode.DATAUP_USE_GOLD_LOG_HTTP_PROTOCOL){//使用道具,和金币
+				} else if (head == IMsgCode.DATAUP_USE_GOLD_LOG_HTTP_PROTOCOL) {// 使用道具,和金币
 					UseGoldLog log = JSON.parseObject(data, UseGoldLog.class);
 					consume(log);
 				}
 			}
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("数据收报接收有问题::"+e);
+			logger.error("数据收报接收有问题::" + e);
 		}
 	}
 	
@@ -130,11 +129,10 @@ public class LogicHandler implements MessageListener {
 			opOssQlzPassportReg.setLastloginIp(obj.getUserIp());
 			opOssQlzPassportReg.setOpenId(obj.getUserName());
 			opOssQlzPassportReg.setAppId(obj.getAppId());
-		//	opOssQlzPassportReg.setId(IdGenerateUtils.makeId());
+			// opOssQlzPassportReg.setId(IdGenerateUtils.makeId());
 			opOssQlzPassportReg.setWorldId(obj.getServerId());
 			playerRegisterLogService.insert(opOssQlzPassportReg);
 			
-
 		} catch (Exception e) {
 			logger.error("reg 处理异常", e);
 		}
@@ -150,7 +148,7 @@ public class LogicHandler implements MessageListener {
 	private void createRole(CreateRoleLog obj) {
 		try {
 			// 加日志
-		//	OsaCreateroleLogService
+			// OsaCreateroleLogService
 			OsaCreateroleLog opOssQlzCreateroleLog = new OsaCreateroleLog();
 			opOssQlzCreateroleLog.setAddTime(ToolUtils.getNowDate());
 			opOssQlzCreateroleLog.setRoleName(obj.getRoleName());
@@ -159,25 +157,27 @@ public class LogicHandler implements MessageListener {
 			opOssQlzCreateroleLog.setUserIp(obj.getUserIp());
 			opOssQlzCreateroleLog.setTime(ToolUtils.getDateString(new Date(obj.getCreateRoleTime())));
 			opOssQlzCreateroleLog.setAppId(obj.getAppId());
-			//opOssQlzCreateroleLog.setId(IdGenerateUtils.makeId());
+			// opOssQlzCreateroleLog.setId(IdGenerateUtils.makeId());
 			createrRoleLogService.insert(opOssQlzCreateroleLog);
-
+			
 			// 加账号
-			//OsaGamePlayerService
-			OsaGamePlayer opOssQlzPassport = new OsaGamePlayer();
-			
-			opOssQlzPassport.setOpenId(obj.getUserName()); // openid+区服
-			opOssQlzPassport.setRoleName(obj.getRoleName());
-			opOssQlzPassport.setWorldId(obj.getServerId());
-			opOssQlzPassport.setAppId(obj.getAppId());
-			opOssQlzPassport.setInviteCode(obj.getInviteCode());
-			opOssQlzPassport.setCreateTime(new Date(obj.getCreateRoleTime()));
-			
-			opOssQlzPassport.setPlayerId(obj.getPlayerId());
-			gamePlayerService.insert(opOssQlzPassport);
-			
-			gameLogPlayer.put(obj.getUserName(), opOssQlzPassport);
-			
+			// OsaGamePlayerService
+			OsaGamePlayer gamePlayer = gameLogPlayer.get(obj.getUserName());
+			if (gamePlayer == null) {
+				OsaGamePlayer opOssQlzPassport = new OsaGamePlayer();
+				
+				opOssQlzPassport.setOpenId(obj.getUserName()); // openid+区服
+				opOssQlzPassport.setRoleName(obj.getRoleName());
+				opOssQlzPassport.setWorldId(obj.getServerId());
+				opOssQlzPassport.setAppId(obj.getAppId());
+				opOssQlzPassport.setInviteCode(obj.getInviteCode());
+				opOssQlzPassport.setCreateTime(new Date(obj.getCreateRoleTime()));
+				
+				opOssQlzPassport.setPlayerId(obj.getPlayerId());
+				gamePlayerService.insert(opOssQlzPassport);
+				
+				gameLogPlayer.put(obj.getUserName(), opOssQlzPassport);
+			}
 		} catch (Exception e) {
 			logger.error("createRole 异常", e);
 		}
@@ -202,12 +202,11 @@ public class LogicHandler implements MessageListener {
 			opOssQlzLoginLog.setUserIp(obj.getUserIp());
 			opOssQlzLoginLog.setLoginTime((new Date(obj.getLoginTime())));
 			opOssQlzLoginLog.setAppId(obj.getAppId());
-			//opOssQlzLoginLog.setId(IdGenerateUtils.makeId());
+			// opOssQlzLoginLog.setId(IdGenerateUtils.makeId());
 			loginLogService.insert(opOssQlzLoginLog);
 			
-			
 			OsaGamePlayer gamePlayer = gameLogPlayer.get(obj.getUserName());
-			if (gamePlayer == null){
+			if (gamePlayer == null) {
 				OsaGamePlayer opOssQlzPassport = new OsaGamePlayer();
 				
 				opOssQlzPassport.setOpenId(obj.getUserName()); // openid+区服
@@ -220,7 +219,7 @@ public class LogicHandler implements MessageListener {
 				opOssQlzPassport.setPlayerId(obj.getPlayerId());
 				gamePlayerService.insert(opOssQlzPassport);
 				gameLogPlayer.put(obj.getUserName(), opOssQlzPassport);
-			}else{
+			} else {
 				gamePlayer = new OsaGamePlayer();
 				
 				gamePlayer.setLevel(obj.getRoleLevel());
@@ -231,8 +230,7 @@ public class LogicHandler implements MessageListener {
 				gamePlayer.setPlayerId(obj.getPlayerId());
 				gamePlayerService.update(gamePlayer);
 			}
-		
-		
+			
 		} catch (Exception e) {
 			logger.error("login 异常", e);
 		}
@@ -242,7 +240,6 @@ public class LogicHandler implements MessageListener {
 		try {
 			// 计算在线时长
 			int timeOnline = obj.getOnlineTime();
-	
 			
 			// 加日志
 			OsaLogoutLog opOssQlzOutLog = new OsaLogoutLog();
@@ -256,18 +253,18 @@ public class LogicHandler implements MessageListener {
 			opOssQlzOutLog.setOutTime(new Date(obj.getLoginOutTime()));
 			opOssQlzOutLog.setVipLevel(obj.getVipLevel());
 			opOssQlzOutLog.setAppId(obj.getAppId());
-		//	opOssQlzOutLog.setId(IdGenerateUtils.makeId());
+			// opOssQlzOutLog.setId(IdGenerateUtils.makeId());
 			
 			logoutLogService.insert(opOssQlzOutLog);
-
+			
 			OsaGamePlayer gamePlayer = gameLogPlayer.get(obj.getUserName());
-			if (gamePlayer != null){
+			if (gamePlayer != null) {
 				OsaGamePlayer opOssQlzPassport = new OsaGamePlayer();
 				opOssQlzPassport.setLevel(obj.getRoleLevel());
 				opOssQlzPassport.setIsonline(0);
 				opOssQlzPassport.setVipLevel(obj.getVipLevel());
 				gamePlayerService.update(gamePlayer);
-			
+				
 			}
 		} catch (Exception e) {
 			logger.error("out 异常：", e);
@@ -295,24 +292,24 @@ public class LogicHandler implements MessageListener {
 			rechargeLog.setSfrom(obj.getRechargeChannel());
 			rechargeLog.setBillon(obj.getBillOrder());
 			rechargeLog.setAppId(obj.getAppId());
-			//rechargeLog.setId(IdGenerateUtils.makeId());
+			// rechargeLog.setId(IdGenerateUtils.makeId());
 			rechargeLogService.insert(rechargeLog);
-	
+			
 			OsaGamePlayer gamePlayer = gameLogPlayer.get(obj.getUserName());
-			if (gamePlayer != null){
+			if (gamePlayer != null) {
 				OsaGamePlayer opOssQlzPassport = new OsaGamePlayer();
 				opOssQlzPassport.setLevel(obj.getRoleLevel());
 				opOssQlzPassport.setCurMoney((double) obj.getGoldAfter());
-//				if (obj.getBillOrder() != null && !obj.getBillOrder().contains("lyh")) { // 排除内部充值
-//					opOssQlzPassport.setLastPayTime(ToolUtils.getDateString(new Date(obj.getPayTime())));
-//					if (DataUpHandle.passports.get(opOssQlzPassport.getOpenid()).getFristpaytime() == null) { // 确定首冲时间
-//						opOssQlzPassport.setFristpaytime(Tools.getDateString(new Date(obj.getPayTime())));
-//					}
-//				}
+				// if (obj.getBillOrder() != null && !obj.getBillOrder().contains("lyh")) { // 排除内部充值
+				// opOssQlzPassport.setLastPayTime(ToolUtils.getDateString(new Date(obj.getPayTime())));
+				// if (DataUpHandle.passports.get(opOssQlzPassport.getOpenid()).getFristpaytime() == null) { // 确定首冲时间
+				// opOssQlzPassport.setFristpaytime(Tools.getDateString(new Date(obj.getPayTime())));
+				// }
+				// }
 				gamePlayerService.update(gamePlayer);
-			
+				
 			}
-
+			
 		} catch (Exception e) {
 			logger.error("recharge 日志", e);
 		}
@@ -342,23 +339,22 @@ public class LogicHandler implements MessageListener {
 			opOssQlzConsumeLog.setItemNum(obj.getItemNum());
 			opOssQlzConsumeLog.setItemType(obj.getItemType() + "");
 			opOssQlzConsumeLog.setAppId(obj.getAppId());
-		//	opOssQlzConsumeLog.setId(IdGenerateUtils.makeId());
+			// opOssQlzConsumeLog.setId(IdGenerateUtils.makeId());
 			consumeLogService.insert(opOssQlzConsumeLog);
 			OsaGamePlayer gamePlayer = gameLogPlayer.get(obj.getUserName());
-			if (gamePlayer != null){
+			if (gamePlayer != null) {
 				OsaGamePlayer opOssQlzPassport = new OsaGamePlayer();
 				opOssQlzPassport.setLevel(obj.getRoleLevel());
 				opOssQlzPassport.setCurMoney((double) obj.getGoldAfter());
-//				if (obj.getBillOrder() != null && !obj.getBillOrder().contains("lyh")) { // 排除内部充值
-//					opOssQlzPassport.setLastPayTime(ToolUtils.getDateString(new Date(obj.getPayTime())));
-//					if (DataUpHandle.passports.get(opOssQlzPassport.getOpenid()).getFristpaytime() == null) { // 确定首冲时间
-//						opOssQlzPassport.setFristpaytime(Tools.getDateString(new Date(obj.getPayTime())));
-//					}
-//				}
+				// if (obj.getBillOrder() != null && !obj.getBillOrder().contains("lyh")) { // 排除内部充值
+				// opOssQlzPassport.setLastPayTime(ToolUtils.getDateString(new Date(obj.getPayTime())));
+				// if (DataUpHandle.passports.get(opOssQlzPassport.getOpenid()).getFristpaytime() == null) { // 确定首冲时间
+				// opOssQlzPassport.setFristpaytime(Tools.getDateString(new Date(obj.getPayTime())));
+				// }
+				// }
 				gamePlayerService.update(gamePlayer);
-			
+				
 			}
-			
 			
 		} catch (Exception e) {
 			logger.error("consume 异常", e);
@@ -372,7 +368,7 @@ public class LogicHandler implements MessageListener {
 		opOssQlzOnlinecurLog.setAddtime(ToolUtils.getDateString(new Date(obj.getRecordTime())));
 		opOssQlzOnlinecurLog.setOnlineNum(obj.getOnlineNum());
 		opOssQlzOnlinecurLog.setAppId(obj.getAppId());
-	//	opOssQlzOnlinecurLog.setId(IdGenerateUtils.makeId());
+		// opOssQlzOnlinecurLog.setId(IdGenerateUtils.makeId());
 		onlineLogService.insert(opOssQlzOnlinecurLog);
 	}
 }

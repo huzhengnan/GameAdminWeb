@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,16 +19,9 @@ import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.entity.SysUser;
 import com.lyh.admin.model.OsaGamePlayer;
 import com.lyh.admin.model.OsaGameWorld;
-import com.lyh.admin.model.OsaGmForbidmsg;
 import com.lyh.admin.model.OsaProxyConfig;
 import com.lyh.admin.model.OsaProxyRecharge;
 import com.lyh.admin.model.OsaUser;
-import com.lyh.admin.service.BaseService;
-import com.lyh.admin.service.OsaGamePlayerService;
-import com.lyh.admin.service.OsaOperatorRechargeService;
-import com.lyh.admin.service.OsaProxyConfigService;
-import com.lyh.admin.service.OsaProxyRechargeService;
-import com.lyh.admin.service.OsaUserService;
 import com.lyh.admin.tools.IdGenerateUtils;
 import com.lyh.admin.tools.ShowPage;
 import com.lyh.admin.tools.ToolUtils;
@@ -63,7 +55,7 @@ public class ProxyRechargeController extends BaseController {
 			if (ToolUtils.isNum(money)) {
 				int tMoney = Integer.parseInt(money);
 				// 判断是不是上下级关系
-				if (myName.equals(user.getFatherName())) {
+				if (myName.equals(user.getFatherName()) && tMoney > 0 ) {
 					// 判断钱是否足够
 					int fMoney = Integer.parseInt(fatherUser.getRemainMoney());
 					if (fMoney >= tMoney) {
@@ -102,7 +94,7 @@ public class ProxyRechargeController extends BaseController {
 		myUser.setRemainMoney("" + (uMoney + money));
 		userService.update(fatherUser);
 		userService.update(myUser);
-		addRechargeRecord(fatherUser, myUser, uMoney,0);
+		addRechargeRecord(fatherUser, myUser, money,0);
 	}
 	
 	
@@ -320,7 +312,7 @@ public class ProxyRechargeController extends BaseController {
 				
 					// 判断钱是否足够
 					int fMoney = Integer.parseInt(user.getRemainMoney());
-					if (fMoney >= tMoney) {
+					if (fMoney >= tMoney && tMoney > 0) {
 						
 						OsaGameWorld gameWorld= gameWorldService.getWorldByWorldId(worldId);
 						
