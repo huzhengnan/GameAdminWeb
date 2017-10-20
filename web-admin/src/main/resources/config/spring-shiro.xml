@@ -119,6 +119,8 @@
 			   /wechat/pay/notify/return = anon
 			   /player/code = anon
 			   /player/unbind = anon
+			   /alipay**/pay = anon
+			   /alipay/pay/notify=anon
 				<!-- 请求 logout.action地址，shiro去清除session-->
 				/logout = logout
 				<!--商品查询需要商品查询权限 ，取消url拦截配置，使用注解授权方式 -->

@@ -143,8 +143,8 @@ public class WeChatPayController extends BaseController {
 			attach += "|" + inviteCode;
 		}
 		String nonceStr = CommonUtil.getNonceStr();
-		String notify_url = WeChatConfig.NOTIFY_URL;// 回调地址
-		logger.error(":::" + request.getLocalAddr());
+		String notify_url = this.getBaseUrl(request)+"/wechat/pay/notify/return";// 回调地址
+		logger.error("回调通知:"+notify_url );
 		SortedMap<String, String> signParams = new TreeMap<String, String>();
 		signParams.put("appid", WeChatConfig.APP_ID);// app_id
 		signParams.put("body", "商品");// 商品参数信息
@@ -161,7 +161,7 @@ public class WeChatPayController extends BaseController {
 		signParams.remove("key");// 调用统一下单无需key（商户应用密钥）
 		String requestXml = PayCommonUtil.getRequestXml(signParams);// 生成Xml格式的字符串
 		logger.error("requestXml:::" + requestXml);
-		String result = CommonUtil.httpsRequest(WeChatConfig.UNIFIED_ORDER_URL, "POST", requestXml);
+		String result = CommonUtil.httpsRequest("https://api.mch.weixin.qq.com/pay/unifiedorder", "POST", requestXml);
 		// 以post请求的方式调用统一下单接口
 		// （注：ConstantUtil.UNIFIED_ORDER_URL=https://api.mch.weixin.qq.com/pay/unifiedorder;）
 		

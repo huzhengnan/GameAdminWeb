@@ -32,6 +32,7 @@ import com.lyh.admin.model.OsaProxyConfig;
 import com.lyh.admin.model.OsaProxyRecharge;
 import com.lyh.admin.model.OsaShop;
 import com.lyh.admin.model.OsaUser;
+import com.lyh.admin.properites.AlipayConfig;
 import com.lyh.admin.service.OsaGamePlayerService;
 import com.lyh.admin.service.OsaOperatorRechargeService;
 import com.lyh.admin.service.OsaProxyConfigService;
@@ -137,10 +138,11 @@ public class AliPayController extends BaseController {
 		}
 		
 		try {
-
+			String notify_url = this.getBaseUrl(request)+"/alipay/pay/notify";// 回调地址
+			logger.error("回调通知:"+notify_url );
 			//实例化客户端
 			OsaProxyRecharge oPay = addPlayerMoney(agent, player, gold, (fetchMoneyRate * dPrice) / 100);
-			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", AlipayUtil.ALIPAY_APPID, AlipayUtil.APP_PRIVATE_KEY, "json", AlipayConstants.CHARSET_UTF8, AlipayUtil.ALIPAY_PUBLIC_KEY, "RSA2");
+			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", AlipayConfig.ALIPAY_APPID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConstants.CHARSET_UTF8, AlipayConfig.ALIPAY_PUBLIC_KEY, "RSA2");
 			//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
 			AlipayTradeAppPayRequest req = new AlipayTradeAppPayRequest();
 			//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
@@ -152,7 +154,7 @@ public class AliPayController extends BaseController {
 			model.setTotalAmount(fprice);
 			model.setProductCode("QUICK_MSECURITY_PAY");
 			req.setBizModel(model);
-			req.setNotifyUrl( AlipayUtil.NOTIFY_URL);
+			req.setNotifyUrl(notify_url);
 			try {
 			        //这里和普通的接口调用不同，使用的是sdkExecute
 			        AlipayTradeAppPayResponse resp = alipayClient.sdkExecute(req);

@@ -22,6 +22,7 @@ import com.github.pagehelper.PageInfo;
 import com.lyh.admin.model.OsaGameWorld;
 import com.lyh.admin.model.OsaGmNoticeLeft;
 import com.lyh.admin.properites.WeChatConfig;
+import com.lyh.admin.properites.WebConfig;
 import com.lyh.admin.service.OsaGmNoticeLeftService;
 import com.lyh.admin.tools.PlatformToServerConnection;
 import com.lyh.admin.tools.ShowPage;
@@ -61,7 +62,7 @@ public class NoticeboardController extends BaseController {
 		String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
 		view.addObject("list", list);
 		view.addObject("pages", pages);
-		view.addObject("channel", WeChatConfig.CHANNEL);
+		view.addObject("channel", WebConfig.CHANNEL);
 		return view;
 	}
 	
@@ -80,7 +81,7 @@ public class NoticeboardController extends BaseController {
 		ModelAndView view = new ModelAndView("/NoticeboardAddView");
 		List<OsaGameWorld> worldList = gameWorldService.getWorldList(1);
 		view.addObject("worldList", worldList);
-		view.addObject("channel", WeChatConfig.CHANNEL);
+		view.addObject("channel", WebConfig.CHANNEL);
 		return view;
 	}
 	
@@ -165,7 +166,7 @@ public class NoticeboardController extends BaseController {
 		}
 		List<OsaGameWorld> worldList = gameWorldService.getWorldList(1);
 		view.addObject("worldList", worldList);
-		view.addObject("channel", WeChatConfig.CHANNEL);
+		view.addObject("channel", WebConfig.CHANNEL);
 		return view;
 	}
 	
@@ -219,7 +220,7 @@ public class NoticeboardController extends BaseController {
 		}
 		List<OsaGameWorld> worldList = gameWorldService.getWorldList(1);
 		view.addObject("worldList", worldList);
-		view.addObject("channel", WeChatConfig.CHANNEL);
+		view.addObject("channel", WebConfig.CHANNEL);
 		return view;
 	}
 	

@@ -47,12 +47,14 @@ public abstract class ServerProperties implements IPropertiesResPath {
 			br.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			logger.error(propertiesPath+":读取配置文件异常::"+e);
+			
+			logger.error(propertiesPath+":读取配置文件异常::");
+			return null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			logger.error(propertiesPath+":读取配置文件异常::"+e);
+			
+			logger.error(propertiesPath+":读取配置文件异常::",e);
+			return null;
 		}
 		
 		finally {

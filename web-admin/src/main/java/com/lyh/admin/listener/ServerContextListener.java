@@ -8,6 +8,7 @@ import javax.servlet.ServletContextListener;
 
 import com.lyh.admin.properites.ServletPath;
 import com.lyh.admin.properites.WeChatConfig;
+import com.lyh.admin.properites.WebConfig;
 
 /**
  * ClassName: ServerContextListener <br/>
@@ -35,7 +36,7 @@ public class ServerContextListener implements ServletContextListener {
 		ServletContext sc = event.getServletContext();
 		//String CONFIG_PATH = sc.getRealPath("/");
 		ServletPath.PATH = sc.getRealPath("/");
-		WeChatConfig.loadWeChatConfigConfig(ServletPath.PATH );
+		WebConfig.loadWeChatConfigConfig(ServletPath.PATH );
 		sc.setAttribute("path", sc.getContextPath());
 		System.out.println("web-admin进来了");
 	}

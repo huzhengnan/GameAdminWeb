@@ -18,6 +18,7 @@ import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.entity.SysUser;
 import com.lyh.admin.model.OsaUser;
 import com.lyh.admin.properites.WeChatConfig;
+import com.lyh.admin.properites.WebConfig;
 import com.lyh.admin.tools.IdGenerateUtils;
 import com.lyh.admin.tools.ShowPage;
 import com.lyh.admin.tools.ToolUtils;
@@ -210,7 +211,7 @@ public class ProxyController extends BaseController {
 		
 		view.addObject("proxyId", proxyId);
 		view.addObject("inviteCode", inviteCode);
-		view.addObject("channel", WeChatConfig.CHANNEL);
+		view.addObject("channel", WebConfig.CHANNEL);
 		view.addObject("level", sysUser.getOsaUser().getProxyLevel());
 		return view;
 	}

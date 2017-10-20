@@ -72,7 +72,7 @@ public class HttpClientTest {
 		logger.error("requestXml:::" + requestXml);
 		String result;
 		try {
-			result = HttpClient.send(WeChatConfig.NOTIFY_URL,  true,requestXml.getBytes("utf-8"));
+			result = HttpClient.send("https://api.mch.weixin.qq.com/pay/unifiedorder",  true,requestXml.getBytes("utf-8"));
 			logger.error("ssss::"+result);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

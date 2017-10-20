@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.decorator.Decorator;
+
 import com.alipay.api.AlipayConstants;
 
 
@@ -19,6 +21,7 @@ import com.alipay.api.AlipayConstants;
  * @version   
  * @see       
  */
+@Decorator
 public class AlipayUtil {
 	public static final String ALIPAY_APPID = "2017092608944439"; // appid
 
@@ -26,8 +29,7 @@ public class AlipayUtil {
 
 	    public static String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi7fyPwlB0IsVPxItIezfjnYcvehG98PYGC2v/hreH9q3L1W7QwIhGNtsK5/lJCv5/H+TbV/5aO+rgvwixQJcFpn/Fcbl70LvvQBOxSALzUccXAKfvmmETnakPFzbceZh4dxXFOGng1rkNHX4qNlYpXm0vfKv4BnoTyRoy0Kl4E9GGEeu//HoM0xkN/i/5Sg4Prh2OZroRC4BVYnOftboB9nFjB5i+V8wOEqR1ZIC5UnV8GI6BV/JIv5/2h5qBZ+r8xsxpWkvPHI1NR8+3Jn6G501wNPIfjafToaNQH3WT0gicfRk3jKHJBRFzLTPP17oZ7L+FeEcim9r54dq1oj2QwIDAQAB"; // 支付宝公钥
 	    
-	    /**通知地址**/  
-		public static  String NOTIFY_URL="http://192.168.0.189:8090/game/alipay/pay/notify";
+
 //	    static {
 //	        try {
 //	            Resource resource = new ClassPathResource("alipay_private_key_pkcs8.pem");
