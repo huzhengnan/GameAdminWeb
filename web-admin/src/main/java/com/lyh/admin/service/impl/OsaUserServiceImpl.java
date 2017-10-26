@@ -1,5 +1,6 @@
 package com.lyh.admin.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,6 +11,7 @@ import com.lyh.admin.mapper.OsaUserMapper;
 import com.lyh.admin.model.OsaUser;
 import com.lyh.admin.model.OsaUserExample;
 import com.lyh.admin.service.OsaUserService;
+import com.lyh.admin.tools.ToolUtils;
 
 
 
@@ -82,12 +84,20 @@ public class OsaUserServiceImpl implements OsaUserService {
 	}
 
 	@Override
-	public List<OsaUser> getUsersByFatherName(String fatherName) {
+	public List<OsaUser> getUsersByFatherName(String fatherName,Date startDate,Date endDate,long phone,String inviteCode) {
 		// TODO Auto-generated method stub
 		OsaUserExample example = new OsaUserExample();
 		OsaUserExample.Criteria  criteria= example.createCriteria();
 		criteria.andFatherNameEqualTo(fatherName);
 		criteria.andStatusEqualTo((byte)1);
+		if (startDate != null && endDate != null){
+			criteria.andCreateTimeBetween(startDate, endDate);
+		}else if (phone > 0){
+			criteria.andMobileEqualTo(phone);
+		}else if (!ToolUtils.isStringNull(inviteCode)){
+			criteria.andInviteCodeEqualTo(inviteCode);
+		}
+		
 		return mapper.selectByExample(example);
 	}
 

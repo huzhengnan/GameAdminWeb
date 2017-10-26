@@ -45,11 +45,11 @@
 	</c:if>
 </c:forEach>
 
-
+<!--  
 <a target="_blank" href="${ctxPage}/index" class="nav-header">
 	<i class="icon-question-sign"></i>
 	帮助
-</a>
+</a>-->
 </div>
 <!--- 以上为左侧菜单栏 sidebar --->
 

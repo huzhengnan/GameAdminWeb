@@ -28,7 +28,11 @@
                                     </c:forEach>
 					</select>
 				</div>
-
+	
+			<select name="type">
+				<option value="0">金花</option>
+				<option value="1">麻将</option>
+			</select>>
 			
 				<label>玩家ID</label>
 				<input type="number" name="playerId" value="" class="input-xlarge" required="required" placeholder="请输入玩家ID">

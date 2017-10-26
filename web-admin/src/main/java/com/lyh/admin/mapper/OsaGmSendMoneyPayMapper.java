@@ -1,11 +1,9 @@
 package com.lyh.admin.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.lyh.admin.model.OsaGmSendMoneyPay;
 import com.lyh.admin.model.OsaGmSendMoneyPayExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface OsaGmSendMoneyPayMapper {
     long countByExample(OsaGmSendMoneyPayExample example);

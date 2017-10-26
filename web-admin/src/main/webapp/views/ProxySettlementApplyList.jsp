@@ -42,8 +42,8 @@
 						</td>
 						<td>
 							<a href="${ctxPage}/proxy/settlement_pay?id=${item.id}" onclick=" return confirm('你确定要与${item.name}结算${item.money}元?'); return false;">结算</a>
-							&nbsp;/&nbsp;
-							<a href="${ctxPage}/proxy/settlement_see?id=${item.id}">查看</a>
+							&nbsp;
+							<!--  <a href="${ctxPage}/proxy/settlement_see?id=${item.id}">查看</a>-->
 						</td>
 					</tr>
 				</c:forEach>

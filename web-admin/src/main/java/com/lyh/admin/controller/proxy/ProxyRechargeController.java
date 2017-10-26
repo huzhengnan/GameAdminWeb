@@ -103,6 +103,9 @@ public class ProxyRechargeController extends BaseController {
 		int fMoney = Integer.parseInt(proxyUser.getRemainMoney());
 
 		proxyUser.setRemainMoney("" + (fMoney - money));
+		proxyUser.setTotalFetchMoney(proxyUser.getTotalFetchMoney()+fetchMoney);
+		proxyUser.setRemainFetchMoney(proxyUser.getRemainFetchMoney()+fetchMoney);
+
 
 		userService.update(proxyUser);
 		OsaProxyRecharge pay = new OsaProxyRecharge();

@@ -1,11 +1,9 @@
 package com.lyh.admin.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.lyh.admin.model.OsaGmForbidmsg;
 import com.lyh.admin.model.OsaGmForbidmsgExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface OsaGmForbidmsgMapper {
     long countByExample(OsaGmForbidmsgExample example);

@@ -687,4 +687,149 @@ public class ToolUtils {
 		}
 		return map;
 	}
+	
+	
+	/**
+	 * 返回普通sql日期
+	 * 
+	 * @param dates
+	 * @return
+	 */
+	public static Date getSqlDate(String dates) {
+		Date sqlDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			java.util.Date date = sdf.parse(dates);
+			sqlDate = new Date(date.getTime());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sqlDate;
+	}
+	
+	
+	/** 
+	 * getDateStringFromat:(). <br/> 
+	 * TODO().<br/> 
+	 *年月日字符串格式
+	 * @author lyh 
+	 * @param date
+	 * @return 
+	 */  
+	public static String getDateStringFromat(Date date){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(date);
+	}
+	
+	
+	/**
+	 * 字符串时间 转换为Date
+	 * 
+	 * @param dates
+	 * @return
+	 */
+	public static Date getDateByStr(String dates) {
+		Date sqlDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			java.util.Date date = sdf.parse(dates);
+			sqlDate = new Date(date.getTime());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sqlDate;
+	}
+	
+	/**
+	 * 字符串时间 转换为Date
+	 * 
+	 * @param dates
+	 * @return
+	 */
+	public static Date getDateByStr2(String dates) {
+		Date sqlDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			java.util.Date date = sdf.parse(dates);
+			sqlDate = new Date(date.getTime());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sqlDate;
+	}
+	
+	/**
+	 * 返回当前精确sql日期
+	 * 
+	 * @return
+	 */
+	public static Timestamp getSqlTime() {
+		Timestamp sqlDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			java.util.Date date = sdf.parse(getNowDate("yyyy-MM-dd HH:mm:ss"));
+			sqlDate = new Timestamp(date.getTime());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sqlDate;
+	}
+	
+	/**
+	 * 字符串转换成日期
+	 * 
+	 * @param str
+	 * @return date
+	 */
+	public static Date StrToDate(String str) {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = format.parse(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+	
+	/** 
+	 * getStartDateOneDay:(). <br/> 
+	 * TODO().<br/> 
+	 * 一天的开始时间(从0点开始)
+	 * @author lyh 
+	 * @param strymd年月日
+	 * @return 
+	 */  
+	public static Date getStartDateOneDay(String strymd){
+		strymd+=" 00:00:00";
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = format.parse(strymd);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+	
+	/** 
+	 * getEndDateOneDay:(). <br/> 
+	 * TODO().<br/> 
+	 * 
+	 * @author lyh 
+	 * @param strym一天结束时间
+	 * @return 
+	 */  
+	public static Date getEndDateOneDay(String strymd){
+		strymd+=" 23:59:59";
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = format.parse(strymd);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
 }

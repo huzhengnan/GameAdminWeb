@@ -1,5 +1,6 @@
 package com.lyh.admin.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -74,15 +75,31 @@ public class OsaGamePlayerServiceImpl implements OsaGamePlayerService {
 	}
 
 	@Override
-	public List<OsaGamePlayer> getGamePlayersByInviteCode(String inviteCode) {
+	public List<OsaGamePlayer> getGamePlayersByInviteCode(String inviteCode,Date startDate,Date endDate,long playerId) {
 		// TODO Auto-generated method stub
 		OsaGamePlayerExample example = new OsaGamePlayerExample();
 		OsaGamePlayerExample.Criteria criteria = example.createCriteria();
 		if (!ToolUtils.isStringNull(inviteCode)){
 			criteria.andInviteCodeEqualTo(inviteCode);
 		}
+		if (startDate != null && endDate != null){
+			criteria.andCreateTimeBetween(startDate, endDate);
+		}else if (playerId > 0){
+			criteria.andPlayerIdEqualTo(playerId);
+		}
 		
 		return mapper.selectByExample(example);
+	}
+
+	@Override
+	public int getGamePlayerNumsByInviteCode(String inviteCode) {
+		// TODO Auto-generated method stub
+		OsaGamePlayerExample example = new OsaGamePlayerExample();
+		OsaGamePlayerExample.Criteria criteria = example.createCriteria();
+		if (!ToolUtils.isStringNull(inviteCode)){
+			criteria.andInviteCodeEqualTo(inviteCode);
+		}
+		return (int)mapper.countByExample(example);
 	}
 	
 }

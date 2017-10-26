@@ -31,28 +31,28 @@ public class InviteCodeTask {
 	 */
 	public synchronized void work() {
 		
-		while (!inviteCodeList.isEmpty()) {
-			
-			GmInviteCodeProtocolRequest req = inviteCodeList.poll();
-			try {
-				OsaGameWorld opGameworld = gameWorldService.getWorldByWorldId(req.getServerId());
-				
-				if (opGameworld == null){
-					continue;
-				}
-				
-				OsaGamePlayer passport = gamePlayerService.getGamePlayerByOpenId(req.getOpenId());
-				if (passport != null ){
-					passport.setInviteCode(req.getInviteCode());
-					
-					gamePlayerService.update(passport);
-				}
-				GmInviteCodeHttpProtocol resp = (GmInviteCodeHttpProtocol) PlatformToServerConnection.sendPlatformToServer(opGameworld.getIp(), opGameworld.getServerUrl(), req);
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.error("邀请码出异常了::",e);
-			}
-		}
+//		while (!inviteCodeList.isEmpty()) {
+//			
+//			GmInviteCodeProtocolRequest req = inviteCodeList.poll();
+//			try {
+//				OsaGameWorld opGameworld = gameWorldService.getWorldByWorldId(req.getServerId());
+//				
+//				if (opGameworld == null){
+//					continue;
+//				}
+//				
+//				OsaGamePlayer passport = gamePlayerService.getGamePlayerByOpenId(req.getOpenId());
+//				if (passport != null ){
+//					passport.setInviteCode(req.getInviteCode());
+//					
+//					gamePlayerService.update(passport);
+//				}
+//				GmInviteCodeHttpProtocol resp = (GmInviteCodeHttpProtocol) PlatformToServerConnection.sendPlatformToServer(opGameworld.getIp(), opGameworld.getServerUrl(), req);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				logger.error("邀请码出异常了::",e);
+//			}
+//		}
 		
 	}
 	

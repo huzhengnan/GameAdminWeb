@@ -1,5 +1,6 @@
 package com.lyh.admin.controller.proxy;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,15 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.game.protocol.gm.GmInviteCodeHttpProtocol;
+import com.game.protocol.gm.GmInviteCodeProtocolRequest;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lyh.admin.controller.BaseController;
 import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.entity.SysUser;
+import com.lyh.admin.model.OsaGamePlayer;
+import com.lyh.admin.model.OsaGameWorld;
 import com.lyh.admin.model.OsaUser;
 import com.lyh.admin.properites.WeChatConfig;
 import com.lyh.admin.properites.WebConfig;
 import com.lyh.admin.tools.IdGenerateUtils;
+import com.lyh.admin.tools.PlatformToServerConnection;
 import com.lyh.admin.tools.ShowPage;
 import com.lyh.admin.tools.ToolUtils;
 
@@ -33,8 +39,6 @@ import com.lyh.admin.tools.ToolUtils;
 @Controller
 public class ProxyController extends BaseController {
 	
-	private Object agentListService;
-	
 	/**
 	 * getProxyMyList:(). <br/>
 	 * TODO().<br/>
@@ -47,18 +51,42 @@ public class ProxyController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/proxy/my_list")
-	public ModelAndView getProxyMyList(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage) {
+	public ModelAndView getProxyMyList(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage, String startDate, String endDate, String phone, String inviteCode) {
 		ModelAndView view = new ModelAndView("/ProxyMyList");
 		PageHelper.startPage(curPage, ShowPage.PAGE_SIZE);
 		SysUser sysUser = ShiroSysUser.getShiroSubject();
 		
-		List<OsaUser> list = userService.getUsersByFatherName(sysUser.getOsaUser().getUserName());
+		List<OsaUser> list = new ArrayList<OsaUser>();
+		Date dStartDate = null;
+		Date dEndDate = null;
+		long dPhone = 0;
+		if (!ToolUtils.isStringNull(startDate)) {
+			
+			dStartDate = ToolUtils.getStartDateOneDay(startDate);
+			if (ToolUtils.isStringNull(endDate)) {
+				endDate = ToolUtils.getDateStringFromat(new Date(System.currentTimeMillis()));
+			}
+			
+			dEndDate = ToolUtils.getEndDateOneDay(endDate);
+			
+		} else if (!ToolUtils.isStringNull(phone) && ToolUtils.isPhoneLegal(phone)) {
+			dPhone = Long.parseLong(phone);
+		}
+		
+		if (!ToolUtils.isStringNull(inviteCode)) {
+			inviteCode = inviteCode.trim();
+		}
+		list = userService.getUsersByFatherName(sysUser.getOsaUser().getUserName(), dStartDate, dEndDate, dPhone, inviteCode);
 		
 		PageInfo<OsaUser> pageInfo = new PageInfo<OsaUser>(list);
 		String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
 		view.addObject("list", list);
 		view.addObject("pages", pages);
 		view.addObject("name", sysUser.getOsaUser().getUserName());
+		// view.addObject("startDate", startDate);
+		// view.addObject("endDate", endDate);
+		// view.addObject("phone", phone);
+		// view.addObject("inivteCode", inviteCode);
 		return view;
 	}
 	
@@ -74,7 +102,7 @@ public class ProxyController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/proxy/see_sub_proxy")
-	public ModelAndView getProxySubProxy(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage) {
+	public ModelAndView getProxySubProxy(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage, String startDate, String endDate, String phone, String inviteCode) {
 		ModelAndView view = new ModelAndView("/ProxyMyList");
 		PageHelper.startPage(curPage, ShowPage.PAGE_SIZE);
 		// SysUser sysUser =ShiroSysUser.getShiroSubject();
@@ -82,7 +110,26 @@ public class ProxyController extends BaseController {
 		
 		OsaUser user = userService.findById(Long.parseLong(id));
 		if (user != null) {
-			List<OsaUser> list = userService.getUsersByFatherName(user.getUserName());
+			Date dStartDate = null;
+			Date dEndDate = null;
+			long dPhone = 0;
+			if (!ToolUtils.isStringNull(startDate)) {
+				
+				dStartDate = ToolUtils.getStartDateOneDay(startDate);
+				if (ToolUtils.isStringNull(endDate)) {
+					endDate = ToolUtils.getDateStringFromat(new Date(System.currentTimeMillis()));
+				}
+				
+				dEndDate = ToolUtils.getEndDateOneDay(endDate);
+				
+			} else if (!ToolUtils.isStringNull(phone) && ToolUtils.isPhoneLegal(phone)) {
+				dPhone = Long.parseLong(phone);
+				
+			}
+			if (!ToolUtils.isStringNull(inviteCode)) {
+				inviteCode = inviteCode.trim();
+			}
+			List<OsaUser> list = userService.getUsersByFatherName(user.getUserName(), dStartDate, dEndDate, dPhone, inviteCode);
 			
 			PageInfo<OsaUser> pageInfo = new PageInfo<OsaUser>(list);
 			String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
@@ -111,15 +158,38 @@ public class ProxyController extends BaseController {
 			String id = request.getParameter("id");
 			OsaUser oUser = userService.findById(Long.parseLong(id));
 			if (oUser != null) {
-				oUser.setStatus((byte) 0);
-				userService.update(oUser);
+				int size = 0;
+				List<OsaGamePlayer> userList = gamePlayerService.getGamePlayersByInviteCode(oUser.getInviteCode(), null, null, 0);
+				for (OsaGamePlayer gamePlayer : userList) {
+					GmInviteCodeProtocolRequest req = new GmInviteCodeProtocolRequest();
+					req.setInviteCode("");
+					req.setOpenId(gamePlayer.getOpenId());
+					req.setServerId(gamePlayer.getWorldId());
+					
+					OsaGameWorld opGameworld = gameWorldService.getWorldByWorldId(gamePlayer.getWorldId());
+					GmInviteCodeHttpProtocol resp = (GmInviteCodeHttpProtocol) PlatformToServerConnection.sendPlatformToServer(opGameworld.getIp(), opGameworld.getServerUrl(), req);
+					if (resp != null && resp.getStatus() == 1) {
+						logger.error("解绑成功::" + gamePlayer.getPlayerId());
+						gamePlayer.setInviteCode("");
+						gamePlayerService.update(gamePlayer);
+						size++;
+					} else {
+						logger.error("解绑失败::" + gamePlayer.getPlayerId());
+					}
+				}
+				
+				if (userList.size() == size) {
+					// oUser.setStatus((byte) 0);
+					userService.delete(oUser.getId());
+				}
+				
 			}
 		}
 		
 		PageHelper.startPage(curPage, ShowPage.PAGE_SIZE);
 		SysUser sysUser = ShiroSysUser.getShiroSubject();
 		
-		List<OsaUser> list = userService.getUsersByFatherName(sysUser.getOsaUser().getUserName());
+		List<OsaUser> list = userService.getUsersByFatherName(sysUser.getOsaUser().getUserName(), null, null, 0, null);
 		
 		PageInfo<OsaUser> pageInfo = new PageInfo<OsaUser>(list);
 		String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
@@ -163,11 +233,11 @@ public class ProxyController extends BaseController {
 					msg = "电话号码已存在,请另外填写";// 电话号码已存在,请另外填写
 				} else if (userService.getUsersByInviteCode(inviteCode) != null) {
 					msg = "邀请码已存在";// 微信号已存在,请另外填写
-				} else if (!ToolUtils.isNumAndLetter(name,4,8) || name.length() > 8) {
+				} else if (!ToolUtils.isNumAndLetter(name, 4, 8) || name.length() > 8) {
 					msg = "用户名只能是字母和数字";
 				} else if (realName.length() > 8) {
 					msg = "真实姓名过长";
-				} else if (password.length() > 6 ||ToolUtils.isContainChinese(password)) {
+				} else if (password.length() > 6 || ToolUtils.isContainChinese(password)) {
 					msg = "密码过长或不能包含中文";
 				}
 				
@@ -185,7 +255,7 @@ public class ProxyController extends BaseController {
 					oUser.setInviteCode(inviteCode);
 					oUser.setPassword(password);
 					oUser.setRealName(realName);
-					oUser.setStatus((byte)1);
+					oUser.setStatus((byte) 1);
 					oUser.setRemainMoney("0");
 					oUser.setEmail("1548@126.com");
 					oUser.setTemplate("schoolpainting");

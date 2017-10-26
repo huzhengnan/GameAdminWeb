@@ -21,6 +21,6 @@ public interface OsaProxyRechargeFetchService extends BaseService<OsaProxyRechar
 	 * @param status
 	 * @return 
 	 */  
-	List<OsaProxyRechargeFetch> getProxyRechargeFetchList(int status);
+	List<OsaProxyRechargeFetch> getProxyRechargeFetchList(String name,int status);
 }
   

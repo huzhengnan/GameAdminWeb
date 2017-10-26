@@ -1,5 +1,7 @@
 package com.lyh.admin.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.lyh.admin.controller.sys.MessageController;
 import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.service.OsaUserService;
+import com.lyh.admin.shiro.UsernamePasswordLoginToken;
 
 /**
  * ClassName:LoginController <br/>
@@ -25,8 +28,6 @@ import com.lyh.admin.service.OsaUserService;
  */
 @Controller
 public class LoginController extends BaseController {
-	@Autowired
-	private OsaUserService sysService;
 	
 	/**
 	 * login:(). <br/>
@@ -61,47 +62,54 @@ public class LoginController extends BaseController {
 		// }
 		// }
 		// 取出session的验证码（正确的验证码）
-		String validateCode = (String) session.getAttribute("validateCode");
+		// String validateCode = (String) session.getAttribute("validateCode");
 		
 		// 取出页面的验证码
 		// 输入的验证和session中的验证进行对比
-		String randomcode = request.getParameter("verify_code");
-		if (randomcode != null && validateCode != null && randomcode.equals(validateCode)) {
-			String userName = request.getParameter("username");
-			String password = request.getParameter("password");
-			Subject currentUser = SecurityUtils.getSubject();
-			if (!currentUser.isAuthenticated()) {
-				UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
-				try {
-					currentUser.login(token);
-					String ip = getIpAddr(request);
-					ShiroSysUser.getShiroSubject().getOsaUser().setLoginIp(ip);
-					sysService.update(ShiroSysUser.getShiroSubject().getOsaUser());
-					// session.setAttribute("sysUser", currentUser.getPrincipal());
-				} catch (Exception e) {
-					logger.error("登录错误:");
-					// return "/login";
-					
-					if (e instanceof AuthenticationException) {
-						AuthenticationException ex = (AuthenticationException) e;
-						if (ex.getMessage().equals("null")) {
-							return MessageController.exitWithMsg(null, "查无此人", "登录", "/index", 3, model);
-						} else if (ex.getMessage().equals("user")) {
-							return MessageController.exitWithMsg(null, "查无此人!", "登录", "/index", 3, model);
-						} else if (ex.getMessage().equals("password")) {
-							return MessageController.exitWithMsg(null, "密码有问题!", "登录", "/index", 3, model);
-						} else if (ex.getMessage().equals("status")) {
-							return MessageController.exitWithMsg(null, "此用户被禁!", "登录", "/index", 3, model);
-						}
-					}
+		// String randomcode = request.getParameter("verify_code");
+		// if (randomcode != null && validateCode != null && randomcode.equals(validateCode)) {
+		String userName = request.getParameter("username");
+		String password = request.getParameter("password");
+		boolean rememberMe = request.getParameter("rememberMe") == null ? false : true;
+		String ip = getIpAddr(request);
+		Subject currentUser = SecurityUtils.getSubject();
+		
+		if (!currentUser.isAuthenticated()) {
+			UsernamePasswordLoginToken token = new UsernamePasswordLoginToken(userName, password, rememberMe, ip, "1");
+			try {
+				currentUser.login(token);
+				ShiroSysUser.getShiroSubject().getOsaUser().setLoginIp(ip);
+				userService.update(ShiroSysUser.getShiroSubject().getOsaUser());
+				// session.setAttribute("sysUser", currentUser.getPrincipal());
+			} catch (AuthenticationException e) {
+				
+				String exceptionClassName = e.getMessage();
+				// (String) request.getAttribute("shiroLoginFailure");
+				logger.error("登录错误:" + exceptionClassName);
+				if (exceptionClassName.equals("null")) {
+					return MessageController.exitWithMsg(null, "查无此人", "登录", "/index", 3, model);
+				} else if (exceptionClassName.equals("user")) {
+					return MessageController.exitWithMsg(null, "查无此人!", "登录", "/index", 3, model);
+				} else if (exceptionClassName.equals("password")) {
+					return MessageController.exitWithMsg(null, "密码有问题!", "登录", "/index", 3, model);
+				} else if (exceptionClassName.equals("status")) {
+					return MessageController.exitWithMsg(null, "此用户被禁!", "登录", "/index", 3, model);
 				}
 			}
-		} else {
-			return MessageController.exitWithMsg(null, "验证码有问题", "登录", "/index", 3, model);
 		}
 		
 		// 此方法不处理登陆成功（认证成功），shiro认证成功会自动跳转到上一个请求路径
 		// 登陆失败还到login页面
+		return "redirect:/index";
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session, HttpServletRequest request) {
+		Subject currentUser = SecurityUtils.getSubject();
+		if (currentUser.isAuthenticated()) {
+			currentUser.logout();
+			request.removeAttribute("sysUser");
+		}
 		return "redirect:/index";
 	}
 }

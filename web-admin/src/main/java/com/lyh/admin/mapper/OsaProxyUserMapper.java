@@ -1,11 +1,9 @@
 package com.lyh.admin.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.lyh.admin.model.OsaProxyUser;
 import com.lyh.admin.model.OsaProxyUserExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface OsaProxyUserMapper {
     long countByExample(OsaProxyUserExample example);

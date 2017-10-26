@@ -13,8 +13,12 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,7 +108,7 @@ public class MyRealm extends AuthorizingRealm {
 		
 		// token是用户输入的用户名和密码
 		// 第一步从token中取出用户名
-		UsernamePasswordToken userCode = (UsernamePasswordToken) token;
+		UsernamePasswordLoginToken userCode = (UsernamePasswordLoginToken) token;
 		
 		// 第二步：根据用户输入的userCode从数据库查询
 		OsaUser user = null;
@@ -201,7 +205,7 @@ public class MyRealm extends AuthorizingRealm {
 		
 		// 将activeUser设置simpleAuthenticationInfo
 		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(sysUser, password, ByteSource.Util.bytes(salt), this.getName());
-		
+		setSession("sysUser", sysUser);
 		return simpleAuthenticationInfo;
 	}
 	
@@ -236,11 +240,52 @@ public class MyRealm extends AuthorizingRealm {
 		
 		return simpleAuthorizationInfo;
 	}
+//	
+//	// 清除缓存
+//	public void clearCached() {
+//		PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
+//		super.clearCache(principals);
+//	}
 	
-	// 清除缓存
-	public void clearCached() {
-		PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
-		super.clearCache(principals);
-	}
 	
+	  /**
+	     * 更新用户授权信息缓存.
+	     */
+	    public void clearCachedAuthorizationInfo(String principal) {
+	        SimplePrincipalCollection principals = new SimplePrincipalCollection(principal, getName());
+	        clearCachedAuthorizationInfo(principals);
+	    }
+
+	    /**
+	     * 清除所有用户授权信息缓存.
+	     */
+	    public void clearAllCachedAuthorizationInfo() {
+	        Cache<Object, AuthorizationInfo> cache = getAuthorizationCache();
+	        if (cache != null) {
+	            for (Object key : cache.keys()) {
+	                cache.remove(key);
+	            }
+	        }
+	    }
+	    
+//	    @PostConstruct
+//	    public void initCredentialsMatcher() {// MD5加密
+//	        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(ALGORITHM);
+//	        setCredentialsMatcher(matcher);
+//	    }
+	    /**
+	     * 将一些数据放到ShiroSession中,以便于其它地方使用
+	     *
+	     * 比如Controller,使用时直接用HttpSession.getAttribute(key)就可以取到
+	     */
+	    private void setSession(Object key, Object value) {
+	        Subject subject = SecurityUtils.getSubject();
+	        if (null != subject) {
+	            Session session = subject.getSession();
+	            logger.error("Session默认超时时间为[" + session.getTimeout() + "]毫秒");
+	            if (null != session) {
+	                session.setAttribute(key, value);
+	            }
+	        }
+	    }
 }

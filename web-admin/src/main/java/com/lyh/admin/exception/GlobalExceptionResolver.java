@@ -22,7 +22,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 		// TODO Auto-generated method stub
 		 //向前台返回错误信息
-	        ModelAndView modelAndView = new ModelAndView("/page/commons/error");
+	        ModelAndView modelAndView = new ModelAndView("/Error");
 	        modelAndView.addObject("message", ex.getMessage());
 	        //modelAndView.setViewName("/WEB-INF/jsp/error.jsp");
 	        logger.error("有异常::",ex);

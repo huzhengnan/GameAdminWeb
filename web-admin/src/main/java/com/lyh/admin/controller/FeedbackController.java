@@ -63,7 +63,7 @@ public class FeedbackController extends BaseController {
 		String phone = req.getParameter("phone");
 
 		String res = "1";
-	
+		logger.error("feedback::"+openId);
 		if (phone != null && openId != null &&content != null &&  ToolUtils.isPhoneLegal(phone)){
 			OsaFeedbackQuestion quest = new OsaFeedbackQuestion();
 			quest.setOpenId(openId);

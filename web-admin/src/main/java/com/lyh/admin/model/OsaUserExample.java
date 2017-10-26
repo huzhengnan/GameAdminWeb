@@ -1626,6 +1626,126 @@ public class OsaUserExample {
             addCriterion("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
+
+        public Criteria andRemainFetchMoneyIsNull() {
+            addCriterion("remain_fetch_money is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyIsNotNull() {
+            addCriterion("remain_fetch_money is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyEqualTo(Double value) {
+            addCriterion("remain_fetch_money =", value, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyNotEqualTo(Double value) {
+            addCriterion("remain_fetch_money <>", value, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyGreaterThan(Double value) {
+            addCriterion("remain_fetch_money >", value, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyGreaterThanOrEqualTo(Double value) {
+            addCriterion("remain_fetch_money >=", value, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyLessThan(Double value) {
+            addCriterion("remain_fetch_money <", value, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyLessThanOrEqualTo(Double value) {
+            addCriterion("remain_fetch_money <=", value, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyIn(List<Double> values) {
+            addCriterion("remain_fetch_money in", values, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyNotIn(List<Double> values) {
+            addCriterion("remain_fetch_money not in", values, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyBetween(Double value1, Double value2) {
+            addCriterion("remain_fetch_money between", value1, value2, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemainFetchMoneyNotBetween(Double value1, Double value2) {
+            addCriterion("remain_fetch_money not between", value1, value2, "remainFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyIsNull() {
+            addCriterion("total_fetch_money is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyIsNotNull() {
+            addCriterion("total_fetch_money is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyEqualTo(Double value) {
+            addCriterion("total_fetch_money =", value, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyNotEqualTo(Double value) {
+            addCriterion("total_fetch_money <>", value, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyGreaterThan(Double value) {
+            addCriterion("total_fetch_money >", value, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyGreaterThanOrEqualTo(Double value) {
+            addCriterion("total_fetch_money >=", value, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyLessThan(Double value) {
+            addCriterion("total_fetch_money <", value, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyLessThanOrEqualTo(Double value) {
+            addCriterion("total_fetch_money <=", value, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyIn(List<Double> values) {
+            addCriterion("total_fetch_money in", values, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyNotIn(List<Double> values) {
+            addCriterion("total_fetch_money not in", values, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyBetween(Double value1, Double value2) {
+            addCriterion("total_fetch_money between", value1, value2, "totalFetchMoney");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalFetchMoneyNotBetween(Double value1, Double value2) {
+            addCriterion("total_fetch_money not between", value1, value2, "totalFetchMoney");
+            return (Criteria) this;
+        }
     }
 
     /**

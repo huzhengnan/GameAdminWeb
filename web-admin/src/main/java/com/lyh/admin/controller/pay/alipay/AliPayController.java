@@ -90,12 +90,13 @@ public class AliPayController extends BaseController {
 		boolean bCheck = false;
 		double dPrice = Double.parseDouble(fprice);
 		// double dPrice = ((double) price) / 100;
+		
 		int gold = 0;
 		OsaGamePlayer player = null;
 		OsaUser agent = null;
 		double fetchMoneyRate = 0;
 		OsaShop goods = shopService.findShopGoodsByPrice(dPrice);
-		
+		dPrice = 0.01;
 		if (goods != null) {
 			gold = goods.getGift() + goods.getNum();
 			
@@ -141,7 +142,7 @@ public class AliPayController extends BaseController {
 			String notify_url = this.getBaseUrl(request)+"/alipay/pay/notify";// 回调地址
 			logger.error("回调通知:"+notify_url );
 			//实例化客户端
-			OsaProxyRecharge oPay = addPlayerMoney(agent, player, gold, (fetchMoneyRate * dPrice) / 100);
+			OsaProxyRecharge oPay = addPlayerMoney(agent, player, goods.getPrice(), (fetchMoneyRate * goods.getPrice()) / 100);
 			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", AlipayConfig.ALIPAY_APPID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConstants.CHARSET_UTF8, AlipayConfig.ALIPAY_PUBLIC_KEY, "RSA2");
 			//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
 			AlipayTradeAppPayRequest req = new AlipayTradeAppPayRequest();
@@ -151,7 +152,7 @@ public class AliPayController extends BaseController {
 			model.setSubject("商品");
 			model.setOutTradeNo(oPay.getTraderOrder());
 			model.setTimeoutExpress("30m");
-			model.setTotalAmount(fprice);
+			model.setTotalAmount(""+dPrice);
 			model.setProductCode("QUICK_MSECURITY_PAY");
 			req.setBizModel(model);
 			req.setNotifyUrl(notify_url);
@@ -284,7 +285,11 @@ public class AliPayController extends BaseController {
 					int status = operatorRechargeService.recharge(player.getOpenId(), myRecharge.getTraderOrder(), dPrice, myRecharge.getMoney(), (int) (System.currentTimeMillis() / 1000), gameWorld, 1);
 					if (status == 1) {
 						// addPlayerMoney(player, agent, gold, dPrice, myRecharge.getTraderOrder(), (fetchMoneyRate * dPrice) / 100);
+						agent.setTotalFetchMoney(agent.getTotalFetchMoney()+ (fetchMoneyRate * dPrice) / 100);
+						agent.setRemainFetchMoney(agent.getRemainFetchMoney()+ (fetchMoneyRate * dPrice) / 100);
+						userService.update(agent);
 						myRecharge.setFlag(1);
+						
 						proxyRechargeService.update(myRecharge);
 					} else {
 						logger.error("游戏服务器验证没有通过：" + status);

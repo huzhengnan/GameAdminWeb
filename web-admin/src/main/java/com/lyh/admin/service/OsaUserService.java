@@ -1,5 +1,6 @@
 package com.lyh.admin.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.lyh.admin.model.OsaUser;
@@ -62,9 +63,9 @@ public interface OsaUserService extends BaseService<OsaUser> {
 	 * @param fatherName
 	 * @return 
 	 */  
-	List<OsaUser> getUsersByFatherName(String fatherName);
+	List<OsaUser> getUsersByFatherName(String fatherName,Date startDate,Date endDate,long phone,String inviteCode);
 	
 	
-
+	
 }
   

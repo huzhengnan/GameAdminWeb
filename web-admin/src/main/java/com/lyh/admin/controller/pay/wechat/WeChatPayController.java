@@ -96,7 +96,10 @@ public class WeChatPayController extends BaseController {
 		boolean bCheck = false;
 		int price = Integer.parseInt(fprice);
 		double dPrice = ((double) price) / 100;
+	
 		OsaShop goods = shopService.findShopGoodsByPrice(dPrice);
+		
+		logger.error(fprice+":统一订单号::"+openId);
 		OsaGamePlayer player = null;
 		OsaUser agent = null;
 		double fetchMoneyRate = 0;
@@ -297,7 +300,7 @@ public class WeChatPayController extends BaseController {
 								String trade = String.valueOf(map.get("out_trade_no"));
 								int status = operatorRechargeService.recharge(player.getOpenId(), trade,dPrice,gold, (int) (System.currentTimeMillis() / 1000), worldServer,1);
 								if (status == 1) {
-									addPlayerMoney(agent, player ,gold,(fetchMoneyRate * dPrice) / 100);
+									addPlayerMoney(agent, player ,dPrice,(fetchMoneyRate * dPrice) / 100);
 									returnMap.put("return_code", "SUCCESS");
 									logger.error("返回结果通知::成功" + map.get("attach"));
 								} else {
@@ -369,10 +372,11 @@ public class WeChatPayController extends BaseController {
 	@Transactional
 	public void addPlayerMoney(OsaUser proxyUser, OsaGamePlayer gamePlayer, double money,double fetchMoney) {
 		int fMoney = Integer.parseInt(proxyUser.getRemainMoney());
-
+		proxyUser.setTotalFetchMoney(proxyUser.getTotalFetchMoney()+fetchMoney);
+		proxyUser.setRemainFetchMoney(proxyUser.getRemainFetchMoney()+fetchMoney);
 		//proxyUser.setRemainMoney("" + (fMoney - money));
 
-	//	userService.update(proxyUser);
+		userService.update(proxyUser);
 		OsaProxyRecharge pay = new OsaProxyRecharge();
 		pay.setProxyName(proxyUser.getUserName());
 		pay.setIsProxy((byte) 0);

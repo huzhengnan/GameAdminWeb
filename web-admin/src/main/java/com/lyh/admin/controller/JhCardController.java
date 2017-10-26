@@ -34,6 +34,7 @@ public class JhCardController extends BaseController {
 		if (this.isPost(request)){
 			String worldId = request.getParameter("worldId");
 			String playerId = request.getParameter("playerId");
+			String gameType = request.getParameter("type");
 			OsaGameWorld gameWorld= gameWorldService.getWorldByWorldId(worldId);
 			// 发给后端
 			String result = "1";
@@ -41,8 +42,8 @@ public class JhCardController extends BaseController {
 				long player_id= Long.parseLong(playerId);
 				
 				GmJHPlayerProtocolRequest req = new GmJHPlayerProtocolRequest();
-				req.setPlayerName(playerId);
-			
+				req.setPlayerId(playerId);
+				req.setGameType(Integer.parseInt(gameType));
 				if (gameWorld != null) {
 					//logger.error("来了没有没有朋");
 					GmJHPlayerHttpProtocol resp = (GmJHPlayerHttpProtocol) PlatformToServerConnection.sendPlatformToServer(gameWorld.getIp(), gameWorld.getServerUrl(), req);

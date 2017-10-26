@@ -120,6 +120,16 @@ public class OsaUser implements Serializable {
     private Date createTime;
 
     /**
+     * 剩余未提现
+     */
+    private Double remainFetchMoney;
+
+    /**
+     * 总提现金额
+     */
+    private Double totalFetchMoney;
+
+    /**
      * osa_user
      */
     private static final long serialVersionUID = 1L;
@@ -308,6 +318,22 @@ public class OsaUser implements Serializable {
         this.createTime = createTime;
     }
 
+    public Double getRemainFetchMoney() {
+        return remainFetchMoney;
+    }
+
+    public void setRemainFetchMoney(Double remainFetchMoney) {
+        this.remainFetchMoney = remainFetchMoney;
+    }
+
+    public Double getTotalFetchMoney() {
+        return totalFetchMoney;
+    }
+
+    public void setTotalFetchMoney(Double totalFetchMoney) {
+        this.totalFetchMoney = totalFetchMoney;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -337,6 +363,8 @@ public class OsaUser implements Serializable {
         sb.append(", remainMoney=").append(remainMoney);
         sb.append(", bindPlayerId=").append(bindPlayerId);
         sb.append(", createTime=").append(createTime);
+        sb.append(", remainFetchMoney=").append(remainFetchMoney);
+        sb.append(", totalFetchMoney=").append(totalFetchMoney);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

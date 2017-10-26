@@ -217,7 +217,13 @@ public class LogicHandler implements MessageListener {
 				opOssQlzPassport.setCreateTime(new Date(obj.getLoginTime()));
 				
 				opOssQlzPassport.setPlayerId(obj.getPlayerId());
-				gamePlayerService.insert(opOssQlzPassport);
+				
+				if  ( gamePlayerService.findById(obj.getPlayerId()) != null){
+					gamePlayerService.update(opOssQlzPassport);
+				}else {
+				
+					gamePlayerService.insert(opOssQlzPassport);
+				}
 				gameLogPlayer.put(obj.getUserName(), opOssQlzPassport);
 			} else {
 				gamePlayer = new OsaGamePlayer();

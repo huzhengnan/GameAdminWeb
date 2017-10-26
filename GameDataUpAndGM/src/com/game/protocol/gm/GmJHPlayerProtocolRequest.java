@@ -24,15 +24,28 @@ public class GmJHPlayerProtocolRequest extends DataUpBase implements IMsgCode {
 	}
 	
 	/**玩家名称 **/
-	private String playerName;
+	private String playerId;
 
-	public String getPlayerName() {
-		return playerName;
+	/**0=金花,1=麻将**/  
+	private int  gameType = 1;
+	
+	public String getPlayerId() {
+		return playerId;
 	}
 
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
+	public void setPlayerId(String playerId) {
+		this.playerId = playerId;
 	}
+
+	public int getGameType() {
+		return gameType;
+	}
+
+	public void setGameType(int gameType) {
+		this.gameType = gameType;
+	}
+	
+	
 	
 	
 }

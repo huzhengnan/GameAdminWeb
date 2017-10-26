@@ -25,6 +25,8 @@
     <result column="remain_money" jdbcType="VARCHAR" property="remainMoney" />
     <result column="bind_player_id" jdbcType="BIGINT" property="bindPlayerId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remain_fetch_money" jdbcType="DOUBLE" property="remainFetchMoney" />
+    <result column="total_fetch_money" jdbcType="DOUBLE" property="totalFetchMoney" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -87,7 +89,8 @@
   <sql id="Base_Column_List">
     id, user_name, password, real_name, mobile, email, user_desc, login_time, status, 
     login_ip, user_group, template, shortcuts, show_quicknote, wechat, is_proxy, bank, 
-    invite_code, proxy_level, father_name, remain_money, bind_player_id, create_time
+    invite_code, proxy_level, father_name, remain_money, bind_player_id, create_time, 
+    remain_fetch_money, total_fetch_money
   </sql>
   <select id="selectByExample" parameterType="com.lyh.admin.model.OsaUserExample" resultMap="BaseResultMap">
     select
@@ -128,7 +131,8 @@
       shortcuts, show_quicknote, wechat, 
       is_proxy, bank, invite_code, 
       proxy_level, father_name, remain_money, 
-      bind_player_id, create_time)
+      bind_player_id, create_time, remain_fetch_money, 
+      total_fetch_money)
     values (#{id,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{realName,jdbcType=VARCHAR}, #{mobile,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR}, 
       #{userDesc,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, 
@@ -136,7 +140,8 @@
       #{shortcuts,jdbcType=VARCHAR}, #{showQuicknote,jdbcType=INTEGER}, #{wechat,jdbcType=VARCHAR}, 
       #{isProxy,jdbcType=INTEGER}, #{bank,jdbcType=VARCHAR}, #{inviteCode,jdbcType=VARCHAR}, 
       #{proxyLevel,jdbcType=INTEGER}, #{fatherName,jdbcType=VARCHAR}, #{remainMoney,jdbcType=VARCHAR}, 
-      #{bindPlayerId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
+      #{bindPlayerId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{remainFetchMoney,jdbcType=DOUBLE}, 
+      #{totalFetchMoney,jdbcType=DOUBLE})
   </insert>
   <insert id="insertSelective" parameterType="com.lyh.admin.model.OsaUser">
     insert into osa_user
@@ -210,6 +215,12 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="remainFetchMoney != null">
+        remain_fetch_money,
+      </if>
+      <if test="totalFetchMoney != null">
+        total_fetch_money,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -280,6 +291,12 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remainFetchMoney != null">
+        #{remainFetchMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="totalFetchMoney != null">
+        #{totalFetchMoney,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -361,6 +378,12 @@
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.remainFetchMoney != null">
+        remain_fetch_money = #{record.remainFetchMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.totalFetchMoney != null">
+        total_fetch_money = #{record.totalFetchMoney,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -390,7 +413,9 @@
       father_name = #{record.fatherName,jdbcType=VARCHAR},
       remain_money = #{record.remainMoney,jdbcType=VARCHAR},
       bind_player_id = #{record.bindPlayerId,jdbcType=BIGINT},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      remain_fetch_money = #{record.remainFetchMoney,jdbcType=DOUBLE},
+      total_fetch_money = #{record.totalFetchMoney,jdbcType=DOUBLE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -464,6 +489,12 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="remainFetchMoney != null">
+        remain_fetch_money = #{remainFetchMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="totalFetchMoney != null">
+        total_fetch_money = #{totalFetchMoney,jdbcType=DOUBLE},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -490,7 +521,9 @@
       father_name = #{fatherName,jdbcType=VARCHAR},
       remain_money = #{remainMoney,jdbcType=VARCHAR},
       bind_player_id = #{bindPlayerId,jdbcType=BIGINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      remain_fetch_money = #{remainFetchMoney,jdbcType=DOUBLE},
+      total_fetch_money = #{totalFetchMoney,jdbcType=DOUBLE}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

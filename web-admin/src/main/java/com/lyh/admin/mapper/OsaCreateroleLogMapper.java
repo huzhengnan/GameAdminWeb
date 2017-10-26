@@ -1,11 +1,9 @@
 package com.lyh.admin.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.lyh.admin.model.OsaCreateroleLog;
 import com.lyh.admin.model.OsaCreateroleLogExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface OsaCreateroleLogMapper {
     long countByExample(OsaCreateroleLogExample example);

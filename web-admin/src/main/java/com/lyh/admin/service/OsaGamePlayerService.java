@@ -1,5 +1,6 @@
 package com.lyh.admin.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.lyh.admin.model.OsaGamePlayer;
@@ -44,7 +45,17 @@ public interface OsaGamePlayerService extends BaseService<OsaGamePlayer> {
 	 * @param inviteCode
 	 * @return 
 	 */  
-	List<OsaGamePlayer> getGamePlayersByInviteCode(String inviteCode);
+	List<OsaGamePlayer> getGamePlayersByInviteCode(String inviteCode,Date startDate,Date endDate,long playerId);
+	
+	/** 
+	 * getGamePlayerNumsByInviteCode:(). <br/> 
+	 * TODO().<br/> 
+	 * 邀请码绑定玩家的数量
+	 * @author lyh 
+	 * @param inviteCode
+	 * @return 
+	 */  
+	int  getGamePlayerNumsByInviteCode(String inviteCode);
 	
 }
   

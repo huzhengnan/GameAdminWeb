@@ -38,7 +38,6 @@
 				-->
 			
 				
-				
 				<label>代理的房卡</label>
 				<input type="number" name="myMoney" value="${myUser.remainMoney}" class="input-xlarge" readonly="readonly">
 				

@@ -18,7 +18,8 @@
 		<div class="tab-pane active in" id="home">
 
 			<form id="tab" method="post" action="${ctxPage}/proxy/add" autocomplete="off">
-				<input type="hidden" name="proxyId" value="${proxyId}" />
+					<label>代理Id</label>
+				<input type="text" name="proxyId" value="${proxyId}" readonly="readonly" class="input-xlarge" />
 
 				<c:choose>
 					<c:when test="${level gt 2}">

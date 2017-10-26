@@ -1,11 +1,9 @@
 package com.lyh.admin.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.lyh.admin.model.OsaSysLog;
 import com.lyh.admin.model.OsaSysLogExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface OsaSysLogMapper {
     long countByExample(OsaSysLogExample example);

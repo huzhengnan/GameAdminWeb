@@ -6,14 +6,37 @@
 <%@include file="sys/header.jsp"%>
 <%@include file="sys/navibar.jsp"%>
 <%@include file="sys/sidebar.jsp"%>
-<!-- 
-<div class="btn-toolbar" style="margin-bottom:2px;">
-	<a href="${ctxPage}/noticeboard/add_view" class="btn btn-primary">
-		<i class="icon-plus"></i>
-		添加公告
-	</a>
+<div style="border:0px;padding-bottom:5px;height:auto">
+	<form action="" method="POST" style="margin-bottom:0px">
+
+		<div style="float:left;margin-right:5px">
+			<label> 选择起始时间 </label>
+			<input type="text" id="start_date" name="startDate" value="${startDate}" placeholder="起始时间">
+		</div>
+		<div style="float:left;margin-right:5px">
+			<label>选择结束时间</label>
+			<input type="text" id="end_date" name="endDate" value="${endDate}" placeholder="结束时间">
+		</div>
+		
+		<div style="float:left;margin-right:5px">
+			<label>电话，查询所有用户请留空</label>
+			<input type="number" name="phone" value="${phone}" placeholder="输入电话">
+		</div>
+		 <div style="float:left;margin-right:5px">
+			<label>邀请码，查询所有用户请留空</label>
+			<input type="text" name="inviteCode" value="${inviteCode}" placeholder="输入邀请码">
+		</div>
+		
+		<div class="btn-toolbar" style="padding-top:25px;padding-bottom:0px;margin-bottom:0px">
+			<button type="submit" class="btn btn-primary">
+				<strong>检索</strong>
+			</button>
+		</div>
+		
+		<div style="clear:both;"></div>
+	</form>
 </div>
- -->
+
 <div class="block">
 	<a href="#page-stats" class="block-heading" data-toggle="collapse">${page_title}</a>
 	<div id="page-stats" class="block-body collapse in">
@@ -55,9 +78,12 @@
 							<fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss" />
 						</td>
 						<td>
+						
 							<c:if test="${ !empty name}">
-								<a href="${ctxPage}/proxy/recharge_sub_proxy?id=${item.id}&myName=${name}">充值</a>
+								<a href="${ctxPage}/proxy/recharge_sub_proxy?id=${item.id}&myName=${name}">充值</a> /
+								<a href="${ctxPage}/proxy/proxy_del?id=${item.id}">删除</a>
 							</c:if>
+							
 						</td>
 					</tr>
 				</c:forEach>
@@ -69,4 +95,24 @@
 	</div>
 </div>
 
+<script type="text/javascript">
+	var msg = "${msg}";
+	if (msg != null && msg != "") {
+		alert(msg);
+	}
+	$(function() {
+		var date = $("#start_date");
+		date.datepicker({
+			dateFormat : "yy-mm-dd"
+		});
+		date.datepicker("option", "firstDay", 1);
+	});
+	$(function() {
+		var date = $("#end_date");
+		date.datepicker({
+			dateFormat : "yy-mm-dd"
+		});
+		date.datepicker("option", "firstDay", 1);
+	});
+</script>
 <%@include file="sys/footer.jsp"%>

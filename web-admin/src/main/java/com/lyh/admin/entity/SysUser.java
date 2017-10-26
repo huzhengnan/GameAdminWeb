@@ -32,6 +32,9 @@ public class SysUser implements Serializable{
 	/**menuMap=url,url权限全部的URL**/  
 	private Map<String,SysMenu> menuMap = new HashMap<String, SysMenu>();
 	
+	/**推广人数**/  
+	private int playerNum;
+	
 	public OsaUser getOsaUser() {
 		return osaUser;
 	}
@@ -62,6 +65,14 @@ public class SysUser implements Serializable{
 
 	public void setMenuMap(Map<String, SysMenu> menuMap) {
 		this.menuMap = menuMap;
+	}
+
+	public int getPlayerNum() {
+		return playerNum;
+	}
+
+	public void setPlayerNum(int playerNum) {
+		this.playerNum = playerNum;
 	}
 
 

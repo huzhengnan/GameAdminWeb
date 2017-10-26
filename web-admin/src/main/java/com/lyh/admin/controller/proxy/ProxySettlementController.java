@@ -22,6 +22,7 @@ import com.lyh.admin.entity.SysUser;
 import com.lyh.admin.model.OsaProxyConfig;
 import com.lyh.admin.model.OsaProxyRecharge;
 import com.lyh.admin.model.OsaProxyRechargeFetch;
+import com.lyh.admin.model.OsaUser;
 import com.lyh.admin.tools.ShowPage;
 import com.lyh.admin.tools.ToolUtils;
 
@@ -114,16 +115,23 @@ public class ProxySettlementController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/my_settlement_list")
-	public ModelAndView getProxySettlementList(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage,String startDate,String endDate) {
+	public ModelAndView getProxySettlementList(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage, String startDate, String endDate) {
 		ModelAndView view = new ModelAndView("/ProxySettlementList");
 		PageHelper.startPage(curPage, ShowPage.PAGE_SIZE);
 		SysUser sysUser = ShiroSysUser.getShiroSubject();
-		List<OsaProxyRecharge> list = proxyRechargeService.getSettlementListByFetch(sysUser.getOsaUser().getUserName(), 0);
-		PageInfo<OsaProxyRecharge> pageInfo = new PageInfo<OsaProxyRecharge>(list);
+//		List<OsaProxyRecharge> list = proxyRechargeService.getSettlementListByFetch(sysUser.getOsaUser().getUserName(), 0);
+//		PageInfo<OsaProxyRecharge> pageInfo = new PageInfo<OsaProxyRecharge>(list);
+//		String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
+//		view.addObject("list", list);
+//		view.addObject("pages", pages);
+		
+		List<OsaProxyRechargeFetch> list = null;
+		
+		list = proxyRechargeFetchService.getProxyRechargeFetchList(sysUser.getOsaUser().getUserName(),1);
+		PageInfo<OsaProxyRechargeFetch> pageInfo = new PageInfo<OsaProxyRechargeFetch>(list);
 		String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
 		view.addObject("list", list);
 		view.addObject("pages", pages);
-		
 		return view;
 	}
 	
@@ -140,39 +148,30 @@ public class ProxySettlementController extends BaseController {
 	 */
 	@RequestMapping("/settlement_request")
 	public ModelAndView getProxySettlementRequest(HttpSession session, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "1") int curPage) {
-		ModelAndView view = new ModelAndView("/ProxySettlementList");
-		PageHelper.startPage(curPage, ShowPage.PAGE_SIZE);
+		ModelAndView view = new ModelAndView("/ProxyFetchMoneyView");
+		
 		SysUser sysUser = ShiroSysUser.getShiroSubject();
-		List<OsaProxyRecharge> list = null;
-		if (sysUser != null) {
-			list = proxyRechargeService.getSettlementListByFetch(sysUser.getOsaUser().getUserName(), 0);
-			List<Long> rList = new ArrayList<Long>();
-			double fMoney = 0;
-			for (OsaProxyRecharge recharge : list) {
-				recharge.setIsFetch(1);
-				fMoney += recharge.getFetchMoney();
-				proxyRechargeService.update(recharge);
-				rList.add(recharge.getId());
-			}
-			
-			if (rList.size() > 0) {
-				// 存入请求库
+		if (this.isPost(request)) {
+			String money = request.getParameter("money");
+			double mm = Double.parseDouble(money);
+			double mmr = sysUser.getOsaUser().getRemainFetchMoney();
+			if (mmr >= mm && mm > 0) {
+				
 				OsaProxyRechargeFetch pObj = new OsaProxyRechargeFetch();
 				pObj.setCreateTime(new Date(System.currentTimeMillis()));
 				pObj.setName(sysUser.getOsaUser().getUserName());
-				pObj.setMoney(fMoney);
-				pObj.setIds(JSON.toJSONString(rList));
+				pObj.setMoney(Double.parseDouble(money));
 				pObj.setStatus(0);
 				proxyRechargeFetchService.insert(pObj);
 				view.addObject("msg", "申请结算成功");
+				view.addObject("remainMoney", sysUser.getOsaUser().getRemainFetchMoney());
+			} else {
+				view.addObject("remainMoney", sysUser.getOsaUser().getRemainFetchMoney());
+				view.addObject("msg", "余额不足!");
 			}
+		} else {
+			view.addObject("remainMoney", sysUser.getOsaUser().getRemainFetchMoney());
 		}
-		
-		list = proxyRechargeService.getSettlementListByFetch(sysUser.getOsaUser().getUserName(), 0);
-		PageInfo<OsaProxyRecharge> pageInfo = new PageInfo<OsaProxyRecharge>(list);
-		String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
-		view.addObject("list", list);
-		view.addObject("pages", pages);
 		
 		return view;
 	}
@@ -195,7 +194,7 @@ public class ProxySettlementController extends BaseController {
 		SysUser sysUser = ShiroSysUser.getShiroSubject();
 		List<OsaProxyRechargeFetch> list = null;
 		
-		list = proxyRechargeFetchService.getProxyRechargeFetchList(0);
+		list = proxyRechargeFetchService.getProxyRechargeFetchList(null,0);
 		PageInfo<OsaProxyRechargeFetch> pageInfo = new PageInfo<OsaProxyRechargeFetch>(list);
 		String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
 		view.addObject("list", list);
@@ -226,20 +225,28 @@ public class ProxySettlementController extends BaseController {
 			if (fetchRecharge != null && fetchRecharge.getStatus() == 0) {
 				fetchRecharge.setStatus(1);
 				proxyRechargeFetchService.update(fetchRecharge);
-				List<Long> ids = JSON.parseArray(fetchRecharge.getIds(), Long.class);
-				for (long rechargeId : ids) {
-					OsaProxyRecharge rechargeRecord = proxyRechargeService.findById(rechargeId);
-					if (rechargeRecord != null) {
-						rechargeRecord.setIsFetch(2);
-						proxyRechargeService.update(rechargeRecord);
-					}
+				OsaUser oUser = userService.findUserByUserName(fetchRecharge.getName());
+				if (oUser!=null && oUser.getRemainFetchMoney()  >=fetchRecharge.getMoney()){
+					oUser.setRemainFetchMoney(oUser.getRemainFetchMoney() -fetchRecharge.getMoney() );
+					userService.update(oUser);
+					view.addObject("msg", "结算成功");
+				}else{
+					view.addObject("msg", "结算失败,余额不足!");
 				}
-				view.addObject("msg", "结算成功");
+//				List<Long> ids = JSON.parseArray(fetchRecharge.getIds(), Long.class);
+//				for (long rechargeId : ids) {
+//					OsaProxyRecharge rechargeRecord = proxyRechargeService.findById(rechargeId);
+//					if (rechargeRecord != null) {
+//						rechargeRecord.setIsFetch(2);
+//						proxyRechargeService.update(rechargeRecord);
+//					}
+//				}
+				
 			}
 		}
 		List<OsaProxyRechargeFetch> list = null;
 		
-		list = proxyRechargeFetchService.getProxyRechargeFetchList(0);
+		list = proxyRechargeFetchService.getProxyRechargeFetchList(null,0);
 		PageInfo<OsaProxyRechargeFetch> pageInfo = new PageInfo<OsaProxyRechargeFetch>(list);
 		String pages = ShowPage.showPager(this.getRequestUrl(request), curPage, ShowPage.PAGE_SIZE, pageInfo.getTotal());
 		view.addObject("list", list);

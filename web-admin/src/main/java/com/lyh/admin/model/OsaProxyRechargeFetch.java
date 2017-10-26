@@ -30,7 +30,7 @@ public class OsaProxyRechargeFetch implements Serializable {
     private String ids;
 
     /**
-     * 1已领取
+     * 1为已领取
      */
     private Integer status;
 
