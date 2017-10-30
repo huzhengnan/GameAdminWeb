@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.lyh.admin.controller.BaseController;
 import com.lyh.admin.entity.ShiroSysUser;
 import com.lyh.admin.entity.SysUser;
+import com.lyh.admin.model.OsaProxyConfig;
 import com.lyh.admin.model.OsaProxyRechargeFetch;
 
 /** 
@@ -41,12 +42,13 @@ public class MobileFetchMoneyController extends BaseController {
 		ModelAndView view = new ModelAndView("/mobile/MobileFetchMoneyView");
 		
 		SysUser sysUser = ShiroSysUser.getShiroSubject();
-		
+		OsaProxyConfig  proxyConfig =  proxyConfigService.findById(1);
 		if (this.isPost(request)) {
 			String money = request.getParameter("money");
 			double mm = Double.parseDouble(money);
 			double mmr = sysUser.getOsaUser().getRemainFetchMoney();
-			if (mmr >= mm && mm > 0) {
+			double mmd = Double.parseDouble(proxyConfig.getNoneLevel());
+			if (mmr >= mm && mm > 0 && mm >= mmd) {
 				
 				OsaProxyRechargeFetch pObj = new OsaProxyRechargeFetch();
 				pObj.setCreateTime(new Date(System.currentTimeMillis()));
@@ -63,7 +65,7 @@ public class MobileFetchMoneyController extends BaseController {
 		} else {
 			view.addObject("remainMoney", sysUser.getOsaUser().getRemainFetchMoney());
 		}
-		
+		view.addObject("proxyConfig", proxyConfig);
 		return view;
 	}
 	

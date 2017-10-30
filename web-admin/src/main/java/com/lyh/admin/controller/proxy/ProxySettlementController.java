@@ -85,6 +85,19 @@ public class ProxySettlementController extends BaseController {
 			String twoLevel = request.getParameter("twoLevel");
 			String threeLevel = request.getParameter("threeLevel");
 			String noneLevel = request.getParameter("noneLevel");
+		
+			if (ToolUtils.isStringNull(oneLevel) || Integer.parseInt(oneLevel) < 0){
+				oneLevel="0";
+			}
+			if (ToolUtils.isStringNull(twoLevel) || Integer.parseInt(twoLevel) < 0){
+				twoLevel="0";
+			}
+			if (ToolUtils.isStringNull(threeLevel) || Integer.parseInt(threeLevel) < 0){
+				threeLevel="0";
+			}
+			if (ToolUtils.isStringNull(noneLevel) || Integer.parseInt(noneLevel) < 0){
+				noneLevel="0";
+			}
 			proxyConfig.setNoneLevel(noneLevel);
 			proxyConfig.setOneLevel(oneLevel);
 			proxyConfig.setTwoLevel(twoLevel);
@@ -151,11 +164,13 @@ public class ProxySettlementController extends BaseController {
 		ModelAndView view = new ModelAndView("/ProxyFetchMoneyView");
 		
 		SysUser sysUser = ShiroSysUser.getShiroSubject();
+		OsaProxyConfig  proxyConfig =  proxyConfigService.findById(1);
 		if (this.isPost(request)) {
 			String money = request.getParameter("money");
 			double mm = Double.parseDouble(money);
 			double mmr = sysUser.getOsaUser().getRemainFetchMoney();
-			if (mmr >= mm && mm > 0) {
+			double mmd = Double.parseDouble(proxyConfig.getNoneLevel());
+			if (mmr >= mm && mm > 0 && mm>=mmd) {
 				
 				OsaProxyRechargeFetch pObj = new OsaProxyRechargeFetch();
 				pObj.setCreateTime(new Date(System.currentTimeMillis()));
@@ -173,6 +188,8 @@ public class ProxySettlementController extends BaseController {
 			view.addObject("remainMoney", sysUser.getOsaUser().getRemainFetchMoney());
 		}
 		
+		view.addObject("proxyConfig", proxyConfig);
+	
 		return view;
 	}
 	

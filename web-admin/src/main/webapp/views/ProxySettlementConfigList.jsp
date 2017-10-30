@@ -24,7 +24,7 @@
 					<th style="width :140px">一级代理</th>
 					<th style="width :100px">二级代理</th>
 					<th style="width :100px">三级代理</th>
-					<th style="width :100px">总代理</th>
+					<th style="width :100px">提成基础金额</th>
 					<th style="width :30px">操作</th>
 				</tr>
 			</thead>
@@ -37,7 +37,7 @@
 								<td>${item.oneLevel}%</td>
 										<td>${item.twoLevel}%</td>
 										<td>${item.threeLevel}%</td>
-										<td>${item.noneLevel}%</td>
+										<td>${item.noneLevel}</td>
 						<td>
 								<a href="${ctxPage}/proxy/settlement_config_add?id=${item.id}">修改</a>
 						</td>

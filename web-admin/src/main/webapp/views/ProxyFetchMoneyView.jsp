@@ -28,7 +28,7 @@
 				<label>余额</label>
 				<input type="text" name="remainMoney" value="${remainMoney}" class="input-xlarge" required="required" readonly="readonly">
 				
-				<label>提现金额</label>
+				<label>提现金额(每次提现申请不低于${proxyConfig.noneLevel}元)</label>
 				<input type="number" name="money" value="" class="input-xlarge" required="required" placeholder="提现金额">
 
 				<div class="btn-toolbar">

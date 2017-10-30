@@ -40,15 +40,16 @@
 			</tr>
 
 			<tr>
-				<td>金额信息</td>
+				<td colspan="2" style =" text-align: center;">金额信息</td>
 			</tr>
+				<c:if test="${channel == 2}">
 			<tr>
-				<td>可用金额</td>
+				<td>剩余金额</td>
 				<td>${user_info.osaUser.remainMoney}</td>
 			</tr>
-
+		</c:if>
 			<tr>
-				<td>可提金额</td>
+				<td>可提现金额</td>
 				<td>${user_info.osaUser.remainFetchMoney}</td>
 			</tr>
 

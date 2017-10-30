@@ -128,6 +128,8 @@ public class WeChatPayController extends BaseController {
 						
 						bCheck = true;
 					}
+				}else{
+					logger.error(dPrice + ":没有找到玩家::" + openId);
 				}
 			}
 		} else {
@@ -281,17 +283,19 @@ public class WeChatPayController extends BaseController {
 					agent = userService.getUsersByInviteCode(inviteCode);
 					}
 					
-					if (agent.getRemainMoney() == null) {
-						agent.setRemainMoney("0");
-					}
+				
 					
 					if (agent != null) {// && agent.getRemainMoney() >= gold在线冲值不要减money
-						OsaGameWorld worldServer= gameWorldService.getWorldByWorldId(player.getWorldId());
+						if (agent.getRemainMoney() == null) {
+							agent.setRemainMoney("0");
+						}
+						player = gamePlayerService.getGamePlayerByOpenId(openId);
 						
-						if (worldServer != null) {
-							player = gamePlayerService.getGamePlayerByOpenId(openId);
-							if (player != null) {
-								//
+						
+						if ( player != null) {
+							OsaGameWorld worldServer= gameWorldService.getWorldByWorldId(player.getWorldId());
+							if (worldServer != null) {
+								
 								OsaProxyConfig  agentConfig =  proxyConfigService.findById(1);
 								double fetchMoneyRate = 0;
 								if (agentConfig != null && agentConfig.getOneLevel() != null){

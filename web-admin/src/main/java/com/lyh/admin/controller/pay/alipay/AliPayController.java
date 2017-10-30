@@ -282,7 +282,7 @@ public class AliPayController extends BaseController {
 						return;
 					}
 					
-					int status = operatorRechargeService.recharge(player.getOpenId(), myRecharge.getTraderOrder(), dPrice, myRecharge.getMoney(), (int) (System.currentTimeMillis() / 1000), gameWorld, 1);
+					int status = operatorRechargeService.recharge(player.getOpenId(), myRecharge.getTraderOrder(), dPrice, gold, (int) (System.currentTimeMillis() / 1000), gameWorld, 1);
 					if (status == 1) {
 						// addPlayerMoney(player, agent, gold, dPrice, myRecharge.getTraderOrder(), (fetchMoneyRate * dPrice) / 100);
 						agent.setTotalFetchMoney(agent.getTotalFetchMoney()+ (fetchMoneyRate * dPrice) / 100);

@@ -12,19 +12,18 @@
 <div class="block">
 	<a href="#page-stats" class="block-heading" data-toggle="collapse">代理推广</a>
 	<div id="page-stats" class="block-body collapse in">
-		<table class="table table-striped table-bordered table-condensed">
+	<!-- table-bordered   table-condensed-->
+		<table class="table table-striped ">
 
 			<tr>
 				<td >
-					<button onclick="myInfo();">
-						<h3 style="color: green;">我的推广</h3>
-					</button>
+				<a href="${ctxPage}/mobile/my_info" class="btn btn-large btn-primary "  style="color: green;">我的推广</a>
+		
 				</td>
 
 				<td>
-					<button onclick="queryTrader();">
-						<h3 style="color: red;">订单查询</h3>
-					</button>
+					<a href="${ctxPage}/mobile/order_list" class="btn btn-large btn-primary "  style="color: red;" >订单查询</a>
+				
 				</td>
 			</tr>
 

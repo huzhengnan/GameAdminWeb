@@ -25,8 +25,9 @@
 				<input type="number" maxlength="3" class="input-xlarge" id="twoLevel" name="twoLevel" value="${proxyConfig.twoLevel}" placeholder="请填写你的二级代理提成比例" />
 				<label>三级代理提成比例</label>
 				<input type="number" maxlength="3" class="input-xlarge" id="threeLevel" name="threeLevel" value="${proxyConfig.threeLevel}" placeholder="请填写你的三级代理提成比例" />
-				<label>总代理提成比例</label>
-					<input type="number" maxlength="3" class="input-xlarge" id="noneLevel" name="noneLevel" value="${proxyConfig.noneLevel}" placeholder="请填写你的总代理提成比例" />
+				
+				<label>提成基础金额</label>
+				<input type="number" maxlength="3" class="input-xlarge" id="noneLevel" name="noneLevel" value="${proxyConfig.noneLevel}" placeholder="请填写提成基础金额" />
 
 				<div class="btn-toolbar">
 					<button type="submit" class="btn btn-primary">

@@ -18,19 +18,20 @@
 
 
 	<div class="navbar-inner">
-		<ul class="nav pull-right">
+		<ul class="nav  pull-right">
 
-			<li id="fat-menu" class="dropdown">
-				<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
+			<li  class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="dLabel" role="button" >
 					<i class="icon-user"></i>
 					${sysUser.osaUser.userName}
 					<i class="icon-caret-down"></i>
+					
 				</a>
 
-				<ul class="dropdown-menu">
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 					<!-- <li><a tabindex="-1" href="_ADMIN_/panel/profile">我的账号</a></li>-->
 					<li>
-						<a tabindex="1" href="${ctxPage}/mobile/logout">登出</a>
+						<a  tabindex="-1" href="${ctxPage}/mobile/logout">登出</a>
 					</li>
 				</ul>
 			</li>
