@@ -45,7 +45,7 @@ public class JhCardController extends BaseController {
 				req.setPlayerId(playerId);
 				req.setGameType(Integer.parseInt(gameType));
 				if (gameWorld != null) {
-					//logger.error("来了没有没有朋");
+					logger.error(playerId+":打印::"+gameWorld.getIp()+"::"+gameWorld.getServerUrl()+":Type:"+gameType);
 					GmJHPlayerHttpProtocol resp = (GmJHPlayerHttpProtocol) PlatformToServerConnection.sendPlatformToServer(gameWorld.getIp(), gameWorld.getServerUrl(), req);
 					if (resp != null) {
 						result = resp.result;

@@ -10,11 +10,11 @@ import com.alipay.api.internal.mapping.ApiListField;
  * 口碑订单预咨询
  *
  * @author auto create
- * @since 1.0, 2017-09-01 11:24:28
+ * @since 1.0, 2017-10-23 15:09:59
  */
 public class KoubeiTradeOrderConsultModel extends AlipayObject {
 
-	private static final long serialVersionUID = 4527373234447327897L;
+	private static final long serialVersionUID = 2524436583158489949L;
 
 	/**
 	 * 用户设备信息,通过钱包容器提供的JSAPI接口获取。
@@ -49,7 +49,7 @@ public class KoubeiTradeOrderConsultModel extends AlipayObject {
 	private String totalAmount;
 
 	/**
-	 * 不参与优惠计算的金额，单位为元，精确到小数点后两位，取值范围[0,999999999]
+	 * 不可打折金额，单位为元，精确到小数点后两位，取值范围[0,999999999]
 如果同时传入了【不可打折金额】、【订单总金额】，则必须满足【不可打折金额】<=【订单总金额】
 	 */
 	@ApiField("undiscountable_amount")

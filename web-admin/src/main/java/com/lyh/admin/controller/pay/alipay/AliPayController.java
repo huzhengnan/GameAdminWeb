@@ -139,36 +139,35 @@ public class AliPayController extends BaseController {
 		}
 		
 		try {
-			String notify_url = this.getBaseUrl(request)+"/alipay/pay/notify";// 回调地址
-			logger.error("回调通知:"+notify_url );
-			//实例化客户端
+			String notify_url = this.getBaseUrl(request) + "/alipay/pay/notify";// 回调地址
+			logger.error("回调通知:" + notify_url);
+			// 实例化客户端
 			OsaProxyRecharge oPay = addPlayerMoney(agent, player, goods.getPrice(), (fetchMoneyRate * goods.getPrice()) / 100);
 			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", AlipayConfig.ALIPAY_APPID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConstants.CHARSET_UTF8, AlipayConfig.ALIPAY_PUBLIC_KEY, "RSA2");
-			//实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+			// 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
 			AlipayTradeAppPayRequest req = new AlipayTradeAppPayRequest();
-			//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
+			// SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
 			AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
 			model.setBody("虚拟商品");
 			model.setSubject("商品");
 			model.setOutTradeNo(oPay.getTraderOrder());
 			model.setTimeoutExpress("30m");
-			model.setTotalAmount(""+dPrice);
+			model.setTotalAmount("" + dPrice);
 			model.setProductCode("QUICK_MSECURITY_PAY");
 			req.setBizModel(model);
 			req.setNotifyUrl(notify_url);
 			try {
-			        //这里和普通的接口调用不同，使用的是sdkExecute
-			        AlipayTradeAppPayResponse resp = alipayClient.sdkExecute(req);
-			        StringBuilder builder = new StringBuilder();
+				// 这里和普通的接口调用不同，使用的是sdkExecute
+				AlipayTradeAppPayResponse resp = alipayClient.sdkExecute(req);
+				StringBuilder builder = new StringBuilder();
 				builder.append("return_code=").append("SUCCESS");
 				builder.append("&orderStr=").append(resp.getBody());
 				write.write(builder.toString());
-			        System.out.println(resp.getBody());//就是orderString 可以直接给客户端请求，无需再做处理。
-			    } catch (AlipayApiException e) {
-			        e.printStackTrace();
-			        logger.error("支付宝异常::",e);
+				System.out.println(resp.getBody());// 就是orderString 可以直接给客户端请求，无需再做处理。
+			} catch (AlipayApiException e) {
+				e.printStackTrace();
+				logger.error("支付宝异常::", e);
 			}
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -189,23 +188,23 @@ public class AliPayController extends BaseController {
 	public void orderPayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		logger.info("[/order/pay/notify]");
 		
-		
-		//获取支付宝POST过来反馈信息
-		Map<String,String> params = new HashMap<String,String>();
+		// 获取支付宝POST过来反馈信息
+		Map<String, String> params = new HashMap<String, String>();
 		Map requestParams = request.getParameterMap();
 		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
-		    String name = (String) iter.next();
-		    String[] values = (String[]) requestParams.get(name);
-		    String valueStr = "";
-		    for (int i = 0; i < values.length; i++) {
-		        valueStr = (i == values.length - 1) ? valueStr + values[i]
-		                    : valueStr + values[i] + ",";
-		  }
-		  //乱码解决，这段代码在出现乱码时使用。
-		  //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-		  params.put(name, valueStr);
-		 }
-			
+			String name = (String) iter.next();
+			String[] values = (String[]) requestParams.get(name);
+			String valueStr = "";
+			for (int i = 0; i < values.length; i++) {
+				valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
+			}
+			// 乱码解决，这段代码在出现乱码时使用。
+			// valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+			params.put(name, valueStr);
+		}
+		
+		String json = JSON.toJSONString(params);
+		logger.error("收到的json格式::" + json);
 		PrintWriter write = response.getWriter();
 		// 获取到返回的所有参数 先判断是否交易成功trade_status 再做签名校验
 		// 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号，
@@ -213,16 +212,12 @@ public class AliPayController extends BaseController {
 		// 3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email），
 		// 4、验证app_id是否为该商户本身。上述1、2、3、4有任何一个验证不通过，则表明本次通知是异常通知，务必忽略。在上述验证通过后商户必须根据支付宝不同类型的业务通知，正确的进行不同的业务处理，并且过滤重复的通知结果数据。在支付宝的业务通知中，只有交易通知状态为TRADE_SUCCESS或TRADE_FINISHED时，支付宝才会认定为买家付款成功。
 		if ("TRADE_SUCCESS".equals(params.get("trade_status")) || "TRADE_FINISHED".equals(params.get("trade_status"))) {
-//			Enumeration<?> pNames = request.getParameterNames();
-//			Map<String, String> param = new HashMap<String, String>();
-			try {
-//				while (pNames.hasMoreElements()) {
-//					String pName = (String) pNames.nextElement();
-//					param.put(pName, request.getParameter(pName));
-//				}
-			boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayUtil.ALIPAY_PUBLIC_KEY, AlipayConstants.CHARSET_UTF8);// 校验签名是否正确
-				
 			
+			try {
+				
+				logger.error("alipay_public_key::" + AlipayConfig.ALIPAY_PUBLIC_KEY);
+				boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConstants.CHARSET_UTF8, "RSA2");// 校验签名是否正确
+				
 				if (signVerified) {
 					// TODO 验签成功后
 					// 按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
@@ -285,8 +280,8 @@ public class AliPayController extends BaseController {
 					int status = operatorRechargeService.recharge(player.getOpenId(), myRecharge.getTraderOrder(), dPrice, gold, (int) (System.currentTimeMillis() / 1000), gameWorld, 1);
 					if (status == 1) {
 						// addPlayerMoney(player, agent, gold, dPrice, myRecharge.getTraderOrder(), (fetchMoneyRate * dPrice) / 100);
-						agent.setTotalFetchMoney(agent.getTotalFetchMoney()+ (fetchMoneyRate * dPrice) / 100);
-						agent.setRemainFetchMoney(agent.getRemainFetchMoney()+ (fetchMoneyRate * dPrice) / 100);
+						agent.setTotalFetchMoney(agent.getTotalFetchMoney() + (fetchMoneyRate * dPrice) / 100);
+						agent.setRemainFetchMoney(agent.getRemainFetchMoney() + (fetchMoneyRate * dPrice) / 100);
 						userService.update(agent);
 						myRecharge.setFlag(1);
 						

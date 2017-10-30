@@ -8,9 +8,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.game.protocol.gm.GmJHPlayerProtocolRequest;
 import com.lyh.admin.properites.WeChatConfig;
 import com.lyh.admin.tools.pay.webchat.CommonUtil;
 import com.lyh.admin.tools.pay.webchat.PayCommonUtil;
+import com.lyh.common.ConvertMapUtils;
 
 
 
@@ -87,8 +89,13 @@ public class HttpClientTest {
 			String realName = "321321";
 			String cardId = "32131233";
 			String requestMsg = "playerId="+playerId+"&realName="+realName+"&cardId="+cardId;
+			GmJHPlayerProtocolRequest req = new GmJHPlayerProtocolRequest();
+			req.setPlayerId(""+100050);
+			req.setGameType(0);
 			//39.108.11.36
-			String result = HttpClient.send("http://39.108.11.36/game/auth/real/name",  true,requestMsg.getBytes("utf-8"));
+			String jsonString = ConvertMapUtils.objToString(req);
+			byte[]	data = jsonString.getBytes("UTF-8");
+			String result = HttpClient.send("http://120.77.232.37:3102/platform",  true,data);
 			logger.error("ssss::"+result);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
