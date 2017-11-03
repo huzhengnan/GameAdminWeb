@@ -96,7 +96,7 @@ public class AliPayController extends BaseController {
 		OsaUser agent = null;
 		double fetchMoneyRate = 0;
 		OsaShop goods = shopService.findShopGoodsByPrice(dPrice);
-		dPrice = 0.01;
+		//dPrice = 0.01;
 		if (goods != null) {
 			gold = goods.getGift() + goods.getNum();
 			
@@ -140,7 +140,7 @@ public class AliPayController extends BaseController {
 		
 		try {
 			String notify_url = this.getBaseUrl(request) + "/alipay/pay/notify";// 回调地址
-			logger.error("回调通知:" + notify_url);
+			logger.error(dPrice+":回调通知:" + notify_url);
 			// 实例化客户端
 			OsaProxyRecharge oPay = addPlayerMoney(agent, player, goods.getPrice(), (fetchMoneyRate * goods.getPrice()) / 100);
 			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", AlipayConfig.ALIPAY_APPID, AlipayConfig.APP_PRIVATE_KEY, "json", AlipayConstants.CHARSET_UTF8, AlipayConfig.ALIPAY_PUBLIC_KEY, "RSA2");
