@@ -125,7 +125,6 @@ public class WeChatPayController extends BaseController {
 				if (player != null) {
 					OsaGameWorld gameWorld = gameWorldService.getWorldByWorldId(player.getWorldId());
 					if (gameWorld != null) {
-						
 						bCheck = true;
 					}
 				}else{
