@@ -9,7 +9,7 @@ package com.lyh.admin.tools;
 public class ShowPage {
 	
 	/**每页显示行数**/  
-	public static final int PAGE_SIZE = 5;
+	public static final int PAGE_SIZE = 20;
 	
 	//显示当前页的前后页数  4,5,6,七,8,9,10
     public static final int  OFFSET=3;
